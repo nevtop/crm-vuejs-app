@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login.vue'
+import Signin from '@/components/Signin.vue'
 import Home from '@/components/Home.vue'
 
 Vue.use(Router)
@@ -15,13 +15,13 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Signin
     },
     {
-      path: '/logout',
+      path: '/login?logout=true',
       name: 'Logout',
       props: true,
-      component: Login
+      component: Signin
     }
   ],
   mode: 'history'

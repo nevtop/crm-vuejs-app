@@ -1,24 +1,28 @@
 <template>
-  <div>
-    <top-nav></top-nav>
-  </div>
+    <div ref="container-home" class="container-home">
+        <top-bar></top-bar>
+        <side-nav></side-nav>
+    </div>
 </template>
 
 <script>
-import TopNav from './common/TopNav.vue'
+import SideNav from './common/SideNav.vue'
+import TopBar from './common/TopBar.vue'
 
 export default {
-  data: function () {
-    return {
+    data: function () {
+        return {}
+    },
+    components: {
+        'side-nav': SideNav,
+        'top-bar': TopBar
     }
-  },
-  components: {
-    'top-nav': TopNav
-  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.container-home {
+    transition: 0.5s;
+}
 </style>
