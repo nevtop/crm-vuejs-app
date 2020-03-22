@@ -4,7 +4,7 @@
         <a target="_blank" href="http://nevtop.in/" class="logo">
             <img src="@/assets/nevtop.png" />
         </a>
-        <router-link :to="{name: 'Logout', params: { logout:'true'}}" class="link">Logout</router-link>
+        <router-link :to="{name: 'Login', query: { logout: true }}" class="link">Logout</router-link>
         <router-link :to="{name: 'Home'}" class="link">Home</router-link>
     </div>
 </template>

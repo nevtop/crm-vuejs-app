@@ -3,11 +3,17 @@
         <div class="container-wrapper mt-50">
             <form>
                 <span class="label-login mb-20">Login</span>
+                <template v-if="isLogout">
+                    <alert type="success" message="Logout successfully."></alert>
+                </template>
+                <template v-if="isSessionExpire">
+                    <alert type="error" message="Session Expired."></alert>
+                </template>
                 <div class="div-field-login mb-20">
-                    <input type="text" class="field-login" name="username" placeholder="Username" autocomplete="off" required/>
+                    <input type="text" class="field-login" name="username" v-model="username" placeholder="Username" autocomplete="off"/>
                 </div>
                 <div class="div-field-login mb-20">
-                    <input type="password" class="field-login" name="pass" placeholder="Password" required/>
+                    <input type="password" class="field-login" name="password" v-model="password" placeholder="Password"/>
                 </div>
                 <div class="flex-sb mb-20">
                     <div>
@@ -19,29 +25,51 @@
                     </div>
                 </div>
                 <div>
-                    <button class="button-login" @click="goHome">Login</button>
+                    <button type="button" class="button-login" @click="authenticateUser">Login</button>
                 </div>
             </form>
-            <div v-if="logout" class="div-logout">Logout Successfully!</div>
         </div>
     </div>
 </template>
 
 <script>
+import Alert from '@/components/common/Alert'
+
 export default {
-    props: {
-        logout: Boolean
+    data: function () {
+        return {
+            username: '',
+            password: '',
+            isLogout: false,
+            isSessionExpire: false
+        }
+    },
+    components: {
+        'alert': Alert
     },
     methods: {
-        goHome: function () {
-            this.$router.push('/home')
+        authenticateUser: async function () {
+            let data = {}
+            data['username'] = this.username.trim()
+            data['password'] = this.password
+
+            await this.axios.post('http://localhost:8080/user/signin', data)
+                        .then((response) => {console.log(response.data)})
+                        .catch((error) => {console.log(error.data)})
+            //this.$router.push('/home')
         }
+    },
+    mounted: function() {
+        if(this.$route.query.logout)
+            this.isLogout = true
+        if(this.$route.query.sessionExpire)
+            this.isSessionExpire = true
     }
 }
 </script>
 
 <style>
-.div-logout {
+.msg-logout {
     text-align: center;
     margin-top: 20px;
 }

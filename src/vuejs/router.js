@@ -16,12 +16,6 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Signin
-    },
-    {
-      path: '/login?logout=true',
-      name: 'Logout',
-      props: true,
-      component: Signin
     }
   ],
   mode: 'history'
