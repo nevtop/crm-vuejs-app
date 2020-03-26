@@ -3,29 +3,32 @@
         <div class="container-wrapper mt-50">
             <form>
                 <span class="label-login mb-20">Login</span>
-                <template v-if="isLogout">
-                    <alert type="success" message="Logout successfully."></alert>
-                </template>
-                <template v-if="isSessionExpire">
-                    <alert type="error" message="Session Expired."></alert>
+                <template v-if="showalert">
+                    <alert v-bind:type="alert_type" v-bind:message="alert_message" v-on:closeAlertEvent="closeAlertBox"></alert>
                 </template>
                 <div class="div-field-login mb-20">
                     <input type="text" class="field-login" name="username" v-model="username" placeholder="Username" autocomplete="off"/>
                 </div>
                 <div class="div-field-login mb-20">
-                    <input type="password" class="field-login" name="password" v-model="password" placeholder="Password"/>
+                    <input v-bind:type="showpass ? 'text' : 'password'" class="field-login" name="password" v-model="password" placeholder="Password"/>
                 </div>
                 <div class="flex-sb mb-20">
                     <div>
-                        <input id="ckb" type="checkbox" name="remember-me" />
-                        <label for="ckb">Remember me</label>
-                    </div>
-                    <div>
-                        <a href="#">Forgot?</a>
+                        <input type="checkbox" name="remember-me" v-model="showpass"/>
+                        <label for="showpass">Show password</label>
                     </div>
                 </div>
                 <div>
                     <button type="button" class="button-login" @click="authenticateUser">Login</button>
+                </div>
+                <div class="flex-sb mt-50">
+                    <div>
+                        <input type="checkbox" name="remember-me" />
+                        <label for="rememberme">Remember me</label>
+                    </div>
+                    <div>
+                        <a href="#">Forgot?</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -40,30 +43,58 @@ export default {
         return {
             username: '',
             password: '',
-            isLogout: false,
-            isSessionExpire: false
+            showpass: false,
+            showalert: false,
+            alert_type: '',
+            alert_message: ''
         }
     },
     components: {
         'alert': Alert
     },
+    computed: {},
     methods: {
         authenticateUser: async function () {
             let data = {}
             data['username'] = this.username.trim()
             data['password'] = this.password
 
-            await this.axios.post('http://localhost:8080/user/signin', data)
-                        .then((response) => {console.log(response.data)})
-                        .catch((error) => {console.log(error.data)})
-            //this.$router.push('/home')
+            await this.axios
+                .post('http://localhost:8080/user/signin', data)
+                .then((response) => {
+                    console.log(response.data)
+                    this.$router.push({name: 'Home'})
+                }).catch((error) => {
+                    console.log(error.data)
+                    this.$router.push({name: 'Login', query: { invalidCredentials: true }})
+                })
+        },
+        closeAlertBox: function (boolval) {
+            this.showalert = false
+        },
+        computeAlertTypeAndMessage: function () {
+            if(this.$route.query.logout) {
+                this.showalert = true
+                this.alert_type = 'success'
+                this.alert_message = 'Logout successfully.'
+            } else if(this.$route.query.sessionExpire) {
+                this.showalert = true
+                this.alert_type = 'error'
+                this.alert_message = 'Session expired.'
+            } else if(this.$route.query.invalidCredentials) {
+                this.showalert = true
+                this.alert_type = 'error'
+                this.alert_message = 'Invalid username or password.'
+            }
         }
     },
-    mounted: function() {
-        if(this.$route.query.logout)
-            this.isLogout = true
-        if(this.$route.query.sessionExpire)
-            this.isSessionExpire = true
+    watch: {
+        $route (to, from) {
+            this.computeAlertTypeAndMessage()
+        }
+    },
+    created: function() {
+        this.computeAlertTypeAndMessage();
     }
 }
 </script>

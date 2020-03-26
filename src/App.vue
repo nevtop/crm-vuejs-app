@@ -1,13 +1,20 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <user-registration></user-registration>
     </div>
 </template>
 
 <script>
+import Test from './Test'
+import UserRegistration from './components/settings/UserRegistration.vue'
+
 export default {
     data: function () {
         return {}
+    },
+    components: {
+        'test': Test,
+        'user-registration': UserRegistration
     }
 }
 </script>
