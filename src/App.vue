@@ -1,20 +1,47 @@
 <template>
-    <div id="app">
-        <user-registration></user-registration>
+    <div id="app" ref="container-app" class="container-app">
+        <template v-if="!login">
+            <top-bar></top-bar>
+            <side-nav></side-nav>
+        </template>
+        <router-view name="app"></router-view>
     </div>
 </template>
 
 <script>
-import Test from './Test'
-import UserRegistration from './components/settings/UserRegistration.vue'
+import SideNav from '@/components/common/SideNav.vue'
+import TopBar from '@/components/common/TopBar.vue'
+import { EventBus } from '@/vuejs/event-bus'
 
 export default {
     data: function () {
-        return {}
+        return {
+            login: false
+        }
     },
     components: {
-        'test': Test,
-        'user-registration': UserRegistration
+        'side-nav': SideNav,
+        'top-bar': TopBar
+    },
+    watch: {
+        $route (to, from) {
+            if (to.name === 'Login')
+                this.login = true
+        }
+    },
+    created: function () {
+        if (this.$route.name === 'Login')
+            this.login = true
+        else
+            this.login = false
+            
+        EventBus.$on('toggleSideNav', (drawn) => {
+            if (drawn === true) {
+                this.$refs['container-app'].style.marginLeft = '20%'
+            } else {
+                this.$refs['container-app'].style.marginLeft = '0%'
+            }
+        })
     }
 }
 </script>
@@ -22,4 +49,8 @@ export default {
 <style>
 @import './styles/main.css';
 @import './styles/util.css';
+
+.container-app {
+    transition: 0.5s;
+}
 </style>

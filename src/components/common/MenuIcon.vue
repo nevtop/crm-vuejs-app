@@ -1,6 +1,6 @@
 <template>
-    <div class="menu-icon" @click="bool ? openNav() : closeNav()">
-        <div v-bind:class="{'change': !bool}">
+    <div class="menu-icon" @click="drawn ?  closeSideNav() : openSideNav()">
+        <div v-bind:class="{ 'change': drawn }">
             <div class="bar1"></div>
             <div class="bar2"></div>
             <div class="bar3"></div>
@@ -9,26 +9,28 @@
 </template>
 
 <script>
+import { EventBus } from '@/vuejs/event-bus'
+
 export default {
     data: function () {
         return {
-            bool: true
+            drawn: false
         }
     },
     methods: {
-        openNav: function () {
-            console.log('openNav()');
-            this.bool = false;
-            this.$parent.$parent.$children[1].$refs['sidenav'].style.width = '20%'
-            this.$parent.$parent.$refs['container-home'].style.marginLeft = '20%'
-
+        openSideNav: function () {
+            this.drawn = true;
+            EventBus.$emit('toggleSideNav', this.drawn)
         },
-        closeNav: function () {
-            console.log('closeNav()');
-            this.bool = true
-            this.$parent.$parent.$children[1].$refs['sidenav'].style.width = '0%'
-            this.$parent.$parent.$refs['container-home'].style.marginLeft = '0%'
+        closeSideNav: function () {
+            this.drawn = false
+            EventBus.$emit('toggleSideNav', this.drawn)
         }
+    },
+    created: function () {
+        EventBus.$on('changeMenuIcon', (drawn) => {
+            this.drawn = drawn
+        })
     }
 }
 </script>

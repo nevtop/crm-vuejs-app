@@ -5,7 +5,7 @@
             <img src="@/assets/nevtop.png" />
         </a>
         <router-link :to="{name: 'Login', query: { logout: true }}" class="link">Logout</router-link>
-        <router-link :to="{name: 'Home'}" class="link">Home</router-link>
+        <router-link :to="{path: '/home'}" class="link">Home</router-link>
     </div>
 </template>
 
