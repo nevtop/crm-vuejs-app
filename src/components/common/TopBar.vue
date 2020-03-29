@@ -26,11 +26,14 @@ export default {
 .topbar {
     background-color: #fff;
     overflow: hidden;
+    box-shadow: 0px 3px 5px 0px #888;
+    margin-bottom: 50px;
 }
 
 .topbar .logo {
     left: 35%;
     right: 50%;
+    top: -6px;
     position: relative;
 }
 

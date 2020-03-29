@@ -35,7 +35,7 @@ export default new Router({
       children: [
         {
           path: 'users',
-          name: 'Users',
+          name: 'User',
           components: {
             setting: User
           },
@@ -50,8 +50,8 @@ export default new Router({
           ]
         },
         {
-          path: '/roles',
-          name: 'Roles',
+          path: 'roles',
+          name: 'Role',
           components: {
             setting: Role
           }

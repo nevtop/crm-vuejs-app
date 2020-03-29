@@ -1,11 +1,11 @@
 <template>
     <div>
-        <template v-if="mainPage">
+        <template v-if="settingPage">
             <div v-for="(setting,index) in settings" v-bind:key="index">
                 <p class="heading"><span class="heading-title">{{ setting.name }}</span></p>
                 <ul class="settings-list">
                     <li v-for="item in setting.items" v-bind:key="item.id" class="settings-list-item">
-                        <router-link :to="{ name : item.name}" class="link">
+                        <router-link :to="{ name : item.name}" v-on:click.native="settingPage = !settingPage" class="link">
                             <font-awesome-icon v-bind:icon="item.icon" size="3x" transform="down-2 shrink-4"/>    
                             <label v-bind:for="item.name" class="label">{{ item.name }}</label>
                         </router-link>
@@ -21,25 +21,35 @@
 export default {
     data: function () {
         return {
-            mainPage: true,
+            settingPage: true,
             settings : [
                {
                     name: 'USER SETTINGS', 
                     items : [
                         {
                             id: 11,
-                            name: 'Users',
+                            name: 'User',
                             icon: 'user' 
                         },
                         {
                             id: 12,
-                            name: 'Roles',
+                            name: 'Role',
                             icon: 'sitemap'
                         }
                     ]
                }
             ]
         }
+    },
+    watch: {
+        $route (to, next) {
+            if(to.name === 'Setting')
+                this.settingPage = true
+        }
+    },
+    created: function () {
+        if(this.$route.name !== 'Setting')
+            this.settingPage = false
     }
 }
 </script>
@@ -49,7 +59,7 @@ export default {
 .heading {
     width: 100%; 
     text-align: left; 
-    border-bottom: 1px solid #000; 
+    border-bottom: 1px solid #b3b3b2; 
     line-height: 0.1em;
     margin: 10px 0 20px;
 }
@@ -57,6 +67,7 @@ export default {
 .heading-title {
     background: white;
     padding: 0px 10px;
+    color: #787;
 }
 
 .settings-list {

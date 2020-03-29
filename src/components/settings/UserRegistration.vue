@@ -64,8 +64,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2">
+                <div class="action">
                     <button type="button" class="btn">Create</button>
+                    <button type="button" class="btn" v-on:click="goBack">Cancel</button>
                 </div>
             </div>
         </form>
@@ -106,6 +107,11 @@ export default {
     },
     components: {
         'date-picker': Datepicker
+    },
+    methods: {
+        goBack: function () {
+            this.$router.go(-1)
+        }
     }
 }
 </script>
@@ -145,8 +151,12 @@ export default {
     height: 150px;
 }
 
+.action {
+    margin-top: 100px;
+}
+
 .btn {
-    width: 150px;
+    width: 140px;
     height: 40px;
 }
 
