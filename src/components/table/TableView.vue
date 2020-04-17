@@ -7,7 +7,7 @@
 		        </tr>
             </thead>
             <tbody>
-                <tr v-for="row in rows" :key="row.id">
+                <tr v-for="row in rows" v-bind:key="Object.values(row)[0]">
                     <td v-for="(column, index) in columns" v-bind:key="index">{{ row[column.map] }}</td>
                 </tr>
             </tbody>
@@ -21,7 +21,6 @@
 <script>
 
 export default {
-
     props: {
         data: Array
     },
@@ -34,21 +33,22 @@ export default {
     methods: {
         mapDataToRows: async function () {
             this.rows = this.data
-        }
-        
+        }     
     },
     mounted: async function() {
-        const colComps = this.$slots.default
+        console.log(this.data)
+        const columnSlots = this.$slots.default
             .filter(col => col.componentInstance)
             .map(col => col.componentOptions)
 
 
-        this.columns = colComps.map(col => {
-            let colData = {}
-            colData.label = col.propsData.label
-            colData.map = col.propsData.map
-            return colData
+        this.columns = columnSlots.map(col => {
+            let columnData = {}
+            columnData.label = col.propsData.label
+            columnData.map = col.propsData.map
+            return columnData
         })
+
         await this.mapDataToRows()
     }
 };

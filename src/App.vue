@@ -14,14 +14,14 @@ import TopBar from '@/components/common/TopBar.vue'
 import { EventBus } from '@/vuejs/event-bus'
 
 export default {
-    data: function () {
-        return {
-            login: false
-        }
-    },
     components: {
         'side-nav': SideNav,
-        'top-bar': TopBar
+        'top-bar': TopBar,
+    },
+    data: function () {
+        return {
+            login: false,
+        }
     },
     watch: {
         $route (to, from) {
