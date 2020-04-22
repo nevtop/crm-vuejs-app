@@ -3,7 +3,7 @@
         <template v-if="userPage">
             <div class="search-bar">
                 <search width='900px' placeholder="Search for users.."></search>
-                <router-link :to="{ name: 'UserRegistration' }" class="link" v-on:click.native="userPage = !userPage">New User</router-link>
+                <router-link :to="{ name: 'UserForm' }" class="link" v-on:click.native="userPage = !userPage">New User</router-link>
             </div>
             <table-view v-if="true" v-bind:data="data">
                 <table-column label="First Name" map="firstName"></table-column>
@@ -17,14 +17,14 @@
 
 <script>
 import Search from '@/components/common/Search'
-import UserRegistration from '@/components/settings/UserRegistration.vue'
+import UserForm from '@/components/settings/UserForm.vue'
 import TableView from '@/components/table/TableView.vue'
 import TableColumn from '@/components/table/TableColumn.vue'
 
 export default {
     components: {
         'search': Search,
-        'user-registration': UserRegistration,
+        'user-form': UserForm,
         'table-view': TableView,
         'table-column': TableColumn
     },

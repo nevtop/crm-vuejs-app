@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login.vue'
-import Home from '@/components/Home.vue'
-import Setting from '@/components/Setting.vue'
+import Login from '@/views/Login.vue'
+import Home from '@/views/Home.vue'
+import Setting from '@/views/Setting.vue'
 import User from '@/components/settings/User.vue'
-import UserRegistration from '@/components/settings/UserRegistration.vue'
+import UserForm from '@/components/settings/UserForm.vue'
 import Role from '@/components/settings/Role.vue'
 
 Vue.use(Router)
@@ -42,9 +42,9 @@ export default new Router({
           children: [
             {
               path: 'new',
-              name: 'UserRegistration',
+              name: 'UserForm',
               components: {
-                user: UserRegistration
+                user: UserForm
               }
             }
           ]

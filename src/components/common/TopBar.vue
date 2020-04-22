@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import MenuIcon from './MenuIcon.vue'
+import MenuIcon from '@/components/common/MenuIcon.vue'
 
 export default {
     data: function () {
