@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/views/Login.vue'
-import Home from '@/views/Home.vue'
-import Setting from '@/views/Setting.vue'
-import User from '@/components/settings/User.vue'
-import UserForm from '@/components/settings/UserForm.vue'
-import Role from '@/components/settings/Role.vue'
+import Login from '@/views/Login'
+import Home from '@/views/Home'
+import Setting from '@/views/Setting'
+import User from '@/components/settings/User'
+import UserForm from '@/components/settings/UserForm'
+import Role from '@/components/settings/Role'
 
 Vue.use(Router)
 
@@ -19,8 +19,8 @@ export default new Router({
       }
     },
     {
-      path: '/',
-      alias: '/home',
+      path: '/home',
+      alias: '/',
       name: 'Home',
       components: {
         app: Home

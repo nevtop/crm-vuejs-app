@@ -27,6 +27,8 @@ export default {
         $route (to, from) {
             if (to.name === 'Login')
                 this.login = true
+            else
+                this.login = false
         }
     },
     created: function () {

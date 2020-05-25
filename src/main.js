@@ -1,13 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import router from './vuejs/vue-router'
+import Router from '@/vuejs/vue-router'
+import { Store } from '@/vuejs/vue-store.js'
 import App from './App'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
 import fas from './vuejs/font-awesome'
- 
-Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
 
@@ -15,6 +12,7 @@ Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
-  router,
+  router: Router,
+  store: Store,
   render: h => h(App)
 })

@@ -37,6 +37,7 @@
 
 <script>
 import Alert from '@/components/common/Alert'
+import { sendRequest } from '@/vuejs/vue-axios'
 
 export default {
     data: function () {
@@ -55,19 +56,22 @@ export default {
     computed: {},
     methods: {
         authenticateUser: async function () {
+            let config = {}
+            config['_method'] = 'post'
+            config['_url'] = '/user/login'
+            
             let data = {}
             data['username'] = this.username.trim()
             data['password'] = this.password
 
-            await this.axios
-                .post('http://localhost:8080/user/signin', data)
-                .then((response) => {
-                    console.log(response.data)
-                    this.$router.push({name: 'Home'})
-                }).catch((error) => {
-                    console.log(error.data)
-                    this.$router.push({name: 'Login', query: { invalidCredentials: true }})
-                })
+            config['_data'] = data
+
+            try {
+                let response = await sendRequest(config)
+                this.$router.push({name: 'Home'})
+            } catch(err) {
+                this.$router.push({name: 'Login', query: { invalidCredentials: true }})
+            }
         },
         closeAlertBox: function (boolval) {
             this.showalert = false
