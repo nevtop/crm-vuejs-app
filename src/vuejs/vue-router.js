@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { Store } from '@/store/vue-store'
 import Login from '@/views/Login'
 import Home from '@/views/Home'
 import Setting from '@/views/Setting'
@@ -9,7 +10,7 @@ import Role from '@/components/settings/Role'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/login',
@@ -22,6 +23,7 @@ export default new Router({
       path: '/home',
       alias: '/',
       name: 'Home',
+      meta: { requiresAuth: true },
       components: {
         app: Home
       }
@@ -29,6 +31,7 @@ export default new Router({
     {
       path: '/settings',
       name: 'Setting',
+      meta: { requiresAuth: true },
       components: {
         app: Setting
       },
@@ -61,3 +64,13 @@ export default new Router({
   ],
   mode: 'history'
 })
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('_auth_token')
+  if(to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated)
+    Store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
+  else
+    next()
+})
+
+export default router

@@ -4,8 +4,8 @@
         <a target="_blank" href="http://nevtop.in/" class="logo">
             <img src="@/assets/nevtop.png" />
         </a>
-        <router-link :to="{name: 'Login', query: { logout: true }}" class="link">Logout</router-link>
-        <router-link :to="{path: '/home'}" class="link">Home</router-link>
+        <router-link class="link" :to="{ } " @click.native="logout">Logout</router-link>
+        <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
     </div>
 </template>
 
@@ -18,6 +18,11 @@ export default {
     },
     components: {
         'menu-icon': MenuIcon
+    },
+    methods: {
+        logout: function () {
+            this.$store.dispatch('PERFORM_LOGOUT', 'logout')
+        }
     }
 }
 </script>

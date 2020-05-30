@@ -3,19 +3,19 @@
         <div class="container-wrapper mt-50">
             <form>
                 <span class="label-login mb-20">Login</span>
-                <template v-if="showalert">
-                    <alert v-bind:type="alert_type" v-bind:message="alert_message" v-on:closeAlertEvent="closeAlertBox"></alert>
+                <template v-if="showAlert">
+                    <alert v-bind:type="alertType" v-bind:message="alertMessage" v-on:closeAlertEvent="closeAlertBox"></alert>
                 </template>
                 <div class="div-field-login mb-20">
                     <input type="text" class="field-login" name="username" v-model="username" placeholder="Username" autocomplete="off"/>
                 </div>
                 <div class="div-field-login mb-20">
-                    <input v-bind:type="showpass ? 'text' : 'password'" class="field-login" name="password" v-model="password" placeholder="Password"/>
+                    <input v-bind:type="showPassword ? 'text' : 'password'" class="field-login" name="password" v-model="password" placeholder="Password"/>
                 </div>
                 <div class="flex-sb mb-20">
                     <div>
-                        <input type="checkbox" name="remember-me" v-model="showpass"/>
-                        <label for="showpass">Show password</label>
+                        <input type="checkbox" name="remember-me" v-model="showPassword"/>
+                        <label for="showPassword">Show password</label>
                     </div>
                 </div>
                 <div>
@@ -37,17 +37,16 @@
 
 <script>
 import Alert from '@/components/common/Alert'
-import { sendRequest } from '@/vuejs/vue-axios'
 
 export default {
     data: function () {
         return {
             username: '',
             password: '',
-            showpass: false,
-            showalert: false,
-            alert_type: '',
-            alert_message: ''
+            showPassword: false,
+            showAlert: false,
+            alertType: '',
+            alertMessage: ''
         }
     },
     components: {
@@ -55,40 +54,35 @@ export default {
     },
     computed: {},
     methods: {
-        authenticateUser: async function () {
-            let config = {}
-            config['_method'] = 'post'
-            config['_url'] = '/user/login'
-            
-            let data = {}
-            data['username'] = this.username.trim()
-            data['password'] = this.password
-
-            config['_data'] = data
-
-            try {
-                let response = await sendRequest(config)
-                this.$router.push({name: 'Home'})
-            } catch(err) {
-                this.$router.push({name: 'Login', query: { invalidCredentials: true }})
+        authenticateUser: function () {
+            const credentials = {
+                username: this.username.trim(),
+                password: this.password
             }
+            this.$store.dispatch('AUTHENTICATE_USER', credentials)
         },
         closeAlertBox: function (boolval) {
-            this.showalert = false
+            this.showAlert = false
         },
         computeAlertTypeAndMessage: function () {
-            if(this.$route.query.logout) {
-                this.showalert = true
-                this.alert_type = 'success'
-                this.alert_message = 'Logout successfully.'
-            } else if(this.$route.query.sessionExpire) {
-                this.showalert = true
-                this.alert_type = 'error'
-                this.alert_message = 'Session expired.'
-            } else if(this.$route.query.invalidCredentials) {
-                this.showalert = true
-                this.alert_type = 'error'
-                this.alert_message = 'Invalid username or password.'
+            switch(Object.keys(this.$route.query)[0]) {
+                case 'logout': 
+                    this.showAlert = true
+                    this.alertType = 'success'
+                    this.alertMessage = 'Logout successfully.'
+                    break;
+                case 'sessionExpired':
+                    this.showAlert = true
+                    this.alertType = 'error'
+                    this.alertMessage = 'Session expired.'
+                    break;
+                case 'invalidCredentials':
+                    this.showAlert = true
+                    this.alertType = 'error'
+                    this.alertMessage = 'Invalid username or password.'
+                    break;
+                default:
+                    this.showAlert = false
             }
         }
     },
@@ -98,7 +92,7 @@ export default {
         }
     },
     created: function() {
-        this.computeAlertTypeAndMessage();
+        this.computeAlertTypeAndMessage()
     }
 }
 </script>
