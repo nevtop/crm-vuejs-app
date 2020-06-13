@@ -3,8 +3,8 @@
         <div>
             <a href="#" class="menu-item">About</a>
             <a href="#" class="menu-item">Services</a>
-            <a href="#" class="menu-item">Clients</a>
-            <router-link :to="{name: 'Setting'}" v-on:click.native="emitEvents()" class="menu-item">Setting</router-link>
+            <router-link :to="{name: 'Client'}" v-on:click.native="emitEvents()" class="menu-item">Clients</router-link>
+            <router-link :to="{name: 'Setting'}" v-on:click.native="emitEvents()" class="menu-item">Settings</router-link>
         </div>
     </div>
 </template>

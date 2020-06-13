@@ -7,6 +7,7 @@ import Setting from '@/views/Setting'
 import User from '@/components/settings/User'
 import UserForm from '@/components/settings/UserForm'
 import Role from '@/components/settings/Role'
+import Client from '@/components/ClientForm'
 
 Vue.use(Router)
 
@@ -26,6 +27,15 @@ const router = new Router({
       meta: { requiresAuth: true },
       components: {
         app: Home
+      }
+    },
+    {
+      path: '/clients',
+      alias: '/',
+      name: 'Client',
+      meta: { requiresAuth: true },
+      components: {
+        app: Client
       }
     },
     {

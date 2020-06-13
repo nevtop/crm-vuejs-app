@@ -16,5 +16,6 @@ export default {
         localStorage.removeItem('_auth_token')
         state.jwt = null
         state.isAuthenticated = false
+        Axios.defaults.headers.common['Authorization'] = null
     }
 }
