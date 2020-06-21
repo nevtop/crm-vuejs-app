@@ -18,14 +18,6 @@
                 <input type="text" class="input-field" v-model="pan">
             </div>
         </div>
-        <div class="row">
-            <div class="col-2">
-                <label for="industry_lb" class="mb-5">Industry</label>
-                <select class="input-field" v-model="industry_selected">
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
         <ul><li><h4>Address</h4></li></ul>
         <v-address></v-address>
         <ul><li><h4>Other Information</h4></li></ul>
@@ -36,36 +28,52 @@
             </div>
             <div class="col-2">
                 <label for="support_email_lb" class="mb-5">Support Email</label>
-                <input type="text" class="input-field" v-model="support_email">
+                <input type="text" class="input-field" v-model="supportEmail">
             </div>
         </div>
         <div class="row">
-                <div class="action">
-                    <button type="button" class="btn">Create</button>
-                    <button type="button" class="btn" v-on:click="goBack">Cancel</button>
-                </div>
+            <div class="action">
+                <button type="button" class="btn" v-on:click="create">Create</button>
+                <button type="button" class="btn" v-on:click="cancel">Cancel</button>
             </div>
+        </div>
     </div>
 </template>
 
 <script>
 import Address from '@/components/Address'
+
 export default {
     data: function () {
         return {
             name: '',
             gst: '',
             pan: '',
-            industry_selected: '',
             website: '',
-            support_email: ''
+            supportEmail: ''
         }
     },
     components: {
         'v-address': Address
     },
     methods: {
-        goBack: function () {
+        create: function () {
+            const clientData = {
+                name: this.name.trim(),
+                gst: this.gst.trim(),
+                pan: this.pan.trim(),
+                addressLine1: this.$children[0].$data.addressLine1, 
+                addressLine2: this.$children[0].$data.addressLine2,
+                city: this.$children[0].$data.city,
+                state: this.$children[0].$data.state,
+                pincode: this.$children[0].$data.pincode,
+                country: this.$children[0].$data.country,
+                website: this.website.trim(),
+                supportEmail: this.supportEmail.trim()
+            }
+            this.$store.dispatch('REGISTER_CLIENT', clientData)
+        },
+        cancel: function () {
             this.$router.go(-1)
         }
     }

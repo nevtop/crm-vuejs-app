@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-1">
                 <label for="addressline1_lb" class="mb-5">Address Line 1</label>
-                <input type="text" class="input-address" v-model="addressline1">
+                <input type="text" class="input-address" v-model="addressLine1">
             </div>
         </div>
         <div class="row">
             <div class="col-1">
                 <label for="addressline2_lb" class="mb-5">Address Line 2</label>
-                <input type="text" class="input-address" v-model="addressline2">
+                <input type="text" class="input-address" v-model="addressLine2">
             </div>
         </div>
         <div class="row">
@@ -39,8 +39,8 @@
 export default {
     data: function () {
         return {
-            addressline1: '',
-            addressline2: '',
+            addressLine1: '',
+            addressLine2: '',
             city: '',
             state: '',
             pincode: '',

@@ -22,7 +22,7 @@
 
 export default {
     props: {
-        data: Array
+        list: Array
     },
     data: function () {
         return {
@@ -32,7 +32,7 @@ export default {
     },
     methods: {
         mapDataToRows: async function () {
-            this.rows = this.data
+            this.rows = this.list
         }     
     },
     mounted: async function() {
@@ -44,8 +44,8 @@ export default {
 
         this.columns = columnSlots.map(col => {
             let columnData = {}
-            columnData.label = col.propsData.label
-            columnData.map = col.propsData.map
+            columnData['label'] = col.propsData.label
+            columnData['map'] = col.propsData.map
             return columnData
         })
 

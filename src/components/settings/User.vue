@@ -3,9 +3,9 @@
         <template v-if="userPage">
             <div class="search-bar">
                 <search width='900px' placeholder="Search for users.."></search>
-                <router-link :to="{ name: 'UserForm' }" class="link" v-on:click.native="userPage = !userPage">New User</router-link>
+                <router-link :to="{ name: 'UserForm' }" class="link">New User</router-link>
             </div>
-            <table-view v-if="true" v-bind:data="data">
+            <table-view v-if="true" v-bind:list="userList">
                 <table-column label="First Name" map="firstName"></table-column>
                 <table-column label="Last Name" map="lastName"></table-column>
                 <table-column label="Age" map="age"></table-column>
@@ -17,21 +17,19 @@
 
 <script>
 import Search from '@/components/common/Search'
-import UserForm from '@/components/settings/UserForm.vue'
 import TableView from '@/components/table/TableView.vue'
 import TableColumn from '@/components/table/TableColumn.vue'
 
 export default {
     components: {
         'search': Search,
-        'user-form': UserForm,
         'table-view': TableView,
         'table-column': TableColumn
     },
     data: function () {
         return {
             userPage: true,
-            data: [
+            userList: [
                 { userId: 1, firstName: 'John', lastName: 'Lennon', age: 72 },
                 { userId: 2, firstName: 'Paul', lastName: 'McCartney', age: 70 },
                 { userId: 3, firstName: 'George', lastName: 'Harrison', age: 22 },
@@ -43,6 +41,8 @@ export default {
         $route (to, next) {
             if(to.name === 'User')
                 this.userPage = true
+            else
+                this.userPage = false
         }
     },
     created: function () {
