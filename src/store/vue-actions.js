@@ -42,6 +42,7 @@ export default {
         } catch(err) { }
     },
     FETCH_CLIENTS: async function () {
+        const config = {}
         config['_method'] = HttpMethod.GET
         config['_url'] = Url.FETCH_CLIENTS
         return sendRequest(config)

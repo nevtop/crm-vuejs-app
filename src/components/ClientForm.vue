@@ -1,6 +1,21 @@
 <template>
     <div class="wrapper">
         <h2 class="ml-10">Client Registration</h2>
+        <div class="row">
+            <div class="col-1">
+                <label for="gender_lb" class="mb-5">Type</label>
+                <div class="mt-5">
+                    <span class="mr-10">
+                        <input type="radio" value="PERSONAL" v-model="type">
+                        <label for="personal_lb">Personal</label>
+                    </span>
+                    <span>
+                        <input type="radio" value="CORPORATE" v-model="type">
+                        <label for="corporate_lb">Corporate</label>
+                    </span>
+                </div>
+            </div>
+        </div>
         <ul><li><h4>Basic Details</h4></li></ul>
         <div class="row">
             <div class="col-1">
@@ -46,6 +61,7 @@ import Address from '@/components/Address'
 export default {
     data: function () {
         return {
+            type: '',
             name: '',
             gst: '',
             pan: '',
@@ -59,17 +75,21 @@ export default {
     methods: {
         create: function () {
             const clientData = {
-                name: this.name.trim(),
-                gst: this.gst.trim(),
-                pan: this.pan.trim(),
-                addressLine1: this.$children[0].$data.addressLine1, 
-                addressLine2: this.$children[0].$data.addressLine2,
-                city: this.$children[0].$data.city,
-                state: this.$children[0].$data.state,
-                pincode: this.$children[0].$data.pincode,
-                country: this.$children[0].$data.country,
+                clientType: this.type,
+                clientName: this.name.trim(),
+                active: true,
+                panNo: this.pan.trim(),
+                gstNo: this.gst.trim(),
                 website: this.website.trim(),
-                supportEmail: this.supportEmail.trim()
+                supportEmail: this.supportEmail.trim(),
+                address: {
+                    addressLine1: this.$children[0].$data.addressLine1, 
+                    addressLine2: this.$children[0].$data.addressLine2,
+                    city: this.$children[0].$data.city,
+                    state: this.$children[0].$data.state,
+                    pincode: this.$children[0].$data.pincode,
+                    country: this.$children[0].$data.country
+                }
             }
             this.$store.dispatch('REGISTER_CLIENT', clientData)
         },
