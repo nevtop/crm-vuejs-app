@@ -13,9 +13,9 @@
             </div>
             <div>
                 <table-view v-bind:list="clientList">
-                    <table-column label="Name" map="name"></table-column>
+                    <table-column label="Client Name" map="clientName"></table-column>
+                    <table-column label="Client Type" map="clientType"></table-column>
                     <table-column label="City" map="city"></table-column>
-                    <table-column label="State" map="state"></table-column>
                 </table-view>
             </div>
         </template>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Search from '@/components/common/Search'
 import TableView from '@/components/table/TableView.vue'
 import TableColumn from '@/components/table/TableColumn.vue'
@@ -31,8 +32,8 @@ import TableColumn from '@/components/table/TableColumn.vue'
 export default {
     data: function () {
         return {
-            clientPage: true,
-            clientList: []
+            clientPage: true
+            //clientList: []
         }
     },
     components: {
@@ -41,9 +42,17 @@ export default {
         'table-column': TableColumn
     },
     created: function () {
-        try {
-            const { data } = this.$store.dispatch('FETCH_CLIENTS')
-        } catch (error) {}
+        if(this.$route.name !== 'Client')
+            this.clientPage = false
+
+        var formData = new FormData()
+        formData.set('fields', 'clientType,clientName,address,city')
+        this.$store.dispatch('FETCH_ALL_CLIENTS', formData)
+    },
+    computed: {
+        ...mapGetters({
+            clientList: 'GET_CLIENT_LIST'
+        })
     },
     methods: {
         switchTab: function (event) {
@@ -62,10 +71,6 @@ export default {
             else
                 this.clientPage = false
         }
-    },
-    created: function () {
-        if(this.$route.name !== 'Client')
-            this.clientPage = false
     }
 }
 </script>

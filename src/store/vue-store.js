@@ -10,7 +10,8 @@ export const Store = new Vuex.Store({
     state: {
         user: null,
         jwt: '',
-        isAuthenticated: false
+        isAuthenticated: false,
+        clientList: []
     },
     getters: Getters,
     mutations: Mutations,

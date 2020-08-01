@@ -14,6 +14,7 @@ export default {
             commit('SET_AUTH_TOKEN', data.data[0].jwt)
             Router.push({name: 'Home'})
         } catch(err) {
+            console.error('Error Ocurred in API: AUTHENTICATE_USER')
             Router.push({name: 'Login', query: { invalidCredentials: true }})
         }
     },
@@ -30,7 +31,7 @@ export default {
         }
         commit('CLEAR_LOCAL_DATA')
     },
-    REGISTER_CLIENT: async function (clientData) {
+    REGISTER_CLIENT: async function ({ commit }, clientData) {
         try {
             const config = {}
             config['_method'] = HttpMethod.POST
@@ -39,12 +40,22 @@ export default {
             
             const { data } = await sendRequest(config)
             Router.go(-1)
-        } catch(err) { }
+        } catch(err) { 
+            console.error('Error Ocurred in API: REGISTER_CLIENT')
+        }
     },
-    FETCH_CLIENTS: async function () {
-        const config = {}
-        config['_method'] = HttpMethod.GET
-        config['_url'] = Url.FETCH_CLIENTS
-        return sendRequest(config)
+    FETCH_ALL_CLIENTS: async function ({ commit }, formData) {
+        try {
+            const config = {}
+            config['_method'] = HttpMethod.POST
+            config['_url'] = Url.FETCH_ALL_CLIENTS
+            config['_data'] = formData
+            config['_headers'] = { 'Content-Type': 'multipart/form-data' }
+            const { data } = await sendRequest(config)
+            //return data.data;
+            commit('SET_CLIENT_LIST', data.data)
+        } catch(err) {
+            console.error('Error Ocurred in API: FETCH_ALL_CLIENTS')
+        }
     }
 }

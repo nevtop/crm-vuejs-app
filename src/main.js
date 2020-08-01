@@ -21,7 +21,7 @@ new Vue({
       this.$store.commit('SET_AUTH_TOKEN', authToken)
 
     Axios.interceptors.response.use(response => response, error => {
-      if(error.response.status === 401)
+      if(error.response.status === 440 || error.response.status === 445)
         this.$store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
     })
   },

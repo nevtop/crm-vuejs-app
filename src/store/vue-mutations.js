@@ -17,5 +17,8 @@ export default {
         state.jwt = null
         state.isAuthenticated = false
         Axios.defaults.headers.common['Authorization'] = null
+    },
+    SET_CLIENT_LIST: function(state, clientList) {
+        state.clientList = clientList
     }
 }

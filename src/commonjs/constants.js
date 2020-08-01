@@ -9,5 +9,5 @@ export const HttpMethod = {
 export const Url = {
     AUTHENTICATE_USER: '/user/login',
     REGISTER_CLIENT: '/client/register',
-    FETCH_CLIENTS: '/client/all'
+    FETCH_ALL_CLIENTS: '/client/all'
 }

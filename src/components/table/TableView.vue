@@ -30,17 +30,15 @@ export default {
             rows: []
         }
     },
-    methods: {
-        mapDataToRows: async function () {
-            this.rows = this.list
-        }     
-    },
     mounted: async function() {
-        console.log(this.data)
+        this.rows = this.list.map(r => {
+            r = r
+            r.city = r.address.city
+            return r
+        })
         const columnSlots = this.$slots.default
             .filter(col => col.componentInstance)
             .map(col => col.componentOptions)
-
 
         this.columns = columnSlots.map(col => {
             let columnData = {}
@@ -48,8 +46,15 @@ export default {
             columnData['map'] = col.propsData.map
             return columnData
         })
-
-        await this.mapDataToRows()
+    },
+    watch: {
+        list: function () {
+            this.rows = this.list.map(r => {
+                r = r
+                r.city = r.address.city
+                return r
+            })
+        }
     }
 };
 </script>
