@@ -2,20 +2,23 @@
     <div class="wrapper">
         <template v-if="clientPage">
             <div class="search-bar">
-                <h2>Clients</h2>
+                <label class="label-heading">Clients</label>
                 <search width='500px' placeholder="Search for clients.."></search>
                 <router-link :to="{ name: 'ClientForm' }" class="link">New Client</router-link>
             </div>
             <div class="tab">
-                <button class="tablinks active" v-on:click="switchTab">All Clients</button>
-                <button class="tablinks" v-on:click="switchTab">Personal</button>
-                <button class="tablinks" v-on:click="switchTab">Corporate</button>
+                <button class="tablinks active" v-on:click="switchTab($event, 0)">All Clients</button>
+                <button class="tablinks" v-on:click="switchTab($event, 1)">Personal</button>
+                <button class="tablinks" v-on:click="switchTab($event, 2)">Corporate</button>
             </div>
             <div>
                 <table-view v-bind:list="clientList">
+                    <table-column label="SNo" map="sno"></table-column>
                     <table-column label="Client Name" map="clientName"></table-column>
                     <table-column label="Client Type" map="clientType"></table-column>
+                    <table-column label="Boarding Date" map="onboardingDate"></table-column>
                     <table-column label="City" map="city"></table-column>
+                    <table-column label="State" map="state"></table-column>
                 </table-view>
             </div>
         </template>
@@ -33,7 +36,6 @@ export default {
     data: function () {
         return {
             clientPage: true
-            //clientList: []
         }
     },
     components: {
@@ -45,9 +47,7 @@ export default {
         if(this.$route.name !== 'Client')
             this.clientPage = false
 
-        var formData = new FormData()
-        formData.set('fields', 'clientType,clientName,address,city')
-        this.$store.dispatch('FETCH_ALL_CLIENTS', formData)
+        this.$store.dispatch('FETCH_ALL_CLIENTS')
     },
     computed: {
         ...mapGetters({
@@ -55,13 +55,15 @@ export default {
         })
     },
     methods: {
-        switchTab: function (event) {
+        switchTab: function (event, tabIndex) {
             const tablinks = document.getElementsByClassName("tablinks");
             
             for (let i = 0; i < tablinks.length; i++)
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             
             event.target.className += " active";
+
+            this.$store.commit('FILTER_CLIENT_LIST', tabIndex)
         }
     },
     watch: {
@@ -84,6 +86,12 @@ export default {
 .search-bar {
     display: flex;
     justify-content: space-between;
+}
+
+.label-heading {
+    height: 45px;
+    font-size: 25px;
+    font-weight: bold;
 }
 
 .link {

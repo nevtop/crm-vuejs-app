@@ -31,7 +31,7 @@ export default {
         }
         commit('CLEAR_LOCAL_DATA')
     },
-    REGISTER_CLIENT: async function ({ commit }, clientData) {
+    REGISTER_CLIENT: async function ({ dispatch }, clientData) {
         try {
             const config = {}
             config['_method'] = HttpMethod.POST
@@ -39,21 +39,25 @@ export default {
             config['_data'] = clientData
             
             const { data } = await sendRequest(config)
+            dispatch('FETCH_ALL_CLIENTS')
             Router.go(-1)
         } catch(err) { 
             console.error('Error Ocurred in API: REGISTER_CLIENT')
         }
     },
-    FETCH_ALL_CLIENTS: async function ({ commit }, formData) {
+    FETCH_ALL_CLIENTS: async function ({ commit }) {
         try {
+            const formData = new FormData()
+            formData.set('fields', 'clientId,clientType,clientName,onboardingDate,address,city,state')
+
             const config = {}
             config['_method'] = HttpMethod.POST
             config['_url'] = Url.FETCH_ALL_CLIENTS
             config['_data'] = formData
             config['_headers'] = { 'Content-Type': 'multipart/form-data' }
             const { data } = await sendRequest(config)
-            //return data.data;
             commit('SET_CLIENT_LIST', data.data)
+            commit('FILTER_CLIENT_LIST', 0)
         } catch(err) {
             console.error('Error Ocurred in API: FETCH_ALL_CLIENTS')
         }

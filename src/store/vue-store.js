@@ -11,7 +11,8 @@ export const Store = new Vuex.Store({
         user: null,
         jwt: '',
         isAuthenticated: false,
-        clientList: []
+        clientList: [],
+        filteredClientList: []
     },
     getters: Getters,
     mutations: Mutations,
