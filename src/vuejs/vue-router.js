@@ -69,7 +69,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    const isAuthenticated = !!localStorage.getItem('_auth_token')
+    const isAuthenticated = !!localStorage.getItem('_access_token')
     if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated)
         Store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
     else

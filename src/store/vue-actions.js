@@ -1,25 +1,46 @@
 import Router from '@/vuejs/vue-router'
 import { sendRequest } from '@/vuejs/vue-axios'
 import { HttpMethod, Url } from '@/commonjs/constants'
+import * as Util from '@/commonjs/util'
 
 export default {
     AUTHENTICATE_USER: async function ({ commit }, credentials) {
         try {
-            const config = {}
-            config['_method'] = HttpMethod.POST
-            config['_url'] = Url.AUTHENTICATE_USER
-            config['_data'] = credentials
-            
+            const config = Util.getConfig('AUTHENTICATE_USER', HttpMethod.POST, Url.AUTHENTICATE_USER,
+                    credentials)
             const { data } = await sendRequest(config)
-            commit('SET_AUTH_TOKEN', data.data[0].jwt)
+            commit('SET_ACCESS_TOKEN', data.data[0].accessToken)
+            commit('SET_REFRESH_TOKEN', data.data[0].refreshToken)
             Router.push({name: 'Home'})
-        } catch(err) {
-            console.error('Error Ocurred in API: AUTHENTICATE_USER')
+        } catch (err) {
+            console.error('Error occurred in API: AUTHENTICATE_USER')
             Router.push({name: 'Login', query: { invalidCredentials: true }})
         }
     },
-    PERFORM_LOGOUT: function ({ commit }, queryString) {
-        switch(queryString) {
+    ISSUE_TOKEN: async function ({ dispatch, commit, getters }) {
+        try {
+            const refreshToken = getters.GET_REFRESH_TOKEN
+            const config = Util.getConfig('ISSUE_TOKEN', HttpMethod.GET, Url.ISSUE_TOKEN, null, null,
+                    { 'Authorization': `Bearer ${refreshToken}` })
+            const { data } = await sendRequest(config)
+            commit('SET_ACCESS_TOKEN', data.data[0].accessToken)
+            commit('SET_REFRESH_TOKEN', data.data[0].refreshToken)
+            dispatch('RESEND_REQUEST')
+        } catch (err) {
+            console.error('Error occurred in API: ISSUE_TOKEN')
+        }
+    },
+    RESEND_REQUEST: async function ({ state, dispatch }) {
+        try {
+            state.configList.forEach(config => {
+                dispatch(config._action, config._data)
+            })
+        } catch (err) {
+            console.error('Error occurred in API: RESENT_REQUEST')
+        }
+    },
+    PERFORM_LOGOUT: async function ({ commit }, queryString) {
+        switch (queryString) {
             case 'logout':
                 Router.push({ name: 'Login', query: { logout: true }})
                 break;
@@ -33,16 +54,12 @@ export default {
     },
     REGISTER_CLIENT: async function ({ dispatch }, clientData) {
         try {
-            const config = {}
-            config['_method'] = HttpMethod.POST
-            config['_url'] = Url.REGISTER_CLIENT
-            config['_data'] = clientData
-            
+            const config = Util.getConfig('REGISTER_CLIENT', HttpMethod.POST, Url.REGISTER_CLIENT, clientData)
             const { data } = await sendRequest(config)
             dispatch('FETCH_ALL_CLIENTS')
             Router.go(-1)
-        } catch(err) { 
-            console.error('Error Ocurred in API: REGISTER_CLIENT')
+        } catch (err) { 
+            console.error('Error occurred in API: REGISTER_CLIENT')
         }
     },
     FETCH_ALL_CLIENTS: async function ({ commit }) {
@@ -50,16 +67,13 @@ export default {
             const formData = new FormData()
             formData.set('fields', 'clientId,clientType,clientName,onboardingDate,address,city,state')
 
-            const config = {}
-            config['_method'] = HttpMethod.POST
-            config['_url'] = Url.FETCH_ALL_CLIENTS
-            config['_data'] = formData
-            config['_headers'] = { 'Content-Type': 'multipart/form-data' }
+            const config = Util.getConfig('FETCH_ALL_CLIENTS', HttpMethod.POST, Url.FETCH_ALL_CLIENTS,
+                    formData, null, { 'Content-Type': 'multipart/form-data' })
             const { data } = await sendRequest(config)
             commit('SET_CLIENT_LIST', data.data)
             commit('FILTER_CLIENT_LIST', 0)
-        } catch(err) {
-            console.error('Error Ocurred in API: FETCH_ALL_CLIENTS')
+        } catch (err) {
+            console.error('Error occurred in API: FETCH_ALL_CLIENTS')
         }
     }
 }

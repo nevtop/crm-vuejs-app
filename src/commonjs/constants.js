@@ -8,6 +8,7 @@ export const HttpMethod = {
 
 export const Url = {
     AUTHENTICATE_USER: '/user/login',
+    ISSUE_TOKEN: '/user/jwt/issue',
     REGISTER_CLIENT: '/client/register',
     FETCH_ALL_CLIENTS: '/client/all'
 }

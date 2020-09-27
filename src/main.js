@@ -16,13 +16,25 @@ new Vue({
   router: Router,
   store: Store,
   created: function () {
-    const authToken = localStorage.getItem('_auth_token')
-    if(authToken)
-      this.$store.commit('SET_AUTH_TOKEN', authToken)
+    const accessToken = localStorage.getItem('_access_token')
+    if (accessToken) {
+      this.$store.commit('SET_ACCESS_TOKEN', accessToken)
+    }
+    
+    const refreshToken = localStorage.getItem('_refresh_token')
+    if (refreshToken) {
+      this.$store.commit('SET_REFRESH_TOKEN', refreshToken)
+    }
 
-    Axios.interceptors.response.use(response => response, error => {
-      if(error.response.status === 440 || error.response.status === 445)
+    Axios.interceptors.response.use(response => {
+      this.$store.commit('REMOVE_REQUEST_CONFIG', response.config)
+      return response
+    }, error => {
+      if (error.response.status === 435) {
+        this.$store.dispatch('ISSUE_TOKEN')
+      } else if (error.response.status === 440 || error.response.status === 445) {
         this.$store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
+      }
     })
   },
   render: h => h(App)
