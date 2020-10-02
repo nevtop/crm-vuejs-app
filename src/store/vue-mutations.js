@@ -22,14 +22,20 @@ export default {
         state.jwt.accessToken = null
         state.jwt.refreshToken = null
         state.isAuthenticated = false
+        state.configMap.clear()
         delete Axios.defaults.headers.common['Authorization']
     },
     ADD_REQUEST_CONFIG: function (state, config) {
-        state.configList.push(config)
+        state.configMap.set(config._url, config)
     },
     REMOVE_REQUEST_CONFIG: function (state, config) {
-        const index = state.configList.map(item => item._url).indexOf(config.url)
-        state.configList.splice(index, 1)
+        state.configMap.delete(config.url)
+    },
+    ADD_CANCEL_TOKEN: function (state, token) {
+        state.cancelTokenList.push(token)
+    },
+    CLEAR_CANCEL_TOKEN_LIST: function (state) {
+        state.cancelTokenList = []
     },
     SET_CLIENT_LIST: function (state, clientList) {
         const processList = clientList.map((ele, index) => {

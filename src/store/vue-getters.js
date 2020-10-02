@@ -2,6 +2,9 @@ export default {
     IS_AUTHENTICATED: function (state) {
         return state.isAuthenticated
     },
+    GET_CANCEL_TOKEN_LIST: function (state) {
+        return state.cancelTokenList
+    },    
     GET_REFRESH_TOKEN: function (state) {
         return state.jwt.refreshToken
     },

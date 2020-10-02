@@ -1,5 +1,5 @@
 <template>
-    <div id="app" ref="container-app" class="container-app">
+    <div id="app" ref="container-app" class="container">
         <template v-if="!login">
             <top-bar></top-bar>
             <side-nav></side-nav>
@@ -38,7 +38,7 @@ export default {
             this.login = false
             
         EventBus.$on('toggleSideNav', (drawn) => {
-            if (drawn === true) {
+            if (drawn) {
                 this.$refs['container-app'].style.marginLeft = '20%'
             } else {
                 this.$refs['container-app'].style.marginLeft = '0%'
@@ -52,7 +52,7 @@ export default {
 @import './styles/main.css';
 @import './styles/util.css';
 
-.container-app {
+.container {
     transition: 0.5s;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div ref="sidenav" class="sidenav">
+    <div class="sidenav" v-bind:class="{ 'drawn': drawn }">
         <div>
             <a href="#" class="menu-item">About</a>
             <a href="#" class="menu-item">Services</a>
@@ -14,21 +14,19 @@ import { EventBus } from '@/vuejs/event-bus'
 
 export default {
     data: function () {
-        return {}
+        return {
+            drawn: false
+        }
     },
     methods: {
         emitEvents: function () {
-            EventBus.$emit('changeMenuIcon', false)
+            EventBus.$emit('toggleMenuIcon', false)
             EventBus.$emit('toggleSideNav', false)
         }
     },
     created: function () {
         EventBus.$on('toggleSideNav', (drawn) => {
-            if (drawn === true) {
-                this.$refs['sidenav'].style.width = '20%'
-            } else {
-                this.$refs['sidenav'].style.width = '0%'
-            }
+            this.drawn = drawn
         })
     }
 }
@@ -39,13 +37,16 @@ export default {
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1;
     top: 0;
     left: 0;
     background-color: #111;
     overflow-y: hidden;
     transition: 0.5s;
     padding-top: 60px;
+}
+
+.drawn {
+    width: 20%
 }
 
 .sidenav .menu-item {

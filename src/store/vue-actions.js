@@ -17,27 +17,35 @@ export default {
             Router.push({name: 'Login', query: { invalidCredentials: true }})
         }
     },
-    ISSUE_TOKEN: async function ({ dispatch, commit, getters }) {
+    ISSUE_TOKEN: async function ({ state, commit, dispatch}) {
         try {
-            const refreshToken = getters.GET_REFRESH_TOKEN
+            const refreshToken = state.jwt.refreshToken
             const config = Util.getConfig('ISSUE_TOKEN', HttpMethod.GET, Url.ISSUE_TOKEN, null, null,
                     { 'Authorization': `Bearer ${refreshToken}` })
             const { data } = await sendRequest(config)
             commit('SET_ACCESS_TOKEN', data.data[0].accessToken)
             commit('SET_REFRESH_TOKEN', data.data[0].refreshToken)
-            dispatch('RESEND_REQUEST')
+            dispatch('RESEND_REQUESTS')
         } catch (err) {
             console.error('Error occurred in API: ISSUE_TOKEN')
         }
     },
-    RESEND_REQUEST: async function ({ state, dispatch }) {
+    RESEND_REQUESTS: async function ({ state, dispatch }) {
         try {
-            state.configList.forEach(config => {
+            state.configMap.forEach((config) => {
                 dispatch(config._action, config._data)
             })
         } catch (err) {
             console.error('Error occurred in API: RESENT_REQUEST')
         }
+    },
+    CANCEL_PENDING_REQUESTS: function ({ state, commit }) {
+        state.cancelTokenList.forEach((request) => {
+            if (request.cancel) {
+                request.cancel()
+            }
+        })
+        commit('CLEAR_CANCEL_TOKEN_LIST')
     },
     PERFORM_LOGOUT: async function ({ commit }, queryString) {
         switch (queryString) {

@@ -26,11 +26,20 @@ new Vue({
       this.$store.commit('SET_REFRESH_TOKEN', refreshToken)
     }
 
-    Axios.interceptors.response.use(response => {
+    Axios.interceptors.request.use((request) => {
+      const source = Axios.CancelToken.source()
+      request.cancelToken = source.token
+      this.$store.commit('ADD_CANCEL_TOKEN', source)
+      return request
+
+    }, (error) => error)
+
+    Axios.interceptors.response.use((response) => {
       this.$store.commit('REMOVE_REQUEST_CONFIG', response.config)
       return response
-    }, error => {
+    }, (error) => {
       if (error.response.status === 435) {
+        this.$store.dispatch('CANCEL_PENDING_REQUESTS')
         this.$store.dispatch('ISSUE_TOKEN')
       } else if (error.response.status === 440 || error.response.status === 445) {
         this.$store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
