@@ -8,5 +8,6 @@ export default {
     cancelTokenList: [] ,
     configMap: new Map,
     clientList: [],
+    isClientAdded: false,
     filteredClientList: []
 }

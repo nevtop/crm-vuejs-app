@@ -12,8 +12,7 @@
                 <button class="tablinks" v-on:click="switchTab($event, 2)">Corporate</button>
             </div>
             <div>
-                <table-view v-bind:list="clientList">
-                    <table-column label="SNo" map="sno"></table-column>
+                <table-view v-bind:list="clientList" action="ClientProfile">
                     <table-column label="Client Name" map="clientName"></table-column>
                     <table-column label="Client Type" map="clientType"></table-column>
                     <table-column label="Boarding Date" map="onboardingDate"></table-column>
@@ -44,9 +43,9 @@ export default {
         'table-column': TableColumn
     },
     created: function () {
-        if(this.$route.name !== 'Client')
+        if (this.$route.name !== 'Client') {
             this.clientPage = false
-
+        }
         this.$store.dispatch('FETCH_ALL_CLIENTS')
     },
     computed: {
@@ -68,10 +67,15 @@ export default {
     },
     watch: {
         $route (to, next) {
-            if(to.name === 'Client')
+            if (to.name === 'Client') {
                 this.clientPage = true
-            else
+                if (this.$store.getters.IS_CLIENT_ADDED) {
+                    this.$store.dispatch('FETCH_ALL_CLIENTS')
+                    this.$store.commit('NEW_CLIENT_ADDED', false)
+                }
+            } else {
                 this.clientPage = false
+            }
         }
     }
 }

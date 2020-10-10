@@ -4,7 +4,7 @@
             <form>
                 <span class="label-login mb-20">Login</span>
                 <template v-if="showAlert">
-                    <alert v-bind:type="alertType" v-bind:message="alertMessage" v-on:closeAlertEvent="closeAlertBox"></alert>
+                    <alert v-bind:type="alertType" v-bind:message="alertMessage" v-on:close-alert="closeAlertBox"></alert>
                 </template>
                 <div class="div-field-login mb-20">
                     <input type="text" class="field-login" name="username" v-model="username" placeholder="Username" autocomplete="off"/>

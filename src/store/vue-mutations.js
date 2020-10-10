@@ -48,6 +48,9 @@ export default {
         })
         state.clientList = processList
     },
+    NEW_CLIENT_ADDED: function (state, bool) {
+        state.isClientAdded = bool
+    },
     FILTER_CLIENT_LIST: function (state, tabIndex) {
         if (tabIndex == 0)
             state.filteredClientList = state.clientList.filter(ele =>

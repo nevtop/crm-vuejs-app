@@ -3,12 +3,18 @@
         <table class="content-table">
             <thead>
 		        <tr>
+                    <th>SNo</th>
 		            <th v-for="(column, index) in columns" v-bind:key="index">{{ column.label }}</th>
+                    <th>Action</th>
 		        </tr>
             </thead>
             <tbody>
-                <tr v-for="row in rows" v-bind:key="row.id">
+                <tr v-for="(row, index) in rows" v-bind:key="index">
+                    <td>{{ index + 1 }}</td>
                     <td v-for="(column, index) in columns" v-bind:key="index">{{ row[column.map] }}</td>
+                    <td>
+                        <router-link :to="{ name : action, params: { id: row.id } }">view</router-link>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -22,7 +28,8 @@
 
 export default {
     props: {
-        list: Array
+        list: Array,
+        action: String
     },
     data: function () {
         return {
@@ -37,9 +44,10 @@ export default {
             .map(col => col.componentOptions)
 
         this.columns = columnSlots.map(col => {
-            let columnData = {}
-            columnData['label'] = col.propsData.label
-            columnData['map'] = col.propsData.map
+            let columnData = {
+                label: col.propsData.label,
+                map: col.propsData.map
+            }
             return columnData
         })
     },

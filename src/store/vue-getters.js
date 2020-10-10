@@ -10,5 +10,8 @@ export default {
     },
     GET_CLIENT_LIST: function (state) {
         return state.filteredClientList
+    },
+    IS_CLIENT_ADDED: function (state) {
+        return state.isClientAdded
     }
 }

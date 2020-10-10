@@ -9,6 +9,7 @@ import UserForm from '@/components/settings/UserForm'
 import Role from '@/components/settings/Role'
 import Client from '@/components/Client'
 import ClientForm from '@/components/ClientForm'
+import ClientProfile from '@/components/ClientProfile'
 
 Vue.use(Router)
 
@@ -33,9 +34,14 @@ const router = new Router({
             components: { app: Client },
             children: [
                 {
-                    path: 'new',
+                    path: 'profile/new',
                     name: 'ClientForm',
                     components: { client: ClientForm }
+                },
+                {
+                    path: 'profile/:id',
+                    name: 'ClientProfile',
+                    components: { client: ClientProfile }
                 }
             ]
         },

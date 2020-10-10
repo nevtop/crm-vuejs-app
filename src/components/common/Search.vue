@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" v-model="searchValue" v-bind:placeholder="placeholder" v-bind:style="{width: width}" class="search">
+        <input type="text" v-model="searchValue" v-bind:placeholder="placeholder" v-bind:style="{ width: width }" class="search">
     </div>
 </template>
 

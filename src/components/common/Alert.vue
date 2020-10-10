@@ -3,7 +3,7 @@
         <span>
             <font-awesome-icon v-bind:icon="icon" size="2x" transform="down-2 shrink-4"/>
         </span>
-        <span>{{ message }}</span>
+        <span v-once>{{ message }}</span>
         <span class="closebtn" @click="closeAlert">&times;</span>
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
     props: ['type', 'message'],
     methods: {
         closeAlert: function () {
-            this.$emit('closeAlertEvent')
+            this.$emit('close-alert')
         }
     },
     computed: {
