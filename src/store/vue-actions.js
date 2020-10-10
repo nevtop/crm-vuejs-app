@@ -60,11 +60,11 @@ export default {
         }
         commit('CLEAR_LOCAL_DATA')
     },
-    REGISTER_CLIENT: async function ({ dispatch }, clientData) {
+    REGISTER_CLIENT: async function ({ commit }, clientData) {
         try {
             const config = Util.getConfig('REGISTER_CLIENT', HttpMethod.POST, Url.REGISTER_CLIENT, clientData)
             const { data } = await sendRequest(config)
-            dispatch('FETCH_ALL_CLIENTS')
+            commit('NEW_CLIENT_ADDED', true)
             Router.go(-1)
         } catch (err) { 
             console.error('Error occurred in API: REGISTER_CLIENT')
@@ -73,7 +73,7 @@ export default {
     FETCH_ALL_CLIENTS: async function ({ commit }) {
         try {
             const formData = new FormData()
-            formData.set('fields', 'clientId,clientType,clientName,onboardingDate,address,city,state')
+            formData.set('fields', 'id,clientId,clientType,clientName,onboardingDate,address,city,state')
 
             const config = Util.getConfig('FETCH_ALL_CLIENTS', HttpMethod.POST, Url.FETCH_ALL_CLIENTS,
                     formData, null, { 'Content-Type': 'multipart/form-data' })
