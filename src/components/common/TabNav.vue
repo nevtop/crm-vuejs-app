@@ -1,16 +1,12 @@
 <template>
-    <div>
-        <div>
-            <ul class="nav">
-                <li v-for="(tab, index) in tabs" v-bind:key="index">
-                    <a href="#" class="nav-items" v-bind:class="{ active: tab == selected }" 
-                            v-on:click="selectTab(tab)">
-                        {{ tab }}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <ul class="nav">
+        <li v-for="(tab, index) in tabs" v-bind:key="index">
+            <router-link class="nav-items" v-bind:class="{ active: tab.name == selected }" :to="{ name: tab.routeName }"
+                    v-on:click.native="selectTab(tab)">
+                {{ tab.name }}
+            </router-link>
+        </li>
+    </ul>
 </template>
 
 <script>
@@ -21,7 +17,7 @@ export default {
     },
     methods: {
         selectTab: function (tab) {
-            this.$emit('select-tab', tab)
+            this.$emit('select-tab', tab.name)
         }
     }
 };
@@ -30,29 +26,26 @@ export default {
 <style scoped>
 .nav {
     list-style-type: none;
+    padding-left: 125px;
     display: flex;
-    justify-content: center;
-    box-shadow: inset 0 -1px 0 #e1e4e8;
+    justify-content: flex-start;
+    box-shadow: 0px 2px 0px #008cba;
 }
 
 .nav-items {
     text-decoration: none;
+    outline: 0;
     color: black;
-    padding: 8px 30px;
-    font-size: 20px;
-    line-height: 40px;
-    border-bottom: 2px solid rgba(209, 213, 218, 0);
+    padding: 14px 16px;
+    margin: 5px;
+    font-size: 17px;
+    line-height: 280%;
+    border: 2px solid #008cba;
     transition: border-bottom-color 0.25s ease-in;
+    cursor: pointer;
 }
 
 .nav-items.active {
-    font-weight: 600;
-    border-bottom-color: #f9826c;
-}
-
-.nav-items:not(.active):hover {
-    border-bottom-color: #d1d5da;
-    transition-timing-function: ease-out;
-    transition-duration: 0.25s;
+    border-bottom-color: #e1e4e8;
 }
 </style>

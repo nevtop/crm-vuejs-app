@@ -1,10 +1,10 @@
 <template>
     <div ref="topbar" class="topbar">
         <menu-icon></menu-icon>
-        <a target="_blank" href="http://nevtop.in/" class="logo">
+        <a target="_blank" href="https://www.nevtop.com/" class="logo">
             <img src="@/assets/nevtop.png" />
         </a>
-        <router-link class="link" :to="{ } " @click.native="logout">Logout</router-link>
+        <router-link class="link" :to="{}" @click.native="logout">Logout</router-link>
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
     </div>
 </template>
@@ -32,7 +32,7 @@ export default {
     background-color: #fff;
     overflow: hidden;
     box-shadow: 0px 3px 5px 0px #888;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 }
 
 .topbar .logo {

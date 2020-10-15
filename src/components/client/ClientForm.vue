@@ -48,7 +48,7 @@
         </div>
         <div class="row">
             <div class="action">
-                <button type="button" class="btn" v-on:click="create">Create</button>
+                <button type="button" class="btn" v-on:click="register">Create</button>
                 <button type="button" class="btn" v-on:click="cancel">Cancel</button>
             </div>
         </div>
@@ -73,7 +73,7 @@ export default {
         'v-address': Address
     },
     methods: {
-        create: function () {
+        register: function () {
             const clientData = {
                 clientType: this.type,
                 clientName: this.name.trim(),

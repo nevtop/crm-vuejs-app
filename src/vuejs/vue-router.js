@@ -7,9 +7,13 @@ import Setting from '@/views/Setting'
 import User from '@/components/settings/User'
 import UserForm from '@/components/settings/UserForm'
 import Role from '@/components/settings/Role'
-import Client from '@/components/Client'
-import ClientForm from '@/components/ClientForm'
-import ClientProfile from '@/components/ClientProfile'
+import Clients from '@/components/client/Clients'
+import ClientForm from '@/components/client/ClientForm'
+import ClientView from '@/components/client/ClientView'
+import ClientProfile from '@/components/client/ClientProfile'
+import ClientSessions from '@/components/client/ClientSessions'
+import Sessions from '@/components/session/Sessions'
+import SessionForm from '@/components/session/SessionForm'
 
 Vue.use(Router)
 
@@ -29,19 +33,45 @@ const router = new Router({
         },
         {
             path: '/clients',
-            name: 'Client',
+            name: 'Clients',
             meta: { requiresAuth: true },
-            components: { app: Client },
+            components: { app: Clients },
             children: [
                 {
                     path: 'profile/new',
                     name: 'ClientForm',
-                    components: { client: ClientForm }
+                    components: { clients: ClientForm }
+                }
+            ]
+        },
+        {
+            path: '/client/:id',
+            name: 'ClientView',
+            meta: { requiresAuth: true },
+            components: { app: ClientView },
+            children: [
+                {
+                    path: 'profile',
+                    name: 'ClientProfile',
+                    components: { 'client-view': ClientProfile }
                 },
                 {
-                    path: 'profile/:id',
-                    name: 'ClientProfile',
-                    components: { client: ClientProfile }
+                    path: 'sessions',
+                    name: 'ClientSessions',
+                    components: { 'client-view': ClientSessions }
+                }
+            ]
+        },
+        {
+            path: '/sessions',
+            name: 'Sessions',
+            meta: { requiresAuth: true },
+            components: { app: Sessions },
+            children: [
+                {
+                    path: 'profile/new',
+                    name: 'SessionForm',
+                    components: { sessions: SessionForm }
                 }
             ]
         },

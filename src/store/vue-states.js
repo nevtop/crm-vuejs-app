@@ -7,7 +7,9 @@ export default {
     isAuthenticated: false,
     cancelTokenList: [] ,
     configMap: new Map,
+    routeParams: null,
     clientList: [],
     isClientAdded: false,
-    filteredClientList: []
+    filteredClientList: [],
+    clientInfo: null
 }
