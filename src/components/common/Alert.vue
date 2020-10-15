@@ -23,10 +23,12 @@ export default {
     },
     computed: {
         icon: function () {
-            if(this.type == 'error') return ['fas', 'times-circle']
-            if(this.type == 'success') return ['fas', 'check-circle']
-            if(this.type == 'info') return ['fas', 'info-circle']
-            if(this.type == 'warning') return ['fas', 'exclamation-circle']
+            switch (this.type) {
+                case 'error': return ['fas', 'times-circle']
+                case 'success': return ['fas', 'check-circle']
+                case 'info': return ['fas', 'info-circle']
+                case 'warning': return ['fas', 'exclamation-circle']
+            } 
         }
     }
 }

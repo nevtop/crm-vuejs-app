@@ -83,5 +83,15 @@ export default {
         } catch (err) {
             console.error('Error occurred in API: FETCH_ALL_CLIENTS')
         }
+    },
+    GET_CLIENT_INFO: async function ({ commit }, id) {
+        try {
+            const config = Util.getConfig('GET_CLIENT_INFO', HttpMethod.POST, Url.GET_CLIENT_INFO.concat(`/${id}`),
+                    null, null)
+            const { data } = await sendRequest(config)
+            commit('SET_CLIENT_INFO', data.data)
+        } catch (err) {
+            console.error('Error occurred in API: GET_CLIENT_INFO')
+        }
     }
 }

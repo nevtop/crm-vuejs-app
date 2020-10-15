@@ -37,6 +37,10 @@ export default {
     CLEAR_CANCEL_TOKEN_LIST: function (state) {
         state.cancelTokenList = []
     },
+    SET_ROUTE_PARAMS: function (state, params) {
+        state.routeParams = params
+        localStorage.setItem('_route_params', JSON.stringify(params))
+    },
     SET_CLIENT_LIST: function (state, clientList) {
         const processList = clientList.map((ele, index) => {
             const newEle = {...ele, ...ele.address}
@@ -73,5 +77,8 @@ export default {
                 ele.sno = ++index
                 return ele
             })
+    },
+    SET_CLIENT_INFO: function (state, clientInfo) {
+        state.clientInfo = clientInfo
     }
 }

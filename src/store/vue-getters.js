@@ -8,6 +8,9 @@ export default {
     GET_REFRESH_TOKEN: function (state) {
         return state.jwt.refreshToken
     },
+    GET_ROUTE_PARAMS: function (state) {
+        return state.routeParams
+    },
     GET_CLIENT_LIST: function (state) {
         return state.filteredClientList
     },

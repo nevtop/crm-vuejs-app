@@ -26,6 +26,11 @@ new Vue({
       this.$store.commit('SET_REFRESH_TOKEN', refreshToken)
     }
 
+    const routeParams = localStorage.getItem('_route_params')
+    if (routeParams) {
+      this.$store.commit('SET_ROUTE_PARAMS', JSON.parse(routeParams))
+    }
+
     Axios.interceptors.request.use((request) => {
       const source = Axios.CancelToken.source()
       request.cancelToken = source.token
