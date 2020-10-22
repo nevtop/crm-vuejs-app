@@ -56,3 +56,41 @@
     background-color: #008CBA;
     color: white;
 }
+
+
+.section-header {
+    font-size: 19px;
+    color: #282c33;
+    font-weight: 700;
+    margin: 24px 0 8px;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    background-color: #f2f3f5;
+    padding: 15px 20px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    line-height: 35px;
+}
+
+.right-align {
+    align-items: flex-end;
+}
+
+.left-align {
+    align-items: flex-start;
+}
+
+.input-field {
+    height: 28px;
+    font-size: 12px;
+    width: 300px;
+    margin-bottom: 6px;
+}

@@ -11,5 +11,7 @@ export const Url = {
     ISSUE_TOKEN: '/user/jwt/refresh',
     REGISTER_CLIENT: '/client/register',
     FETCH_ALL_CLIENTS: '/client/all',
-    GET_CLIENT_INFO: '/client/info'
+    RETRIEVE_CLIENT_INFO: '/client/info',
+    FETCH_ALL_SESSIONS: '/session/all',
+    RETRIEVE_SESSION_INFO: '/session/info',
 }

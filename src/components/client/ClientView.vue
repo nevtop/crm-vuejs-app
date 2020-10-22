@@ -44,7 +44,7 @@ export default {
         } 
     },
     created: function () {
-        this.$store.dispatch('GET_CLIENT_INFO', this.$route.params.id)
+        this.$store.dispatch('RETRIEVE_CLIENT_INFO', this.$route.params.id)
     }
 }
 </script>

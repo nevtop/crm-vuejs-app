@@ -1,56 +1,47 @@
 <template>
     <div class="wrapper">
-        <h2 class="ml-10">Client Registration</h2>
-        <div class="row">
-            <div class="col-1">
-                <label for="gender_lb" class="mb-5">Type</label>
-                <div class="mt-5">
-                    <span class="mr-10">
-                        <input type="radio" value="PERSONAL" v-model="type">
-                        <label for="personal_lb">Personal</label>
-                    </span>
-                    <span>
-                        <input type="radio" value="CORPORATE" v-model="type">
-                        <label for="corporate_lb">Corporate</label>
-                    </span>
-                </div>
+        <h2>Client Registration</h2>
+        <div class="section">
+            <div class="column right-align">
+                <label for="client_type">Client Type:</label>
+            </div>
+            <div class="column left-align">
+                <select v-model="type">
+                    <option disabled value="">Please select one</option>
+                    <option value="PERSONAL">Personal</option>
+                    <option value="CORPORATE">Corporate</option>
+                </select>
             </div>
         </div>
-        <ul><li><h4>Basic Details</h4></li></ul>
-        <div class="row">
-            <div class="col-1">
-                <label for="name_lb" class="mb-5">Client Name</label>
-                <input type="text" class="input-address" v-model="name">
+        <div class="section-header">Basic Details</div>
+        <div class="section">
+            <div class="column right-align">
+                <span>Client Name:</span>
+                <span>GST No:</span>
+                <span>PAN No:</span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <label for="gst_lb" class="mb-5">GST No</label>
+            <div class="column left-align">
+                <input type="text" class="input-field" v-model="name">
                 <input type="text" class="input-field" v-model="gst">
-            </div>
-            <div class="col-2">
-                <label for="pan_lb" class="mb-5">PAN No</label>
                 <input type="text" class="input-field" v-model="pan">
             </div>
         </div>
-        <ul><li><h4>Address</h4></li></ul>
+        <div class="section-header">Address</div>
         <v-address></v-address>
-        <ul><li><h4>Other Information</h4></li></ul>
-        <div class="row">
-            <div class="col-2">
-                <label for="website_lb" class="mb-5">Website</label>
-                <input type="text" class="input-field" v-model="website">
+        <div class="section-header">Other Details</div>
+        <div class="section">
+            <div class="column right-align">
+                <span>Website:</span>
+                <span>Support Email:</span>
             </div>
-            <div class="col-2">
-                <label for="support_email_lb" class="mb-5">Support Email</label>
+            <div class="column left-align">
+                <input type="text" class="input-field" v-model="website">
                 <input type="text" class="input-field" v-model="supportEmail">
             </div>
         </div>
-        <div class="row">
-            <div class="action">
-                <button type="button" class="btn" v-on:click="register">Create</button>
-                <button type="button" class="btn" v-on:click="cancel">Cancel</button>
-            </div>
+        <div class="action">
+            <button type="button" class="btn" v-on:click="register">Create</button>
+            <button type="button" class="btn" v-on:click="cancel">Cancel</button>
         </div>
     </div>
 </template>
@@ -106,36 +97,11 @@ export default {
     margin: auto;
     border: 1px solid #b3b3b2;
     border-radius: 10px;
-    padding: 70px 90px 70px 70px;
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.col-1 {
-    margin: 15px;
-}
-
-.col-2 {
-    display: flex;
-    flex-direction: column;
-    width: calc((100% - 60px) / 2);
-    margin: 15px;
-}
-
-.input-field {
-    height: 45px;
-}
-
-.input-address {
-    width: 640px;
-    height: 45px;
+    padding: 30px 70px;
 }
 
 .action {
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .btn {

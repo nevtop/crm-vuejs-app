@@ -91,7 +91,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 10px;
-    line-height: 30px;
+    line-height: 34px;
 }
 
 .right-align {

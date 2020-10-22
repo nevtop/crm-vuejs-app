@@ -1,36 +1,20 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="col-1">
-                <label for="addressline1_lb" class="mb-5">Address Line 1</label>
-                <input type="text" class="input-address" v-model="addressLine1">
-            </div>
+    <div class="section">
+        <div class="column right-align">
+            <span>Address Line 1:</span>
+            <span>Address Line 2:</span>
+            <span>City:</span>
+            <span>State:</span>
+            <span>Pincode:</span>
+            <span>Country:</span>
         </div>
-        <div class="row">
-            <div class="col-1">
-                <label for="addressline2_lb" class="mb-5">Address Line 2</label>
-                <input type="text" class="input-address" v-model="addressLine2">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <label for="city_lb" class="mb-5">City</label>
-                <input type="text" class="input-field" v-model="city">
-            </div>
-            <div class="col-2">
-                <label for="state_lb" class="mb-5">State</label>
-                <input type="text" class="input-field" v-model="state">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <label for="pincode_lb" class="mb-5">Pin Code</label>
-                <input type="text" class="input-field" v-model="pincode">
-            </div>
-            <div class="col-2">
-                <label for="country_lb" class="mb-5">Country</label>
-                <input type="text" class="input-field" v-model="country">
-            </div>
+        <div class="column left-align">
+            <input type="text" class="input-field" v-model="addressLine1">
+            <input type="text" class="input-field" v-model="addressLine2">
+            <input type="text" class="input-field" v-model="city">
+            <input type="text" class="input-field" v-model="state">
+            <input type="text" class="input-field" v-model="pincode">
+            <input type="text" class="input-field" v-model="country">
         </div>
     </div>
 </template>
@@ -51,34 +35,4 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-    max-width: 700px;
-    margin: auto;
-    padding: 70px 90px 70px 70px;
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.col-1 {
-    margin: 15px;
-}
-
-.col-2 {
-    display: flex;
-    flex-direction: column;
-    width: calc((100% - 60px) / 2);
-    margin: 15px;
-}
-
-.input-field {
-    height: 40px;
-}
-
-.input-address {
-    width: 640px;
-    height: 40px;
-}
 </style>
