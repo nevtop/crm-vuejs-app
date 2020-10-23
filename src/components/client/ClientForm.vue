@@ -5,7 +5,7 @@
             <div class="column right-align">
                 <label for="client_type">Client Type:</label>
             </div>
-            <div class="column left-align">
+            <div class="column left-align" id="y">
                 <select v-model="type">
                     <option disabled value="">Please select one</option>
                     <option value="PERSONAL">Personal</option>
@@ -15,7 +15,7 @@
         </div>
         <div class="section-header">Basic Details</div>
         <div class="section">
-            <div class="column right-align">
+            <div class="column right-align" id="t">
                 <span>Client Name:</span>
                 <span>GST No:</span>
                 <span>PAN No:</span>
