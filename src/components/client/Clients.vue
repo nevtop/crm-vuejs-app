@@ -1,19 +1,19 @@
 <template>
-    <div class="wrapper">
-        <template v-if="clientPage">
+    <div>
+        <div v-if="clientPage" class="wrapper">
             <div class="heading">
                 <label class="label-heading">Clients</label>
-                <router-link :to="{ name: 'ClientForm' }" class="link">New Client</router-link>
+                <router-link :to="{ name: 'AddClient'}" class="link">New Client</router-link>
             </div>
             <search width='250px' placeholder="Search for clients.."></search>
-            <table-view v-bind:list="clientList" action="ClientProfile">
+            <table-view v-bind:list="clientList" action="ClientView">
                 <table-column label="Client Name" map="clientName"></table-column>
                 <table-column label="Client Type" map="clientType"></table-column>
                 <table-column label="Boarding Date" map="onboardingDate"></table-column>
                 <table-column label="City" map="city"></table-column>
                 <table-column label="State" map="state"></table-column>
             </table-view>
-        </template>
+        </div>
         <router-view name="clients"></router-view>
     </div>
 </template>
@@ -83,8 +83,6 @@ export default {
 }
 
 .link {
-    float: right;
-    display: block;
     color: black;
     text-align: center;
     height: 18px;

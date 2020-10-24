@@ -16,5 +16,8 @@ export default {
     },
     IS_CLIENT_ADDED: function (state) {
         return state.isClientAdded
+    },
+    GET_CLIENT_INFO: function (state) {
+        return state.clientInfo
     }
 }

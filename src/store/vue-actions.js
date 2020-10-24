@@ -86,10 +86,10 @@ export default {
     },
     RETRIEVE_CLIENT_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.POST, Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`),
+            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`),
                     null, null)
             const { data } = await sendRequest(config)
-            commit('SET_CLIENT_INFO', data.data)
+            commit('SET_CLIENT_INFO', data.data[0])
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_CLIENT_INFO')
         }

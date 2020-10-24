@@ -39,8 +39,13 @@ const router = new Router({
             children: [
                 {
                     path: 'profile/new',
-                    name: 'ClientForm',
-                    components: { clients: ClientForm }
+                    name: 'AddClient',
+                    components: { 'clients': ClientForm }
+                },
+                {
+                    path: 'profile/edit',
+                    name: 'EditClient',
+                    components: { 'clients': ClientForm }
                 }
             ]
         },
@@ -48,19 +53,7 @@ const router = new Router({
             path: '/client/:id',
             name: 'ClientView',
             meta: { requiresAuth: true },
-            components: { app: ClientView },
-            children: [
-                {
-                    path: 'profile',
-                    name: 'ClientProfile',
-                    components: { 'client-view': ClientProfile }
-                },
-                {
-                    path: 'sessions',
-                    name: 'ClientSessions',
-                    components: { 'client-view': ClientSessions }
-                }
-            ]
+            components: { app: ClientView }
         },
         {
             path: '/sessions',

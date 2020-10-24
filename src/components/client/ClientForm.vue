@@ -1,7 +1,8 @@
 <template>
     <div class="wrapper">
-        <h2>Client Registration</h2>
-        <div class="section">
+        <h2 v-if="mode === 'ADD'">Add Client</h2>
+        <h2 v-else-if="mode === 'EDIT'">Edit Client</h2>
+        <div v-if="mode !== 'VIEW'" class="section">
             <div class="column right-align">
                 <label for="client_type">Client Type:</label>
             </div>
@@ -13,33 +14,24 @@
                 </select>
             </div>
         </div>
-        <div class="section-header">Basic Details</div>
-        <div class="section">
-            <div class="column right-align" id="t">
-                <span>Client Name:</span>
-                <span>GST No:</span>
-                <span>PAN No:</span>
-            </div>
-            <div class="column left-align">
-                <input type="text" class="input-field" v-model="name">
-                <input type="text" class="input-field" v-model="gst">
-                <input type="text" class="input-field" v-model="pan">
-            </div>
-        </div>
-        <div class="section-header">Address</div>
-        <v-address></v-address>
-        <div class="section-header">Other Details</div>
-        <div class="section">
-            <div class="column right-align">
-                <span>Website:</span>
-                <span>Support Email:</span>
-            </div>
-            <div class="column left-align">
-                <input type="text" class="input-field" v-model="website">
-                <input type="text" class="input-field" v-model="supportEmail">
-            </div>
-        </div>
-        <div class="action">
+        <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
+            <form-field label="Client Name" map="clientName"></form-field>
+            <form-field label="GST No" map="gstNo"></form-field>
+            <form-field label="PAN No" map="panNo"></form-field>
+        </form-module>
+        <form-module name="Address" v-bind:mode="mode" v-model="address">
+            <form-field label="Address Line 1" map="addressLine1"></form-field>
+            <form-field label="Address Line 2" map="addressLine2"></form-field>
+            <form-field label="City" map="city"></form-field>
+            <form-field label="State" map="state"></form-field>
+            <form-field label="Pincode" map="pincode"></form-field>
+            <form-field label="Country" map="country"></form-field>
+        </form-module>
+        <form-module name="Other Details" v-bind:mode="mode" v-model="otherDetails">
+            <form-field label="Website" map="website"></form-field>
+            <form-field label="Support Email" map="supportEmail"></form-field>
+        </form-module>
+        <div v-if="mode !== 'VIEW'" class="action">
             <button type="button" class="btn" v-on:click="register">Create</button>
             <button type="button" class="btn" v-on:click="cancel">Cancel</button>
         </div>
@@ -47,45 +39,72 @@
 </template>
 
 <script>
-import Address from '@/components/Address'
+import FormModule from '@/components/common/FormModule'
+import FormField from '@/components/common/FormField'
+import { mapper } from '@/commonjs/util'
 
 export default {
+    props: {
+        clientInfo: Object
+    },
+    components: {
+        'form-module': FormModule,
+        'form-field': FormField
+    },
     data: function () {
         return {
             type: '',
-            name: '',
-            gst: '',
-            pan: '',
-            website: '',
-            supportEmail: ''
+            mode: '',
+            basicDetails: { clientName: '', gstNo: '', panNo: '' },
+            address: {
+                addressLine1: '',
+                addressLine2: '',
+                city: '',
+                state: '',
+                pincode: '',
+                country: ''
+            },
+            otherDetails: { website: '', supportEmail: '' }
         }
     },
-    components: {
-        'v-address': Address
+    created: function () {
+        if (this.$route.name === 'AddClient') {
+            this.mode = 'ADD'
+        } else if (this.$route.name === 'EditClient') {
+            this.mode = 'EDIT'
+            this.populate()
+            
+        } else {
+            this.mode = 'VIEW'
+            this.populate()
+        }
     },
     methods: {
+        populate: function () {
+            const clientInfo = this.$store.getters.GET_CLIENT_INFO
+            this.basicDetails = mapper(clientInfo, this.basicDetails)
+            this.address = mapper(clientInfo.address, this.address)
+            this.otherDetails = mapper(clientInfo, this.otherDetails)
+        },
         register: function () {
             const clientData = {
                 clientType: this.type,
-                clientName: this.name.trim(),
                 active: true,
-                panNo: this.pan.trim(),
-                gstNo: this.gst.trim(),
-                website: this.website.trim(),
-                supportEmail: this.supportEmail.trim(),
+                ...this.basicDetails,
                 address: {
-                    addressLine1: this.$children[0].$data.addressLine1, 
-                    addressLine2: this.$children[0].$data.addressLine2,
-                    city: this.$children[0].$data.city,
-                    state: this.$children[0].$data.state,
-                    pincode: this.$children[0].$data.pincode,
-                    country: this.$children[0].$data.country
-                }
+                    ...this.address
+                },
+                ...this.otherDetails
             }
             this.$store.dispatch('REGISTER_CLIENT', clientData)
         },
         cancel: function () {
             this.$router.go(-1)
+        }
+    },
+    watch: {
+        clientInfo: function (newVal) {
+            this.populate()
         }
     }
 }
@@ -93,7 +112,7 @@ export default {
 
 <style scoped>
 .wrapper {
-    max-width: 700px;
+    max-width: 1000px;
     margin: auto;
     border: 1px solid #b3b3b2;
     border-radius: 10px;

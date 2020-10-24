@@ -1,4 +1,4 @@
-export const getConfig = (...input) => {
+export const getConfig = function (...input) {
     const config = {}
     config['_action'] = input[0]
     config['_method'] = input[1]
@@ -7,4 +7,12 @@ export const getConfig = (...input) => {
     config['_params'] = input[4]
     config['_headers'] = input[5]
     return config
-} 
+}
+
+export const mapper = function (source, target) {
+    const temp = {}
+    for (let key in target) {
+        temp[key] = source[key]
+    }
+    return temp
+}

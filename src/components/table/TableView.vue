@@ -45,8 +45,8 @@ export default {
     mounted: async function() {
         this.rows = this.list
         const columnSlots = this.$slots.default
-            .filter(col => col.componentInstance)
-            .map(col => col.componentOptions)
+                .filter(col => col.componentInstance)
+                .map(col => col.componentOptions)
 
         this.columns = columnSlots.map(col => {
             let columnData = {

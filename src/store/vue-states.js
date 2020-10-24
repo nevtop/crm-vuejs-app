@@ -5,7 +5,7 @@ export default {
         refreshToken: ''
     },
     isAuthenticated: false,
-    cancelTokenList: [] ,
+    cancelTokenList: [],
     configMap: new Map,
     routeParams: null,
     clientList: [],
