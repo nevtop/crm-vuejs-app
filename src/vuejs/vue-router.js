@@ -10,8 +10,6 @@ import Role from '@/components/settings/Role'
 import Clients from '@/components/client/Clients'
 import ClientForm from '@/components/client/ClientForm'
 import ClientView from '@/components/client/ClientView'
-import ClientProfile from '@/components/client/ClientProfile'
-import ClientSessions from '@/components/client/ClientSessions'
 import Sessions from '@/components/session/Sessions'
 import SessionForm from '@/components/session/SessionForm'
 

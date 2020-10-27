@@ -1,10 +1,12 @@
 <template>
     <ul class="nav">
         <li v-for="(tab, index) in tabs" v-bind:key="index">
-            <router-link class="nav-items" v-bind:class="{ active: tab.name == selected }" :to="{ name: tab.routeName }"
-                    v-on:click.native="selectTab(tab)">
-                {{ tab.name }}
-            </router-link>
+            <a 
+                class="nav-items" 
+                v-bind:class="{ active: tab == selected }" 
+                v-on:click="selectTab(tab)">{{
+                    tab
+            }}</a>
         </li>
     </ul>
 </template>
@@ -17,7 +19,7 @@ export default {
     },
     methods: {
         selectTab: function (tab) {
-            this.$emit('select-tab', tab.name)
+            this.$emit('select-tab', tab)
         }
     }
 };

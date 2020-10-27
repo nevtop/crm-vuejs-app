@@ -56,13 +56,8 @@ export default {
             type: '',
             mode: '',
             basicDetails: { clientName: '', gstNo: '', panNo: '' },
-            address: {
-                addressLine1: '',
-                addressLine2: '',
-                city: '',
-                state: '',
-                pincode: '',
-                country: ''
+            address: { addressLine1: '', addressLine2: '', city: '',
+                state: '', pincode: '', country: ''
             },
             otherDetails: { website: '', supportEmail: '' }
         }
@@ -112,7 +107,7 @@ export default {
 
 <style scoped>
 .wrapper {
-    max-width: 1000px;
+    max-width: 700px;
     margin: auto;
     border: 1px solid #b3b3b2;
     border-radius: 10px;

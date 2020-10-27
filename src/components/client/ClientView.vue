@@ -6,32 +6,36 @@
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ params.clientName }}</label>
             </div>
-            <router-link class="link" :to="{ name: route.name }">{{ route.linkName }}</router-link>
+            <router-link class="link" :to="{ name: route.name }">{{ route.label }}</router-link>
         </div>
         <tab-nav v-bind:tabs="tabs" v-bind:selected="selected" v-on:select-tab="selectTab"/>
         <!-- <router-view name="client-view"></router-view> -->
-        <client-form :clientInfo="clientInfo"></client-form>
+        <template v-if="selected === 'PROFILE'">
+            <client-form :clientInfo="clientInfo"></client-form>
+        </template>
+        <template v-else-if="selected === 'SESSIONS'">
+            <client-session></client-session>
+        </template>
     </div>
 </template>
 
 <script>
 import TabNav from '@/components/common/TabNav'
 import ClientForm from '@/components/client/ClientForm'
+import ClientSession from '@/components/client/ClientSession'
 import { mapGetters } from 'vuex';
 
 export default {
     components: {
         'tab-nav': TabNav,
-        'client-form': ClientForm
+        'client-form': ClientForm,
+        'client-session': ClientSession
     },
     data: function () {
         return {
-            selected: 'Profile',
-            route: { name: 'EditClient', linkName: 'Edit Profile' },
-            tabs: [
-                { name: 'Profile', routeName: 'ClientProfile' },
-                { name: 'Sessions', routeName: 'ClientSessions' }
-            ]
+            selected: 'PROFILE',
+            route: { name: 'EditClient', label: 'Edit Profile' },
+            tabs: ['PROFILE', 'SESSIONS']
         }
     },
     computed: {
@@ -41,9 +45,9 @@ export default {
         })
     },
     methods: {
-        selectTab: function (tab) {
-            this.selected = tab;
-            if (this.selected === 'Profile') {
+        selectTab: function (tabName) {
+            this.selected = tabName;
+            if (this.selected === 'PROFILE') {
                 this.route.name = 'ClientForm'
                 this.route.linkName = 'Edit Profile'
             } else {
