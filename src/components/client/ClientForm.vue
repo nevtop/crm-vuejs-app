@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" v-bind:style="{ maxWidth: maxWidth }">
         <h2 v-if="mode === 'ADD'">Add Client</h2>
         <h2 v-else-if="mode === 'EDIT'">Edit Client</h2>
         <div v-if="mode !== 'VIEW'" class="section">
@@ -59,7 +59,8 @@ export default {
             address: { addressLine1: '', addressLine2: '', city: '',
                 state: '', pincode: '', country: ''
             },
-            otherDetails: { website: '', supportEmail: '' }
+            otherDetails: { website: '', supportEmail: '' },
+            maxWidth: '1000px'
         }
     },
     created: function () {
@@ -73,6 +74,8 @@ export default {
             this.mode = 'VIEW'
             this.populate()
         }
+        
+        this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
     },
     methods: {
         populate: function () {
@@ -107,7 +110,6 @@ export default {
 
 <style scoped>
 .wrapper {
-    max-width: 700px;
     margin: auto;
     border: 1px solid #b3b3b2;
     border-radius: 10px;

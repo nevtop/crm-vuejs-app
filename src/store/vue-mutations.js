@@ -52,8 +52,8 @@ export default {
         })
         state.clientList = processList
     },
-    NEW_CLIENT_ADDED: function (state, bool) {
-        state.isClientAdded = bool
+    NEW_DATA_ADDED: function (state, bool) {
+        state.isDataAdded = bool
     },
     FILTER_CLIENT_LIST: function (state, tabIndex) {
         if (tabIndex == 0)
@@ -80,5 +80,6 @@ export default {
     },
     SET_CLIENT_INFO: function (state, clientInfo) {
         state.clientInfo = clientInfo
+        localStorage.setItem('_client_info', JSON.stringify(clientInfo))
     }
 }

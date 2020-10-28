@@ -49,10 +49,10 @@ export default {
             this.selected = tabName;
             if (this.selected === 'PROFILE') {
                 this.route.name = 'ClientForm'
-                this.route.linkName = 'Edit Profile'
+                this.route.label = 'Edit Profile'
             } else {
                 this.route.name = 'SessionForm'
-                this.route.linkName = 'Add Session'
+                this.route.label = 'Add Session'
             }
         } 
     },

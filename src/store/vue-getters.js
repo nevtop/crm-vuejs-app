@@ -14,8 +14,8 @@ export default {
     GET_CLIENT_LIST: function (state) {
         return state.filteredClientList
     },
-    IS_CLIENT_ADDED: function (state) {
-        return state.isClientAdded
+    IS_DATA_ADDED: function (state) {
+        return state.isDataAdded
     },
     GET_CLIENT_INFO: function (state) {
         return state.clientInfo

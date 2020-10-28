@@ -64,7 +64,7 @@ export default {
         try {
             const config = Util.getConfig('REGISTER_CLIENT', HttpMethod.POST, Url.REGISTER_CLIENT, clientData)
             const { data } = await sendRequest(config)
-            commit('NEW_CLIENT_ADDED', true)
+            commit('NEW_DATA_ADDED', true)
             Router.go(-1)
         } catch (err) { 
             console.error('Error occurred in API: REGISTER_CLIENT')

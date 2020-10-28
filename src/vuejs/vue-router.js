@@ -12,6 +12,8 @@ import ClientForm from '@/components/client/ClientForm'
 import ClientView from '@/components/client/ClientView'
 import Sessions from '@/components/session/Sessions'
 import SessionForm from '@/components/session/SessionForm'
+import Members from '@/components/member/Members'
+import MemberForm from '@/components/member/MemberForm'
 
 Vue.use(Router)
 
@@ -63,6 +65,24 @@ const router = new Router({
                     path: 'profile/new',
                     name: 'SessionForm',
                     components: { sessions: SessionForm }
+                }
+            ]
+        },
+        {
+            path: '/members',
+            name: 'Members',
+            meta: { requiresAuth: true },
+            components: { app: Members },
+            children: [
+                {
+                    path: 'profile/new',
+                    name: 'AddMember',
+                    components: { 'members': MemberForm }
+                },
+                {
+                    path: 'profile/edit',
+                    name: 'EditMember',
+                    components: { 'members': MemberForm }
                 }
             ]
         },

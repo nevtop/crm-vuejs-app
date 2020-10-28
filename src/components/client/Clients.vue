@@ -51,9 +51,9 @@ export default {
         $route (to, next) {
             if (to.name === 'Clients') {
                 this.clientPage = true
-                if (this.$store.getters.IS_CLIENT_ADDED) {
+                if (this.$store.getters.IS_DATA_ADDED) {
                     this.$store.dispatch('FETCH_ALL_CLIENTS')
-                    this.$store.commit('NEW_CLIENT_ADDED', false)
+                    this.$store.commit('NEW_DATA_ADDED', false)
                 }
             } else {
                 this.clientPage = false

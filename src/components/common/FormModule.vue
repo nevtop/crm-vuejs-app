@@ -1,5 +1,5 @@
 <template>
-    <div id="basic-details">
+    <div id="form-module">
         <div class="section-header">{{ name }}</div>
         <div class="section">
             <div class="column right-align">

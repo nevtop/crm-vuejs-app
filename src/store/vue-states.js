@@ -9,7 +9,7 @@ export default {
     configMap: new Map,
     routeParams: null,
     clientList: [],
-    isClientAdded: false,
+    isDataAdded: false,
     filteredClientList: [],
     clientInfo: null
 }

@@ -56,11 +56,11 @@ export default {
         if (this.$route.name !== 'Sessions') {
             this.sessionPage = false
         }
-        // this.$store.dispatch('FETCH_ALL_CLIENTS')
+        // this.$store.dispatch('FETCH_ALL_SESSIONS')
     },
     computed: {
         // ...mapGetters({
-        //     clientList: 'GET_CLIENT_LIST'
+        //     clientList: 'GET_SESSION_LIST'
         // })
     },
     methods: {},
@@ -68,9 +68,9 @@ export default {
         $route (to, next) {
             if (to.name === 'Sessions') {
                 this.sessionPage = true
-                // if (this.$store.getters.IS_CLIENT_ADDED) {
-                //     this.$store.dispatch('FETCH_ALL_CLIENTS')
-                //     this.$store.commit('NEW_CLIENT_ADDED', false)
+                // if (this.$store.getters.IS_DATA_ADDED) {
+                //     this.$store.dispatch('FETCH_ALL_SESSIONS')
+                //     this.$store.commit('NEW_DATA_ADDED', false)
                 // }
             } else {
                 this.sessionPage = false

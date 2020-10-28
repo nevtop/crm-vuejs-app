@@ -31,6 +31,11 @@ new Vue({
       this.$store.commit('SET_ROUTE_PARAMS', JSON.parse(routeParams))
     }
 
+    const clientInfo = localStorage.getItem('_client_info')
+    if (clientInfo) {
+      this.$store.commit('SET_CLIENT_INFO', JSON.parse(clientInfo))
+    }
+
     Axios.interceptors.request.use((request) => {
       const source = Axios.CancelToken.source()
       request.cancelToken = source.token
