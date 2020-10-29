@@ -70,6 +70,16 @@ export default {
             console.error('Error occurred in API: REGISTER_CLIENT')
         }
     },
+    UPDATE_CLIENT: async function ({ commit }, clientData) {
+        try {
+            const config = Util.getConfig('UPDATE_CLIENT', HttpMethod.POST, Url.UPDATE_CLIENT, clientData)
+            const { data } = await sendRequest(config)
+            commit('NEW_DATA_ADDED', true)
+            Router.go(-1)
+        } catch (err) { 
+            console.error('Error occurred in API: UPDATE_CLIENT')
+        }
+    },
     FETCH_ALL_CLIENTS: async function ({ commit }) {
         try {
             const formData = new FormData()
@@ -86,8 +96,7 @@ export default {
     },
     RETRIEVE_CLIENT_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`),
-                    null, null)
+            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`))
             const { data } = await sendRequest(config)
             commit('SET_CLIENT_INFO', data.data[0])
         } catch (err) {

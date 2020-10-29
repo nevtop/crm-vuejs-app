@@ -32,7 +32,7 @@
             <form-field label="Support Email" map="supportEmail"></form-field>
         </form-module>
         <div v-if="mode !== 'VIEW'" class="action">
-            <button type="button" class="btn" v-on:click="register">Create</button>
+            <button type="button" class="btn" v-on:click="process">{{ buttonName }}</button>
             <button type="button" class="btn" v-on:click="cancel">Cancel</button>
         </div>
     </div>
@@ -60,7 +60,8 @@ export default {
                 state: '', pincode: '', country: ''
             },
             otherDetails: { website: '', supportEmail: '' },
-            maxWidth: '1000px'
+            maxWidth: '1000px',
+            buttonName: 'Create'
         }
     },
     created: function () {
@@ -76,6 +77,7 @@ export default {
         }
         
         this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
+        this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
     },
     methods: {
         populate: function () {
@@ -84,8 +86,9 @@ export default {
             this.address = mapper(clientInfo.address, this.address)
             this.otherDetails = mapper(clientInfo, this.otherDetails)
         },
-        register: function () {
+        process: function () {
             const clientData = {
+                id: this.clientInfo.id,
                 clientType: this.type,
                 active: true,
                 ...this.basicDetails,
@@ -94,7 +97,11 @@ export default {
                 },
                 ...this.otherDetails
             }
-            this.$store.dispatch('REGISTER_CLIENT', clientData)
+            if (this.mode === 'ADD') {
+                this.$store.dispatch('REGISTER_CLIENT', clientData)
+            } else {
+                this.$store.dispatch('UPDATE_CLIENT', clientData)
+            }
         },
         cancel: function () {
             this.$router.go(-1)
