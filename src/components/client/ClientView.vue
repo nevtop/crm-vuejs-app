@@ -48,10 +48,10 @@ export default {
         selectTab: function (tabName) {
             this.selected = tabName;
             if (this.selected === 'PROFILE') {
-                this.route.name = 'ClientForm'
+                this.route.name = 'EditClient'
                 this.route.label = 'Edit Profile'
             } else {
-                this.route.name = 'SessionForm'
+                this.route.name = 'AddSession'
                 this.route.label = 'Add Session'
             }
         } 

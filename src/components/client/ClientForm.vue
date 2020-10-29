@@ -22,6 +22,7 @@
         <form-module name="Address" v-bind:mode="mode" v-model="address">
             <form-field label="Address Line 1" map="addressLine1"></form-field>
             <form-field label="Address Line 2" map="addressLine2"></form-field>
+            <form-field label="Area" map="area"></form-field>
             <form-field label="City" map="city"></form-field>
             <form-field label="State" map="state"></form-field>
             <form-field label="Pincode" map="pincode"></form-field>
@@ -57,7 +58,7 @@ export default {
             mode: '',
             basicDetails: { clientName: '', gstNo: '', panNo: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
-                state: '', pincode: '', country: ''
+                area: '', state: '', pincode: '', country: ''
             },
             otherDetails: { website: '', supportEmail: '' },
             maxWidth: '1000px',
@@ -80,15 +81,20 @@ export default {
         this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
     },
     methods: {
-        populate: function () {
-            const clientInfo = this.$store.getters.GET_CLIENT_INFO
-            this.basicDetails = mapper(clientInfo, this.basicDetails)
-            this.address = mapper(clientInfo.address, this.address)
-            this.otherDetails = mapper(clientInfo, this.otherDetails)
+        populate: function (clientData) {
+            clientData = clientData 
+                    ? clientData 
+                    : this.$store.getters.GET_CLIENT_INFO
+
+            if (clientData && clientData.address) {
+                this.type = clientData.clientType
+                this.basicDetails = mapper(clientData, this.basicDetails)
+                this.address = mapper(clientData.address, this.address)
+                this.otherDetails = mapper(clientData, this.otherDetails)
+            }
         },
         process: function () {
             const clientData = {
-                id: this.clientInfo.id,
                 clientType: this.type,
                 active: true,
                 ...this.basicDetails,
@@ -100,6 +106,7 @@ export default {
             if (this.mode === 'ADD') {
                 this.$store.dispatch('REGISTER_CLIENT', clientData)
             } else {
+                clientData['id'] = this.$store.getters.GET_CLIENT_INFO.id
                 this.$store.dispatch('UPDATE_CLIENT', clientData)
             }
         },
@@ -109,7 +116,7 @@ export default {
     },
     watch: {
         clientInfo: function (newVal) {
-            this.populate()
+            this.populate(newVal)
         }
     }
 }

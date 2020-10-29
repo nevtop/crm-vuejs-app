@@ -20,11 +20,11 @@ export default {
     methods: {
         toggleMenuIcon: function () {
             this.change = !this.change
-            EventBus.$emit('toggleSideNav', this.change)
+            EventBus.$emit('toggle-side-nav', this.change)
         }
     },
     created: function () {
-        EventBus.$on('toggleMenuIcon', (change) => {
+        EventBus.$on('toggle-menu-icon', (change) => {
             this.change = change
         })
     }

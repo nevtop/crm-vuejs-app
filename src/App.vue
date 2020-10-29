@@ -37,7 +37,7 @@ export default {
         else
             this.login = false
             
-        EventBus.$on('toggleSideNav', (drawn) => {
+        EventBus.$on('toggle-side-nav', (drawn) => {
             if (drawn) {
                 this.$refs['container-app'].style.marginLeft = '20%'
             } else {

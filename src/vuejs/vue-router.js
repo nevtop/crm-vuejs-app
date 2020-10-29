@@ -12,6 +12,7 @@ import ClientForm from '@/components/client/ClientForm'
 import ClientView from '@/components/client/ClientView'
 import Sessions from '@/components/session/Sessions'
 import SessionForm from '@/components/session/SessionForm'
+import SessionView from '@/components/session/SessionView'
 import Members from '@/components/member/Members'
 import MemberForm from '@/components/member/MemberForm'
 
@@ -63,10 +64,21 @@ const router = new Router({
             children: [
                 {
                     path: 'profile/new',
-                    name: 'SessionForm',
+                    name: 'AddSession',
+                    components: { sessions: SessionForm }
+                },
+                {
+                    path: 'profile/edit',
+                    name: 'EditSession',
                     components: { sessions: SessionForm }
                 }
             ]
+        },
+        {
+            path: '/session/:id',
+            name: 'SessionView',
+            meta: { requiresAuth: true },
+            components: { app: SessionView }
         },
         {
             path: '/members',

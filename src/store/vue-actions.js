@@ -1,4 +1,5 @@
 import Router from '@/vuejs/vue-router'
+import { EventBus } from '@/vuejs/event-bus'
 import { sendRequest } from '@/vuejs/vue-axios'
 import { HttpMethod, Url } from '@/commonjs/constants'
 import * as Util from '@/commonjs/util'
@@ -58,6 +59,8 @@ export default {
             default:
                 Router.push({name: 'Login'})
         }
+        EventBus.$emit('toggle-menu-icon', false)
+        EventBus.$emit('toggle-side-nav', false)
         commit('CLEAR_LOCAL_DATA')
     },
     REGISTER_CLIENT: async function ({ commit }, clientData) {
@@ -72,7 +75,7 @@ export default {
     },
     UPDATE_CLIENT: async function ({ commit }, clientData) {
         try {
-            const config = Util.getConfig('UPDATE_CLIENT', HttpMethod.POST, Url.UPDATE_CLIENT, clientData)
+            const config = Util.getConfig('UPDATE_CLIENT', HttpMethod.PUT, Url.UPDATE_CLIENT, clientData)
             const { data } = await sendRequest(config)
             commit('NEW_DATA_ADDED', true)
             Router.go(-1)

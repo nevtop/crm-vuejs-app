@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <table-view v-bind:list="sessionList" action="SessionProfile">
+        <table-view v-bind:list="sessionList" action="SessionView">
             <table-column label="Session Name" map="sessionName"></table-column>
             <table-column label="Session Type" map="sessionType"></table-column>
             <table-column label="Status" map="status"></table-column>
@@ -22,7 +22,8 @@ export default {
     data: function () {
         return {
             sessionList: [
-                {
+                {   
+                    id: 1,
                     sessionName: 'Deepa Bhardwaj',
                     sessionType: 'REGULAR',
                     status: 'RUNNING',

@@ -21,12 +21,12 @@ export default {
     },
     methods: {
         emitEvents: function () {
-            EventBus.$emit('toggleMenuIcon', false)
-            EventBus.$emit('toggleSideNav', false)
+            EventBus.$emit('toggle-menu-icon', false)
+            EventBus.$emit('toggle-side-nav', false)
         }
     },
     created: function () {
-        EventBus.$on('toggleSideNav', (drawn) => {
+        EventBus.$on('toggle-side-nav', (drawn) => {
             this.drawn = drawn
         })
     }
