@@ -56,6 +56,13 @@
                         {{ model.key }}
                         </label>
                     </template>
+                    <template v-else-if="item.input === 'date'">
+                        <date-picker 
+                            :ref="item.map"
+                            :value="new Date(item.value)"
+                            @selected="inputValue"
+                        />
+                    </template>
                 </span>
             </div>
             <div v-else class="column left-align">
@@ -69,7 +76,12 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
+
 export default {
+    components: {
+        'date-picker': Datepicker
+    },
     props: {
         name: String,
         mode: String,
@@ -108,15 +120,27 @@ export default {
             let newVal = {};
             this.items.forEach((item) => {
 
-                if(this.$refs[`${item.map}`][0].type === 'radio') {
-                    newVal[`${item.map}`] = this.$refs['type'].filter(ele => ele.checked)[0].value
-                } else if (this.$refs[`${item.map}`][0].type === 'checkbox') {
-                    newVal[`${item.map}`] = new Array()
-                    this.$refs[`${item.map}`].filter(ele => ele.checked)
-                        .map(ele => ele.value)
-                        .forEach(ele => newVal[`${item.map}`].push(ele))
-                } else {
-                    newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value;
+                switch (item.input) {
+                    case 'text': 
+                        newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value
+                        break
+                    case 'select':
+                        newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value
+                        break
+                    case 'radio':
+                        newVal[`${item.map}`] = this.$refs['type'].filter(ele => ele.checked)[0].value
+                        break
+                    case 'checkbox':
+                        newVal[`${item.map}`] = new Array()
+                        this.$refs[`${item.map}`].filter(ele => ele.checked)
+                            .map(ele => ele.value)
+                            .forEach(ele => newVal[`${item.map}`].push(ele))
+                        break
+                    case 'date':
+                        newVal[`${item.map}`] = this.$refs[`${item.map}`][0].selectedDate.getTime()
+                        break
+
+                    default:
                 }
             });
             this.$emit("input", newVal);
