@@ -82,6 +82,7 @@
 
 .right-align {
     align-items: flex-end;
+    min-width: 150px;
 }
 
 .left-align {

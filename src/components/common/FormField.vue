@@ -4,7 +4,15 @@
 
 <script>
 export default {
-    props: ["label", "map"]
+    props: {
+      input: String,
+      label: String, 
+      map: String,
+      models: {
+        type: Array,
+        default: () => []
+      } 
+    }
 }
 </script>
 

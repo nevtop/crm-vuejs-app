@@ -15,22 +15,22 @@
             </div>
         </div>
         <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
-            <form-field label="Client Name" map="clientName"></form-field>
-            <form-field label="GST No" map="gstNo"></form-field>
-            <form-field label="PAN No" map="panNo"></form-field>
+            <form-field input="text" label="Client Name" map="clientName"></form-field>
+            <form-field input="text" label="GST No" map="gstNo"></form-field>
+            <form-field input="text" label="PAN No" map="panNo"></form-field>
         </form-module>
         <form-module name="Address" v-bind:mode="mode" v-model="address">
-            <form-field label="Address Line 1" map="addressLine1"></form-field>
-            <form-field label="Address Line 2" map="addressLine2"></form-field>
-            <form-field label="Area" map="area"></form-field>
-            <form-field label="City" map="city"></form-field>
-            <form-field label="State" map="state"></form-field>
-            <form-field label="Pincode" map="pincode"></form-field>
-            <form-field label="Country" map="country"></form-field>
+            <form-field input="text" label="Address Line 1" map="addressLine1"></form-field>
+            <form-field input="text" label="Address Line 2" map="addressLine2"></form-field>
+            <form-field input="text" label="Area" map="area"></form-field>
+            <form-field input="text" label="City" map="city"></form-field>
+            <form-field input="text" label="State" map="state"></form-field>
+            <form-field input="text" label="Pincode" map="pincode"></form-field>
+            <form-field input="text" label="Country" map="country"></form-field>
         </form-module>
         <form-module name="Other Details" v-bind:mode="mode" v-model="otherDetails">
-            <form-field label="Website" map="website"></form-field>
-            <form-field label="Support Email" map="supportEmail"></form-field>
+            <form-field input="text" label="Website" map="website"></form-field>
+            <form-field input="text" label="Support Email" map="supportEmail"></form-field>
         </form-module>
         <div v-if="mode !== 'VIEW'" class="action">
             <button type="button" class="btn" v-on:click="process">{{ buttonName }}</button>
