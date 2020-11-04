@@ -25,14 +25,14 @@ export default {
     },
     watch: {
         $route (to, from) {
-            if (to.name === 'Login')
+            if (to.name === 'Login' || to.name === 'ForgotPassword')
                 this.login = true
             else
                 this.login = false
         }
     },
     created: function () {
-        if (this.$route.name === 'Login')
+        if (this.$route.name === 'Login' || this.$route.name === 'ForgotPassword')
             this.login = true
         else
             this.login = false

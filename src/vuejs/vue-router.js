@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { Store } from '@/store/vue-store'
 import Login from '@/views/Login'
+import ForgotPassword from '@/views/ForgotPassword'
 import Home from '@/views/Home'
 import Setting from '@/views/Setting'
 import User from '@/components/settings/User'
@@ -24,6 +25,11 @@ const router = new Router({
             path: '/login',
             name: 'Login',
             components: { app: Login }
+        },
+        {
+            path: '/forgot-password',
+            name: 'ForgotPassword',
+            components: { app: ForgotPassword }
         },
         {
             path: '/home',

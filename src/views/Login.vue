@@ -27,7 +27,7 @@
                         <label for="rememberme">Remember me</label>
                     </div>
                     <div>
-                        <a href="#">Forgot?</a>
+                        <router-link :to="{ name: 'ForgotPassword'}" class="link">Forgot Password?</router-link>
                     </div>
                 </div>
             </form>
