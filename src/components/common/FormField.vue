@@ -11,7 +11,7 @@ export default {
       models: {
         type: Array,
         default: () => []
-      } 
+      }
     }
 }
 </script>

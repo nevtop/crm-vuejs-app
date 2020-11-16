@@ -2,6 +2,7 @@
     <div class="wrapper" v-bind:style="{ maxWidth: maxWidth }">
         <h2 v-if="mode === 'ADD'">Add Client</h2>
         <h2 v-else-if="mode === 'EDIT'">Edit Client</h2>
+        <hr>
         <div v-if="mode !== 'VIEW'" class="section">
             <div class="column right-align">
                 <label for="client_type">Client Type:</label>
@@ -138,5 +139,7 @@ export default {
     width: 140px;
     height: 40px;
 }
-
+#y{
+    margin-top: 9px;
+}
 </style>
