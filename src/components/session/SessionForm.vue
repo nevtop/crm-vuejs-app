@@ -9,7 +9,7 @@
             <form-field input="radio" label="Session Type" map="sessionType" :models="types"></form-field>
         </form-module>
         <form-module name="Address" v-bind:mode="mode" v-model="address" :disable="sameAsClientAddress">
-            <div slot="form-control" class="form-control">
+            <div v-if="mode !== 'VIEW'" slot="form-control" class="form-control">
                 <label>
                     <input type="checkbox" v-model="sameAsClientAddress">
                     same as client address
@@ -47,6 +47,7 @@ export default {
     },
     data: function () {
         return {
+            mode: '',
             clients: [
                 { key: 'Nevtop Inc', value: '1' },
                 { key: 'Apple Inc', value: '2' }
@@ -55,11 +56,7 @@ export default {
                 { key: 'Regular', value: 'REGULAR' },
                 { key: 'Event', value: 'EVENT' }
             ],
-            basicDetails: {
-                clientId: '',
-                sessionName: '',
-                sessionType: '',
-            },
+            basicDetails: { clientId: '', sessionName: '', sessionType: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
             },
@@ -90,14 +87,15 @@ export default {
                     : this.$store.getters.GET_SESSION_INFO
 
             if (sessionData && sessionData.address) {
-                this.sessionType = sessionData.sessionType
+                this.sameAsClientAddress = this.mode === 'EDIT'
+                        ? sessionData.sameAsClientAddress
+                        : false
                 this.basicDetails = mapper(sessionData, this.basicDetails)
                 this.address = mapper(sessionData.address, this.address)
             }
         },
         process: function () {
             const sessionData = {
-                sessionType: this.sessionType,
                 active: true,
                 ...this.basicDetails,
                 sameAsClientAddress: this.sameAsClientAddress,

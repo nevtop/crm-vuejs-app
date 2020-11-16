@@ -78,6 +78,7 @@
                 <span v-for="(item, index) in items" v-bind:key="index">
                     <template v-if="item.value">
                         <template v-if="item.input === 'select'">{{ getSelectedElement(item.value, item.models) }}</template>
+                        <template v-else-if="item.input === 'radio'">{{ getSelectedElement(item.value, item.models) }}</template>
                         <template v-else>{{ item.value }}</template>
                     </template>
                     <template v-else>-</template>

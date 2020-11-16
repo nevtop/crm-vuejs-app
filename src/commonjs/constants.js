@@ -16,4 +16,5 @@ export const Url = {
     CREATE_SESSION: '/session/create',
     FETCH_ALL_SESSIONS: '/session/all',
     RETRIEVE_SESSION_INFO: '/session/info',
+    UPDATE_SESSION: '/session/update'
 }

@@ -72,7 +72,6 @@ export default {
     font-weight: bold;
     line-height: 40px;
     width: 950px;
-    margin: auto;
 }
 
 .link {

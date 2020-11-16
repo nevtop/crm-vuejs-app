@@ -137,5 +137,15 @@ export default {
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_SESSION_INFO')
         }
+    },
+    UPDATE_SESSION: async function ({ commit }, sessionData) {
+        try {
+            const config = Util.getConfig('UPDATE_SESSION', HttpMethod.PUT, Url.UPDATE_SESSION, sessionData)
+            const { data } = await sendRequest(config)
+            commit('NEW_DATA_ADDED', true)
+            Router.go(-1)
+        } catch (err) {
+            console.error('Error occurred in API: UPDATE_SESSION')
+        }
     }
 }
