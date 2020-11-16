@@ -4,7 +4,7 @@
         <div class="section-header">{{ name }}</div>
         <div class="section" :class="{ 'grey-out': disable }">
             <div class="column right-align">
-                <span v-for="(item, index) in items" v-bind:key="index">{{ item.label }}</span>
+                <span v-for="(item, index) in items" v-bind:key="index">{{ item.label }} : </span>
             </div>
             <div v-if="mode === 'ADD' || mode === 'EDIT'" class="column left-align">
                 <span v-for="(item, index) in items" v-bind:key="index">
@@ -17,9 +17,18 @@
                             v-on:input="inputValue"
                         >
                     </template>
+                    <template v-if="item.input === 'number'">
+                        <input 
+                            v-bind:ref="item.map"
+                            type="number" 
+                            class="input-field" 
+                            v-bind:value="item.value"
+                            v-on:input="inputValue"
+                        >
+                    </template>
                     <template v-else-if="item.input === 'select'">
                         <select :ref="item.map" @change="inputValue">
-                            <option value="" disabled>Select a option</option>
+                            <option value="" :disabled="isDisabled(item.value)">Select a option</option>
                             <option 
                                 v-for="(model, index) in item.models"
                                 :key="index"
@@ -66,7 +75,13 @@
                 </span>
             </div>
             <div v-else class="column left-align">
-                <span v-for="(item, index) in items" v-bind:key="index">{{ item.value }}</span>
+                <span v-for="(item, index) in items" v-bind:key="index">
+                    <template v-if="item.value">
+                        <template v-if="item.input === 'select'">{{ getSelectedElement(item.value, item.models) }}</template>
+                        <template v-else>{{ item.value }}</template>
+                    </template>
+                    <template v-else>-</template>
+                </span>
             </div>
         </div>
         <div style="display:none;">
@@ -124,11 +139,19 @@ export default {
                     case 'text': 
                         newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value
                         break
+                    case 'number': 
+                        newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value
+                        break
                     case 'select':
                         newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value
                         break
                     case 'radio':
-                        newVal[`${item.map}`] = this.$refs['type'].filter(ele => ele.checked)[0].value
+                        const array = this.$refs[`${item.map}`].filter(ele => ele.checked)
+                        if (array.length > 0) {
+                            newVal[`${item.map}`] = array[0].value
+                        } else {
+                            newVal[`${item.map}`] = ''
+                        }
                         break
                     case 'checkbox':
                         newVal[`${item.map}`] = new Array()
@@ -145,11 +168,18 @@ export default {
             });
             this.$emit("input", newVal);
         },
+        isDisabled: function (val) {
+            return val ? true : false
+        },
         isSelected: function (key, val) {
-            if (val.length >= 0) {
+            if (Array.isArray(val) && val.length >= 0) {
                 return val.includes(key)
             }
             return key === val
+        },
+        getSelectedElement: function (val, models) {
+            const model = models.filter(ele => ele.value == val)
+            return model[0].key
         }
     },
     watch: {

@@ -81,5 +81,25 @@ export default {
     SET_CLIENT_INFO: function (state, clientInfo) {
         state.clientInfo = clientInfo
         localStorage.setItem('_client_info', JSON.stringify(clientInfo))
+    },
+    SET_SESSION_LIST: function (state, sessionList) {
+        const processList = sessionList.map((ele, index) => {
+            const newEle = {...ele, ...ele.address}
+            newEle.sno = ++index
+            if (ele.active === true) {
+                newEle.status = 'RUNNING'
+            } else {
+                newEle.status = 'STOPPED'
+            }
+            delete newEle.address
+            delete newEle.active
+            return newEle
+        })
+        state.session.list = processList
+    },
+    SET_SESSION_INFO: function (state, sessionInfo) {
+        sessionInfo.clientId = sessionInfo.client.id
+        state.session.info = sessionInfo
+        localStorage.setItem('_session_info', JSON.stringify(sessionInfo))
     }
 }
