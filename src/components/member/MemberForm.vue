@@ -32,13 +32,10 @@
                 <label for="member_type">Gender:</label>
             </div>
             <div class="column left-align" id="web">
-                
                 <input type="radio" name="gender">
                 <label for="Male">Male</label>
-                
                 <input type="radio" name="gender">
                 <label for="Female">Female</label>
-                
                 <input type="radio" name="gender">
                 <label for="Others">Others</label>
             </div>
