@@ -11,5 +11,9 @@ export default {
     clientList: [],
     isDataAdded: false,
     filteredClientList: [],
-    clientInfo: null
+    clientInfo: null,
+    session: {
+        list: [],
+        info: null
+    }
 }

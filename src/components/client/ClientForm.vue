@@ -2,20 +2,9 @@
     <div class="wrapper" v-bind:style="{ maxWidth: maxWidth }">
         <h2 v-if="mode === 'ADD'">Add Client</h2>
         <h2 v-else-if="mode === 'EDIT'">Edit Client</h2>
-        <hr>
-        <div v-if="mode !== 'VIEW'" class="section">
-            <div class="column right-align">
-                <label for="client_type">Client Type:</label>
-            </div>
-            <div class="column left-align" id="y">
-                <select v-model="type">
-                    <option disabled value="">Please select one</option>
-                    <option value="PERSONAL">Personal</option>
-                    <option value="CORPORATE">Corporate</option>
-                </select>
-            </div>
-        </div>
+        <hr v-if="mode !== 'VIEW'">
         <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
+            <form-field input="radio" label="Client Type" map="clientType" :models="types"></form-field>
             <form-field input="text" label="Client Name" map="clientName"></form-field>
             <form-field input="text" label="GST No" map="gstNo"></form-field>
             <form-field input="text" label="PAN No" map="panNo"></form-field>
@@ -55,9 +44,12 @@ export default {
     },
     data: function () {
         return {
-            type: '',
             mode: '',
-            basicDetails: { clientName: '', gstNo: '', panNo: '' },
+            types: [
+                { key: 'Personal', value: 'PERSONAL' },
+                { key: 'Corporate', value: 'CORPORATE' }
+            ],
+            basicDetails: { clientType: '', clientName: '', gstNo: '', panNo: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
             },
@@ -88,7 +80,6 @@ export default {
                     : this.$store.getters.GET_CLIENT_INFO
 
             if (clientData && clientData.address) {
-                this.type = clientData.clientType
                 this.basicDetails = mapper(clientData, this.basicDetails)
                 this.address = mapper(clientData.address, this.address)
                 this.otherDetails = mapper(clientData, this.otherDetails)
@@ -96,7 +87,6 @@ export default {
         },
         process: function () {
             const clientData = {
-                clientType: this.type,
                 active: true,
                 ...this.basicDetails,
                 address: {

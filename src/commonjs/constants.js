@@ -13,6 +13,8 @@ export const Url = {
     UPDATE_CLIENT: '/client/update',
     FETCH_ALL_CLIENTS: '/client/all',
     RETRIEVE_CLIENT_INFO: '/client/info',
+    CREATE_SESSION: '/session/create',
     FETCH_ALL_SESSIONS: '/session/all',
     RETRIEVE_SESSION_INFO: '/session/info',
+    UPDATE_SESSION: '/session/update'
 }

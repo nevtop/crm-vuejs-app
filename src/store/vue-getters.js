@@ -19,5 +19,11 @@ export default {
     },
     GET_CLIENT_INFO: function (state) {
         return state.clientInfo
+    },
+    GET_SESSION_LIST: function (state) {
+        return state.session.list
+    },
+    GET_SESSION_INFO: function (state) {
+        return state.session.info
     }
 }

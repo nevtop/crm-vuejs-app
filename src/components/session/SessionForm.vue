@@ -1,94 +1,122 @@
 <template>
-    <div class="wrapper" id="a">
-        <h2>Session Registration</h2>
-        <hr>
-        <div class="section">
-            <div class="column right-align">
-                <label for="client_type">Associated With:</label>
+    <div class="wrapper" id="a" v-bind:style="{ maxWidth: maxWidth }">
+        <h2 v-if="mode === 'ADD'">Add Session</h2>
+        <h2 v-else-if="mode === 'EDIT'">Edit Session</h2>
+        <hr v-if="mode !== 'VIEW'">
+        <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
+            <form-field input="select" label="Associated With" map="clientId" :models="clients"></form-field>
+            <form-field input="text" label="Session Name" map="sessionName"></form-field>
+            <form-field input="radio" label="Session Type" map="sessionType" :models="types"></form-field>
+        </form-module>
+        <form-module name="Address" v-bind:mode="mode" v-model="address" :disable="sameAsClientAddress">
+            <div v-if="mode !== 'VIEW'" slot="form-control" class="form-control">
+                <label>
+                    <input type="checkbox" v-model="sameAsClientAddress">
+                    same as client address
+                </label>
             </div>
-            <div class="column left-align" id="y">
-                <select v-model="clientId">
-                    <option disabled value="">Please select one</option>
-                    <option value="PERSONAL">Personal</option>
-                    <option value="CORPORATE">Corporate</option>
-                </select>
-            </div>
-            <div class="column right-align" id="x">
-                <label for="client_type">Session Type:</label>
-            </div>
-            <div class="column left-align" id="y">
-                <select v-model="type">
-                    <option disabled value="">Please select one</option>
-                    <option value="PERSONAL">Beginner</option>
-                    <option value="CORPORATE">Advanced</option>
-                </select>
-            </div>
-        </div>
-        <div class="section-header">Basic Details</div>
-        <div class="section">
-            <div class="column right-align" id="t">
-                <span>Name:</span>
-                <span>Start Date:</span>
-                <span>End Date:</span>
-            </div>
-            <div class="column left-align">
-                <input type="text" class="input-field" v-model="name">
-                <date-picker  input-class="input-date" calendar-class="input-date" wrapper-class="input-date"></date-picker>
-                <date-picker  input-class="input-date" calendar-class="input-date" wrapper-class="input-date"></date-picker>
-            </div>
-        </div>
-        <div class="section-header">Address</div>
-        <v-address></v-address>
-        <div class="action">
-            <button type="button" class="btn" v-on:click="register">Create</button>
+            <form-field input="text" label="Address Line 1" map="addressLine1"></form-field>
+            <form-field input="text" label="Address Line 2" map="addressLine2"></form-field>
+            <form-field input="text" label="Area" map="area"></form-field>
+            <form-field input="text" label="City" map="city"></form-field>
+            <form-field input="text" label="State" map="state"></form-field>
+            <form-field input="text" label="Pincode" map="pincode"></form-field>
+            <form-field input="text" label="Country" map="country"></form-field>
+        </form-module>
+        <div v-if="mode !== 'VIEW'" class="action">
+            <button type="button" class="btn" v-on:click="process">{{ buttonName }}</button>
             <button type="button" class="btn" v-on:click="cancel">Cancel</button>
         </div>
     </div>
 </template>
 
 <script>
-import Address from '@/components/Address'
-import Datepicker from 'vuejs-datepicker';
+import FormModule from '@/components/common/FormModule'
+import FormField from '@/components/common/FormField'
+import Datepicker from 'vuejs-datepicker'
+import { mapper } from '@/commonjs/util'
 
 export default {
-    data: function () {
-        return {
-            clientId: '',
-            type:'',
-            name: '',
-            gst: '',
-            pan: '',
-            website: '',
-            supportEmail: ''
-        }
+    props: {
+        sessionInfo: Object
     },
     components: {
-        'v-address': Address,
+        'form-module': FormModule,
+        'form-field': FormField,
         'date-picker': Datepicker
     },
+    data: function () {
+        return {
+            mode: '',
+            clients: [
+                { key: 'Nevtop Inc', value: '1' },
+                { key: 'Apple Inc', value: '2' }
+            ],
+            types: [
+                { key: 'Regular', value: 'REGULAR' },
+                { key: 'Event', value: 'EVENT' }
+            ],
+            basicDetails: { clientId: '', sessionName: '', sessionType: '' },
+            address: { addressLine1: '', addressLine2: '', city: '',
+                area: '', state: '', pincode: '', country: ''
+            },
+            sameAsClientAddress: false,
+            maxWidth: '1000px',
+            buttonName: 'Create'
+        }
+    },
+    created: function () {
+        if (this.$route.name === 'AddSession') {
+            this.mode = 'ADD'
+        } else if (this.$route.name === 'EditSession') {
+            this.mode = 'EDIT'
+            this.populate()
+            
+        } else {
+            this.mode = 'VIEW'
+            this.populate()
+        }
+        
+        this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
+        this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
+    },
     methods: {
-        register: function () {
-            const clientData = {
-                clientType: this.type,
-                clientName: this.name.trim(),
-                active: true,
-                panNo: this.pan.trim(),
-                gstNo: this.gst.trim(),
-                website: this.website.trim(),
-                supportEmail: this.supportEmail.trim(),
-                address: {
-                    addressLine1: this.$children[0].$data.addressLine1, 
-                    addressLine2: this.$children[0].$data.addressLine2,
-                    city: this.$children[0].$data.city,
-                    state: this.$children[0].$data.state,
-                    pincode: this.$children[0].$data.pincode,
-                    country: this.$children[0].$data.country
-                }
+        populate: function (data) {
+            const sessionData = data 
+                    ? data 
+                    : this.$store.getters.GET_SESSION_INFO
+
+            if (sessionData && sessionData.address) {
+                this.sameAsClientAddress = this.mode === 'EDIT'
+                        ? sessionData.sameAsClientAddress
+                        : false
+                this.basicDetails = mapper(sessionData, this.basicDetails)
+                this.address = mapper(sessionData.address, this.address)
             }
-            this.$store.dispatch('REGISTER_CLIENT', clientData)
+        },
+        process: function () {
+            const sessionData = {
+                active: true,
+                ...this.basicDetails,
+                sameAsClientAddress: this.sameAsClientAddress,
+                address: {
+                    ...this.address
+                },
+            }
+            if (this.mode === 'ADD') {
+                this.$store.dispatch('CREATE_SESSION', sessionData)
+            } else {
+                sessionData['id'] = this.$store.getters.GET_SESSION_INFO.id
+                this.$store.dispatch('UPDATE_SESSION', sessionData)
+            }
         },
         cancel: function () {
             this.$router.go(-1)
+        }
+    },
+    watch: {
+        sessionInfo: function (newVal) {
+            this.populate(newVal)
         }
     }
 }
@@ -118,7 +146,7 @@ export default {
   margin-left: 100px;
 }
 
-
-
-
+.form-control {
+    float: right;
+}
 </style>

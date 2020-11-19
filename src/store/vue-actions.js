@@ -105,5 +105,47 @@ export default {
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_CLIENT_INFO')
         }
+    },
+    CREATE_SESSION: async function ({ commit }, sessionData) {
+        try {
+            const config = Util.getConfig('CREATE_SESSION', HttpMethod.POST, Url.CREATE_SESSION, sessionData)
+            const { data } = await sendRequest(config)
+            commit('NEW_DATA_ADDED', true)
+            Router.go(-1)
+        } catch (err) { 
+            console.error('Error occurred in API: CREATE_SESSION')
+        }
+    },
+    FETCH_ALL_SESSIONS: async function ({ commit }) {
+        try {
+            const formData = new FormData()
+            formData.set('fields', 'id,client,sessionType,sessionName,active,memberCount,address,city,state')
+
+            const config = Util.getConfig('FETCH_ALL_SESSIONS', HttpMethod.POST, Url.FETCH_ALL_SESSIONS,
+                    formData, null, { 'Content-Type': 'multipart/form-data' })
+            const { data } = await sendRequest(config)
+            commit('SET_SESSION_LIST', data.data)
+        } catch (err) {
+            console.error('Error occurred in API: FETCH_ALL_CLIENTS')
+        }
+    },
+    RETRIEVE_SESSION_INFO: async function ({ commit }, id) {
+        try {
+            const config = Util.getConfig('RETRIEVE_SESSION_INFO', HttpMethod.GET, Url.RETRIEVE_SESSION_INFO.concat(`/${id}`))
+            const { data } = await sendRequest(config)
+            commit('SET_SESSION_INFO', data.data[0])
+        } catch (err) {
+            console.error('Error occurred in API: RETRIEVE_SESSION_INFO')
+        }
+    },
+    UPDATE_SESSION: async function ({ commit }, sessionData) {
+        try {
+            const config = Util.getConfig('UPDATE_SESSION', HttpMethod.PUT, Url.UPDATE_SESSION, sessionData)
+            const { data } = await sendRequest(config)
+            commit('NEW_DATA_ADDED', true)
+            Router.go(-1)
+        } catch (err) {
+            console.error('Error occurred in API: UPDATE_SESSION')
+        }
     }
 }
