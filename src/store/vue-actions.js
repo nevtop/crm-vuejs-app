@@ -18,7 +18,7 @@ export default {
             Router.push({name: 'Login', query: { invalidCredentials: true }})
         }
     },
-    ISSUE_TOKEN: async function ({ state, commit, dispatch}) {
+    ISSUE_TOKEN: async function ({ state, commit, dispatch }) {
         try {
             const refreshToken = state.jwt.refreshToken
             const config = Util.getConfig('ISSUE_TOKEN', HttpMethod.GET, Url.ISSUE_TOKEN, null, null,
@@ -51,13 +51,13 @@ export default {
     PERFORM_LOGOUT: async function ({ commit }, queryString) {
         switch (queryString) {
             case 'logout':
-                Router.push({ name: 'Login', query: { logout: true }})
+                Router.push({ name: 'Login', query: { logout: true } })
                 break;
             case 'sessionExpired':
-                Router.push({name: 'Login', query: { sessionExpired: true }})
+                Router.push({ name: 'Login', query: { sessionExpired: true } })
                 break;
             default:
-                Router.push({name: 'Login'})
+                Router.push({ name: 'Login' })
         }
         EventBus.$emit('toggle-menu-icon', false)
         EventBus.$emit('toggle-side-nav', false)
@@ -67,7 +67,7 @@ export default {
         try {
             const config = Util.getConfig('REGISTER_CLIENT', HttpMethod.POST, Url.REGISTER_CLIENT, clientData)
             const { data } = await sendRequest(config)
-            commit('NEW_DATA_ADDED', true)
+            commit('DATA_MODIFIED', true)
             Router.go(-1)
         } catch (err) { 
             console.error('Error occurred in API: REGISTER_CLIENT')
@@ -77,7 +77,7 @@ export default {
         try {
             const config = Util.getConfig('UPDATE_CLIENT', HttpMethod.PUT, Url.UPDATE_CLIENT, clientData)
             const { data } = await sendRequest(config)
-            commit('NEW_DATA_ADDED', true)
+            commit('DATA_MODIFIED', true)
             Router.go(-1)
         } catch (err) { 
             console.error('Error occurred in API: UPDATE_CLIENT')
@@ -89,19 +89,30 @@ export default {
             formData.set('fields', 'id,clientId,clientType,clientName,onboardingDate,address,city,state')
 
             const config = Util.getConfig('FETCH_ALL_CLIENTS', HttpMethod.POST, Url.FETCH_ALL_CLIENTS,
-                    formData, null, { 'Content-Type': 'multipart/form-data' })
+                formData, null, { 'Content-Type': 'multipart/form-data' })
             const { data } = await sendRequest(config)
-            commit('SET_CLIENT_LIST', data.data)
-            commit('FILTER_CLIENT_LIST', 0)
+            commit('SET_CLIENT_LIST', data.data)  
         } catch (err) {
             console.error('Error occurred in API: FETCH_ALL_CLIENTS')
         }
     },
+    FETCH_CLIENT_SELECT_LIST: async function ({ commit }) {
+        try {
+            const config = Util.getConfig('FETCH_CLIENT_SELECT_LIST', HttpMethod.GET, 
+                Url.FETCH_CLIENT_SELECT_LIST)
+            const { data } = await sendRequest(config)
+            commit('SET_CLIENT_SELECT_LIST', data.data)
+        } catch (err) {
+            console.error('Error occurred in API: FETCH_CLIENT_SELECT_LIST')
+        }
+    },
     RETRIEVE_CLIENT_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, 
+                Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`))
             const { data } = await sendRequest(config)
             commit('SET_CLIENT_INFO', data.data[0])
+            commit('SET_SESSION_LIST', data.data[0].sessions)
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_CLIENT_INFO')
         }
@@ -110,7 +121,7 @@ export default {
         try {
             const config = Util.getConfig('CREATE_SESSION', HttpMethod.POST, Url.CREATE_SESSION, sessionData)
             const { data } = await sendRequest(config)
-            commit('NEW_DATA_ADDED', true)
+            commit('DATA_MODIFIED', true)
             Router.go(-1)
         } catch (err) { 
             console.error('Error occurred in API: CREATE_SESSION')
@@ -122,16 +133,17 @@ export default {
             formData.set('fields', 'id,client,sessionType,sessionName,active,memberCount,address,city,state')
 
             const config = Util.getConfig('FETCH_ALL_SESSIONS', HttpMethod.POST, Url.FETCH_ALL_SESSIONS,
-                    formData, null, { 'Content-Type': 'multipart/form-data' })
+                formData, null, { 'Content-Type': 'multipart/form-data' })
             const { data } = await sendRequest(config)
             commit('SET_SESSION_LIST', data.data)
         } catch (err) {
-            console.error('Error occurred in API: FETCH_ALL_CLIENTS')
+            console.error('Error occurred in API: FETCH_ALL_SESSIONS')
         }
     },
     RETRIEVE_SESSION_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_SESSION_INFO', HttpMethod.GET, Url.RETRIEVE_SESSION_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_SESSION_INFO', HttpMethod.GET, 
+                Url.RETRIEVE_SESSION_INFO.concat(`/${id}`))
             const { data } = await sendRequest(config)
             commit('SET_SESSION_INFO', data.data[0])
         } catch (err) {
@@ -142,10 +154,54 @@ export default {
         try {
             const config = Util.getConfig('UPDATE_SESSION', HttpMethod.PUT, Url.UPDATE_SESSION, sessionData)
             const { data } = await sendRequest(config)
-            commit('NEW_DATA_ADDED', true)
+            commit('DATA_MODIFIED', true)
             Router.go(-1)
         } catch (err) {
             console.error('Error occurred in API: UPDATE_SESSION')
+        }
+    },
+    REGISTER_MEMBER: async function ({ commit }, memberData) {
+        try {
+            const config = Util.getConfig('REGISTER_MEMBER', HttpMethod.POST, Url.REGISTER_MEMBER, memberData)
+            const { data } = await sendRequest(config)
+            commit('DATA_MODIFIED', true)
+            Router.go(-1)
+        } catch (err) { 
+            console.error('Error occurred in API: REGISTER_MEMBER')
+        }
+    },
+    UPDATE_MEMBER: async function ({ commit }, memberData) {
+        try {
+            const config = Util.getConfig('UPDATE_MEMBER', HttpMethod.PUT, Url.UPDATE_MEMBER, memberData)
+            const { data } = await sendRequest(config)
+            commit('DATA_MODIFIED', true)
+            Router.go(-1)
+        } catch (err) { 
+            console.error('Error occurred in API: UPDATE_MEMBER')
+        }
+    },
+    FETCH_ALL_MEMBERS: async function ({ commit }) {
+        try {
+            const formData = new FormData()
+            formData.set('fields', 'id,sessionId,memberName,onboardingDate,address,city,state')
+
+            const config = Util.getConfig('FETCH_ALL_MEMBERS', HttpMethod.POST, Url.FETCH_ALL_MEMBERS,
+                formData, null, { 'Content-Type': 'multipart/form-data' })
+            const { data } = await sendRequest(config)
+            commit('SET_MEMBER_LIST', data.data)
+            commit('FILTER_MEMBER_LIST', 0)
+        } catch (err) {
+            console.error('Error occurred in API: FETCH_ALL_MEMBERS')
+        }
+    },
+    RETRIEVE_MEMBER_INFO: async function ({ commit }, id) {
+        try {
+            const config = Util.getConfig('RETRIEVE_MEMBER_INFO', HttpMethod.GET, 
+                Url.RETRIEVE_MEMBER_INFO.concat(`/${id}`))
+            const { data } = await sendRequest(config)
+            commit('SET_MEMBER_INFO', data.data[0])
+        } catch (err) {
+            console.error('Error occurred in API: RETRIEVE_MEMBER_INFO')
         }
     }
 }

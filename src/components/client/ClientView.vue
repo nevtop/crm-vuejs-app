@@ -4,17 +4,19 @@
             <div class="label-heading">
                 <label for="heading">Client</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
-                <label for="">{{ params.clientName }}</label>
+                <label for="">{{ getClientName }}</label>
             </div>
-            <router-link class="link" :to="{ name: route.name }">{{ route.label }}</router-link>
+            <router-link 
+                class="link" 
+                :to="{ name: selectedTab.route , query: { clientId: $route.params.id } }"
+            >{{ selectedTab.label }}</router-link>
         </div>
-        <tab-nav v-bind:tabs="tabs" v-bind:selected="selected" v-on:select-tab="selectTab"/>
-        <!-- <router-view name="client-view"></router-view> -->
-        <template v-if="selected === 'PROFILE'">
+        <tab-nav v-bind:tabs="tabs" v-bind:selected="selectedTab"/>
+        <template v-if="selectedTab.name === 'PROFILE'">
             <client-form :clientInfo="clientInfo"></client-form>
         </template>
-        <template v-else-if="selected === 'SESSIONS'">
-            <client-session></client-session>
+        <template v-else-if="selectedTab.name === 'SESSIONS'">
+            <sessions></sessions>
         </template>
     </div>
 </template>
@@ -22,42 +24,43 @@
 <script>
 import TabNav from '@/components/common/TabNav'
 import ClientForm from '@/components/client/ClientForm'
-import ClientSession from '@/components/client/ClientSession'
+import Sessions from '@/components/session/Sessions'
 import { mapGetters } from 'vuex';
 
 export default {
     components: {
         'tab-nav': TabNav,
         'client-form': ClientForm,
-        'client-session': ClientSession
+        'sessions': Sessions
     },
     data: function () {
         return {
-            selected: 'PROFILE',
-            route: { name: 'EditClient', label: 'Edit Profile' },
-            tabs: ['PROFILE', 'SESSIONS']
+            tabs: [
+                { name: 'PROFILE', route: 'EditClient', label: 'Edit Profile' },
+                { name: 'SESSIONS', route: 'AddSession', label: 'Add Session' }
+            ]
         }
+    },
+    created: function () {
+        if (this.$store.getters.GET_SELECTED_TAB) {
+            this.$store.commit('SET_SELECTED_TAB', this.$store.getters.GET_SELECTED_TAB)
+        } else {
+            this.$store.commit('SET_SELECTED_TAB', this.tabs[0])
+        }
+        this.$store.dispatch('RETRIEVE_CLIENT_INFO', this.$route.params.id)
     },
     computed: {
         ...mapGetters({
             params: 'GET_ROUTE_PARAMS',
-            clientInfo: 'GET_CLIENT_INFO'
-        })
-    },
-    methods: {
-        selectTab: function (tabName) {
-            this.selected = tabName;
-            if (this.selected === 'PROFILE') {
-                this.route.name = 'EditClient'
-                this.route.label = 'Edit Profile'
-            } else {
-                this.route.name = 'AddSession'
-                this.route.label = 'Add Session'
+            clientInfo: 'GET_CLIENT_INFO',
+            selectedTab: 'GET_SELECTED_TAB'
+        }),
+        getClientName: function () {
+            if (this.params.ClientView) {
+                return this.params.ClientView.clientName
             }
-        } 
-    },
-    created: function () {
-        this.$store.dispatch('RETRIEVE_CLIENT_INFO', this.$route.params.id)
+            return ""
+        }
     }
 }
 </script>

@@ -38,8 +38,11 @@ export default {
         state.cancelTokenList = []
     },
     SET_ROUTE_PARAMS: function (state, params) {
-        state.routeParams = params
-        localStorage.setItem('_route_params', JSON.stringify(params))
+        state.routeParams[`${params.key}`] = params.value
+        localStorage.setItem('_route_params', JSON.stringify(state.routeParams))
+    },
+    SET_SELECTED_TAB: function (state, tab) {
+        state.selectedTab = tab
     },
     SET_CLIENT_LIST: function (state, clientList) {
         const processList = clientList.map((ele, index) => {
@@ -50,36 +53,21 @@ export default {
             delete newEle.address
             return newEle
         })
-        state.clientList = processList
+        state.client.list = processList
     },
-    NEW_DATA_ADDED: function (state, bool) {
-        state.isDataAdded = bool
+    SET_CLIENT_SELECT_LIST: function (state, clientSelectList) {
+        state.client.selectList = clientSelectList.map(client => {
+            return {
+                key: client.clientName,
+                value: client.id
+            }
+        })
     },
-    FILTER_CLIENT_LIST: function (state, tabIndex) {
-        if (tabIndex == 0)
-            state.filteredClientList = state.clientList.filter(ele =>
-                ele.clientType == 'CORPORATE' || ele.clientType == 'PERSONAL'
-            ).map((ele, index) => {
-                ele.sno = ++index
-                return ele
-            })
-        else if (tabIndex == 1)
-            state.filteredClientList = state.clientList.filter(ele => 
-                ele.clientType == 'PERSONAL'
-            ).map((ele, index) => {
-                ele.sno = ++index
-                return ele
-            })
-        else if (tabIndex == 2)
-            state.filteredClientList = state.clientList.filter(ele => 
-                ele.clientType == 'CORPORATE'
-            ).map((ele, index) => {
-                ele.sno = ++index
-                return ele
-            })
+    DATA_MODIFIED: function (state, bool) {
+        state.isDataModified = bool
     },
     SET_CLIENT_INFO: function (state, clientInfo) {
-        state.clientInfo = clientInfo
+        state.client.info = clientInfo
         localStorage.setItem('_client_info', JSON.stringify(clientInfo))
     },
     SET_SESSION_LIST: function (state, sessionList) {
@@ -101,5 +89,21 @@ export default {
         sessionInfo.clientId = sessionInfo.client.id
         state.session.info = sessionInfo
         localStorage.setItem('_session_info', JSON.stringify(sessionInfo))
+    },
+    SET_MEMBER_LIST: function (state, memberList) {
+        const processList = memberList.map((ele, index) => {
+            const newEle = {...ele, ...ele.address}
+            newEle.sno = ++index
+            newEle.onboardingDate = new Intl.DateTimeFormat('en-GB')
+                .format(new Date(ele.onboardingDate))
+            delete newEle.address
+            return newEle
+        })
+        state.member.list = processList
+    },
+    SET_MEMBER_INFO: function (state, memberInfo) {
+        memberInfo.clientId = memberInfo.client.id
+        state.member.info = memberInfo
+        localStorage.setItem('_member_info', JSON.stringify(memberInfo))
     }
 }

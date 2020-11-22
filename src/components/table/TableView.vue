@@ -13,7 +13,7 @@
                     <td>{{ index + 1 }}</td>
                     <td v-for="(column, index) in columns" v-bind:key="index">{{ row[column.map] }}</td>
                     <td>
-                        <router-link :to="{ name : action, params: { id: row.id } }" v-on:click.native="saveRowData(row)">view</router-link>
+                        <router-link :to={} v-on:click.native="saveRowData(row)">view</router-link>
                     </td>
                 </tr>
             </tbody>
@@ -39,7 +39,9 @@ export default {
     },
     methods: {
         saveRowData: function (row) {
-            this.$store.commit('SET_ROUTE_PARAMS', row)
+            this.$store.commit('SET_ROUTE_PARAMS', { key: this.action, value: row })
+            this.$store.commit('SET_SELECTED_TAB', null)
+            this.$router.push({ name : this.action, params: { id: row.id } })
         }
     },
     mounted: async function() {

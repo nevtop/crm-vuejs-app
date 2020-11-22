@@ -64,9 +64,9 @@ export default {
         $route (to, next) {
             if (to.name === 'Members') {
                 this.memberPage = true
-                // if (this.$store.getters.IS_DATA_ADDED) {
+                // if (this.$store.getters.IS_DATA_MODIFIED) {
                 //     this.$store.dispatch('FETCH_ALL_MEMBERS')
-                //     this.$store.commit('NEW_DATA_ADDED', false)
+                //     this.$store.commit('DATA_MODIFIED', false)
                 // }
             } else {
                 this.memberPage = false

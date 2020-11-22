@@ -3,8 +3,11 @@
         <h2 v-if="mode === 'ADD'">Add Session</h2>
         <h2 v-else-if="mode === 'EDIT'">Edit Session</h2>
         <hr v-if="mode !== 'VIEW'">
+        <form-module name="" v-bind:mode="mode" v-model="client">
+            <form-field input="select" label="Associated With" map="clientId" :models="clients" 
+                :disabled="disabled"></form-field>
+        </form-module>
         <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
-            <form-field input="select" label="Associated With" map="clientId" :models="clients"></form-field>
             <form-field input="text" label="Session Name" map="sessionName"></form-field>
             <form-field input="radio" label="Session Type" map="sessionType" :models="types"></form-field>
         </form-module>
@@ -48,33 +51,44 @@ export default {
     data: function () {
         return {
             mode: '',
-            clients: [
-                { key: 'Nevtop Inc', value: '1' },
-                { key: 'Apple Inc', value: '2' }
-            ],
+            clients: [],
             types: [
                 { key: 'Regular', value: 'REGULAR' },
                 { key: 'Event', value: 'EVENT' }
             ],
-            basicDetails: { clientId: '', sessionName: '', sessionType: '' },
+            client: { clientId: '' },
+            basicDetails: { sessionName: '', sessionType: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
             },
             sameAsClientAddress: false,
             maxWidth: '1000px',
-            buttonName: 'Create'
+            buttonName: 'Create',
+            disabled: false
         }
     },
     created: function () {
-        if (this.$route.name === 'AddSession') {
-            this.mode = 'ADD'
-        } else if (this.$route.name === 'EditSession') {
-            this.mode = 'EDIT'
-            this.populate()
-            
-        } else {
-            this.mode = 'VIEW'
-            this.populate()
+        switch (this.$route.name) {
+            case 'AddSession':
+                this.mode = 'ADD'
+                break
+            case 'EditSession':
+                this.mode = 'EDIT'
+                this.populate()
+                break
+            default:
+                this.mode = 'VIEW'
+                this.populate()
+                break
+        }
+
+        if (this.$store.getters.GET_CLIENT_SELECT_LIST) {
+            this.clients = this.$store.getters.GET_CLIENT_SELECT_LIST
+        }
+
+        if (this.$route.query.clientId) {
+            this.client.clientId = this.$route.query.clientId
+            this.disabled = true
         }
         
         this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
@@ -90,6 +104,7 @@ export default {
                 this.sameAsClientAddress = this.mode === 'EDIT'
                         ? sessionData.sameAsClientAddress
                         : false
+                this.client.clientId = sessionData.clientId                    
                 this.basicDetails = mapper(sessionData, this.basicDetails)
                 this.address = mapper(sessionData.address, this.address)
             }
@@ -97,6 +112,7 @@ export default {
         process: function () {
             const sessionData = {
                 active: true,
+                clientId: this.client.clientId,
                 ...this.basicDetails,
                 sameAsClientAddress: this.sameAsClientAddress,
                 address: {

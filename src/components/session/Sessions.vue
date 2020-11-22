@@ -1,11 +1,11 @@
 <template>
     <div class="wrapper">
-        <template v-if="sessionPage">
-            <div class="heading">
+        <template v-if="sessionPage || sessionTab">
+            <div v-if="sessionPage" class="heading">
                 <label class="label-heading">Sessions</label>
                 <router-link :to="{ name: 'AddSession' }" class="link">New Session</router-link>
             </div>
-            <search width='250px' placeholder="Search for sessions.."></search>
+            <search v-if="sessionPage" width='250px' placeholder="Search for sessions.."></search>
             <table-view v-bind:list="sessionList" action="SessionView">
                 <table-column label="Session Name" map="sessionName"></table-column>
                 <table-column label="Session Type" map="sessionType"></table-column>
@@ -30,6 +30,7 @@ export default {
     data: function () {
         return {
             sessionPage: true,
+            sessionTab: false
         }
     },
     components: {
@@ -38,24 +39,40 @@ export default {
         'table-column': TableColumn
     },
     created: function () {
-        if (this.$route.name !== 'Sessions') {
-            this.sessionPage = false
+        switch (this.$route.name) {
+            case 'Sessions':
+                this.$store.dispatch('FETCH_ALL_SESSIONS')
+                this.setState(true, false)
+                break
+            case 'ClientView':
+                this.setState(false, true)
+                break
+            default:
+                this.setState(false, false)
         }
-        this.$store.dispatch('FETCH_ALL_SESSIONS')
+
+        if (this.$store.getters.GET_CLIENT_SELECT_LIST.length == 0) {
+            this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
+        }
     },
     computed: {
         ...mapGetters({
             sessionList: 'GET_SESSION_LIST'
         })
     },
-    methods: {},
+    methods: {
+        setState: function (bool1, bool2) {
+            this.sessionPage = bool1
+            this.sessionTab = bool2
+        }
+    },
     watch: {
         $route (to, next) {
             if (to.name === 'Sessions') {
                 this.sessionPage = true
-                if (this.$store.getters.IS_DATA_ADDED) {
+                if (this.$store.getters.IS_DATA_MODIFIED) {
                     this.$store.dispatch('FETCH_ALL_SESSIONS')
-                    this.$store.commit('NEW_DATA_ADDED', false)
+                    this.$store.commit('DATA_MODIFIED', false)
                 }
             } else {
                 this.sessionPage = false

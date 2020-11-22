@@ -2,58 +2,30 @@
     <div class="wrapper" v-bind:style="{ maxWidth: maxWidth }">
         <h2 v-if="mode === 'ADD'" id="du">Add Member</h2>
         <h2 v-else-if="mode === 'EDIT'" id="du">Edit Member</h2>
-        <hr>
-        <div v-if="mode !== 'VIEW'" class="section" id="lb">
-            <div class="column right-align">
-                <label for="client_type">Member Type:</label>
-            </div>
-            <div class="column left-align" id="y">
-                <select v-model="type">
-                    <option disabled value="">Please select one</option>
-                    <option value="PERSONAL">Personal</option>
-                    <option value="CORPORATE">Corporate</option>
-                </select>
-            </div>
-        </div>
+        <hr v-if="mode !== 'VIEW'">
+        <form-module name="" v-bind:mode="mode" v-model="session">
+            <form-field  input="select" label="Associated with" map="sessionId"></form-field>
+        </form-module>
         <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
-            <form-field  input="text" label="FirstName:" map="FirstName"></form-field>
-            <form-field  input="text" label="LastName:" map="LastName"></form-field>
+            <form-field  input="text" label="FirstName" map="firstName"></form-field>
+            <form-field  input="text" label="LastName" map="lastName"></form-field>
+            <form-field  input="date" label="Date Of Birth" map="dob"></form-field>
+            <form-field  input="radio" label="Gender" map="gender" :models="genders"></form-field>
         </form-module>
-        <div v-if="mode !== 'VIEW'" class="section">
-            <div class="column right-align">
-                <label for="Member_type">Date Of Birth:</label>
-            </div>
-            <div class="column left-align">
-                <date-picker  input-class="input-date" calendar-class="input-date" wrapper-class="input-date" id="nan"></date-picker>
-            </div>
-        </div>
-        <div v-if="mode !== 'VIEW'" class="section">
-            <div class="column right-align">
-                <label for="member_type">Gender:</label>
-            </div>
-            <div class="column left-align" id="web">
-                <input type="radio" name="gender">
-                <label for="Male">Male</label>
-                <input type="radio" name="gender">
-                <label for="Female">Female</label>
-                <input type="radio" name="gender">
-                <label for="Others">Others</label>
-            </div>
-        </div>
         <form-module name="Address Details" v-bind:mode="mode" v-model="address">
-            <form-field  input="text" label="Address Line 1:" map="addressLine1"></form-field>
-            <form-field  input="text" label="Address Line 2:" map="addressLine2"></form-field>
-            <form-field  input="text" label="Area:" map="area"></form-field>
-            <form-field  input="text" label="City:" map="city"></form-field>
-            <form-field  input="text" label="State:" map="state"></form-field>
-            <form-field  input="text" label="Pincode:" map="pincode"></form-field>
-            <form-field  input="text" label="Country:" map="country"></form-field>
+            <form-field  input="text" label="Address Line 1" map="addressLine1"></form-field>
+            <form-field  input="text" label="Address Line 2" map="addressLine2"></form-field>
+            <form-field  input="text" label="Area" map="area"></form-field>
+            <form-field  input="text" label="City" map="city"></form-field>
+            <form-field  input="text" label="State" map="state"></form-field>
+            <form-field  input="text" label="Pincode" map="pincode"></form-field>
+            <form-field  input="text" label="Country" map="country"></form-field>
         </form-module>
-        <form-module name="Other Details" v-bind:mode="mode" v-model="otherDetails">
-            <form-field  input="text" label="Primary Email Address:" map="primaryemailaddress"></form-field>
-            <form-field  input="text" label="Secondary Email Address:" map="secondaryemailaddress"></form-field>
-            <form-field  input="text" label="Primary Phone Number:" map="primaryphonenumber"></form-field>
-            <form-field  input="text" label="Secondary Phone Number:" map="secondaryphonenumber"></form-field>
+        <form-module name="Other Details" v-bind:mode="mode" v-model="contactDetails">
+            <form-field  input="text" label="Primary Email Address" map="primaryemailaddress"></form-field>
+            <form-field  input="text" label="Secondary Email Address" map="secondaryemailaddress"></form-field>
+            <form-field  input="text" label="Primary Phone Number" map="primaryphonenumber"></form-field>
+            <form-field  input="text" label="Secondary Phone Number" map="secondaryphonenumber"></form-field>
         </form-module>
         <div v-if="mode !== 'VIEW'" class="action">
             <button type="button" class="btn" v-on:click="process">{{ buttonName }}</button>
@@ -79,13 +51,20 @@ export default {
     },
     data: function () {
         return {
-            type: '',
             mode: '',
-            basicDetails: { FirstName: '', LastName: '', gender: '',dob:'' },
+            genders: [
+                { key: 'Male', value: 'MALE' },
+                { key: 'Female', value: 'FEMALE' },
+                { key: 'Other', value: 'OTHER' }
+            ],
+            session: { sessionId: '' },
+            basicDetails: { FirstName: '', LastName: '', gender: '', dob: new Date() },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
             },
-            otherDetails: { primaryemailaddress: '', secondaryemailaddress: '',primaryphonenumber:'', secondaryphonenumber:''},
+            contactDetails: { primaryemailaddress: '', secondaryemailaddress: '',
+                primaryphonenumber: '', secondaryphonenumber: ''
+            },
             maxWidth: '1000px',
             buttonName: 'Create'
         }
@@ -106,33 +85,33 @@ export default {
         this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
     },
     methods: {
-        populate: function (MemberData) {
-            MemberData = MemberData 
-                    ? MemberData 
+        populate: function (memberData) {
+            memberData = memberData 
+                    ? memberData 
                     : this.$store.getters.GET_MEMBER_INFO
 
-            if (MemberData && MemberData.address) {
-                this.type = MemberData.MemberType
-                this.basicDetails = mapper(MemberData, this.basicDetails)
-                this.address = mapper(MemberData.address, this.address)
-                this.otherDetails = mapper(MemberData, this.otherDetails)
+            if (memberData && memberData.address) {
+                this.member.sessionId = memberData.sessionId
+                this.basicDetails = mapper(memberData, this.basicDetails)
+                this.address = mapper(memberData.address, this.address)
+                this.contactDetails = mapper(memberData, this.otherDetails)
             }
         },
         process: function () {
-            const MemberData = {
-                MemberType: this.type,
+            const memberData = {
+                sessionId: this.session.sessionId,
                 active: true,
                 ...this.basicDetails,
                 address: {
                     ...this.address
                 },
-                ...this.otherDetails
+                ...this.contactDetails
             }
             if (this.mode === 'ADD') {
-                this.$store.dispatch('REGISTER_MEMBER', MemberData)
+                this.$store.dispatch('REGISTER_MEMBER', memberData)
             } else {
-                MemberData['id'] = this.$store.getters.GET_MEMBER_INFO.id
-                this.$store.dispatch('UPDATE_MEMBER', MemberData)
+                memberData['id'] = this.$store.getters.GET_MEMBER_INFO.id
+                this.$store.dispatch('UPDATE_MEMBER', memberData)
             }
         },
         cancel: function () {
@@ -140,7 +119,7 @@ export default {
         }
     },
     watch: {
-        MemberInfo: function (newVal) {
+        memberInfo: function (newVal) {
             this.populate(newVal)
         }
     }

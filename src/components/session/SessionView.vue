@@ -4,7 +4,7 @@
             <div class="label-heading">
                 <label for="heading">Session</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
-                <label for="">{{ params.sessionName }}</label>
+                <label for="">{{ getSessionName }}</label>
             </div>
             <router-link class="link" :to="{ name: route.name }">{{ route.label }}</router-link>
         </div>
@@ -39,7 +39,13 @@ export default {
         ...mapGetters({
             params: 'GET_ROUTE_PARAMS',
             sessionInfo: 'GET_SESSION_INFO'
-        })
+        }),
+        getSessionName: function () {
+            if (this.params.SessionView) {
+                return this.params.SessionView.sessionName
+            }
+            return ""
+        }
     },
     methods: {
         selectTab: function (tabName) {

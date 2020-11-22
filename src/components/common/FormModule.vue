@@ -27,7 +27,7 @@
                         >
                     </template>
                     <template v-else-if="item.input === 'select'">
-                        <select :ref="item.map" @change="inputValue">
+                        <select :ref="item.map" @change="inputValue" :disabled="item.disabled">
                             <option value="" :disabled="isDisabled(item.value)">Select a option</option>
                             <option 
                                 v-for="(model, index) in item.models"
@@ -127,6 +127,7 @@ export default {
                 map: field.propsData.map,
                 models: field.propsData.models,
                 value: this.value[`${field.propsData.map}`],
+                disabled: field.propsData.disabled
             };
             return item;
         });
@@ -176,7 +177,7 @@ export default {
             if (Array.isArray(val) && val.length >= 0) {
                 return val.includes(key)
             }
-            return key === val
+            return key == val
         },
         getSelectedElement: function (val, models) {
             const model = models.filter(ele => ele.value == val)
@@ -191,7 +192,8 @@ export default {
                     label: item.label,
                     map: item.map,
                     models: item.models,
-                    value: newVal[`${item.map}`]
+                    value: newVal[`${item.map}`],
+                    disabled: item.disabled
                 };
                 return obj;
             });

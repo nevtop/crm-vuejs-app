@@ -11,19 +11,28 @@ export default {
     GET_ROUTE_PARAMS: function (state) {
         return state.routeParams
     },
-    GET_CLIENT_LIST: function (state) {
-        return state.filteredClientList
+    GET_SELECTED_TAB: function (state) {
+        return state.selectedTab
     },
-    IS_DATA_ADDED: function (state) {
-        return state.isDataAdded
+    IS_DATA_MODIFIED: function (state) {
+        return state.isDataModified
+    },
+    GET_CLIENT_LIST: function (state) {
+        return state.client.list
+    },
+    GET_CLIENT_SELECT_LIST: function (state) {
+        return state.client.selectList
     },
     GET_CLIENT_INFO: function (state) {
-        return state.clientInfo
+        return state.client.info
     },
     GET_SESSION_LIST: function (state) {
         return state.session.list
     },
     GET_SESSION_INFO: function (state) {
         return state.session.info
+    },
+    GET_MEMBER_INFO: function (state) {
+        return state.member.info
     }
 }

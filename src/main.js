@@ -28,12 +28,24 @@ new Vue({
 
     const routeParams = localStorage.getItem('_route_params')
     if (routeParams) {
-      this.$store.commit('SET_ROUTE_PARAMS', JSON.parse(routeParams))
+      this.$store.state.routeParams = JSON.parse(routeParams)
     }
 
     const clientInfo = localStorage.getItem('_client_info')
     if (clientInfo) {
-      this.$store.commit('SET_CLIENT_INFO', JSON.parse(clientInfo))
+      const clientData = JSON.parse(clientInfo)
+      this.$store.commit('SET_CLIENT_INFO', clientData)
+      this.$store.commit('SET_SESSION_LIST', clientData.sessions)
+    }
+
+    const sessionInfo = localStorage.getItem('_session_info')
+    if (sessionInfo) {
+      this.$store.commit('SET_SESSION_INFO', JSON.parse(sessionInfo))
+    }
+
+    const memberInfo = localStorage.getItem('_member_info')
+    if (memberInfo) {
+      this.$store.commit('SET_MEMBER_INFO', JSON.parse(memberInfo))
     }
 
     Axios.interceptors.request.use((request) => {

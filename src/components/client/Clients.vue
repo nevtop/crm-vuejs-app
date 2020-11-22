@@ -36,10 +36,16 @@ export default {
         'table-column': TableColumn
     },
     created: function () {
-        if (this.$route.name !== 'Clients') {
+        if (this.$route.name === 'Clients') {
+            this.$store.dispatch('FETCH_ALL_CLIENTS')
+            this.clientPage = true
+        } else {
             this.clientPage = false
         }
-        this.$store.dispatch('FETCH_ALL_CLIENTS')
+
+        if (this.$store.getters.GET_CLIENT_SELECT_LIST.length == 0) {
+            this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
+        }
     },
     computed: {
         ...mapGetters({
@@ -51,9 +57,10 @@ export default {
         $route (to, next) {
             if (to.name === 'Clients') {
                 this.clientPage = true
-                if (this.$store.getters.IS_DATA_ADDED) {
+                if (this.$store.getters.IS_DATA_MODIFIED) {
                     this.$store.dispatch('FETCH_ALL_CLIENTS')
-                    this.$store.commit('NEW_DATA_ADDED', false)
+                    this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
+                    this.$store.commit('DATA_MODIFIED', false)
                 }
             } else {
                 this.clientPage = false

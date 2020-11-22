@@ -11,6 +11,10 @@ export default {
       models: {
         type: Array,
         default: () => []
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     }
 }

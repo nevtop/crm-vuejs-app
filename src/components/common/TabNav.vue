@@ -3,9 +3,9 @@
         <li v-for="(tab, index) in tabs" v-bind:key="index">
             <a 
                 class="nav-items" 
-                v-bind:class="{ active: tab == selected }" 
+                v-bind:class="{ active: tab.name == selected.name }" 
                 v-on:click="selectTab(tab)">{{
-                    tab
+                    tab.name
             }}</a>
         </li>
     </ul>
@@ -14,12 +14,15 @@
 <script>
 export default {
     props: {
-        selected: String,
+        selected: {
+            type: Object,
+            default: {}
+        },
         tabs: Array,
     },
     methods: {
         selectTab: function (tab) {
-            this.$emit('select-tab', tab)
+            this.$store.commit('SET_SELECTED_TAB', tab)
         }
     }
 };

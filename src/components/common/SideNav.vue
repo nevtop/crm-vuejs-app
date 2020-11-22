@@ -23,6 +23,7 @@ export default {
         emitEvents: function () {
             EventBus.$emit('toggle-menu-icon', false)
             EventBus.$emit('toggle-side-nav', false)
+            this.$store.commit('SET_SELECTED_TAB', null)
         }
     },
     created: function () {
