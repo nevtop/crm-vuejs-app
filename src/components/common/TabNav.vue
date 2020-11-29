@@ -40,17 +40,22 @@ export default {
 .nav-items {
     text-decoration: none;
     outline: 0;
-    color: black;
+    color: white;
+    background-color: #008cba;
     padding: 14px 16px;
-    margin: 5px;
+    margin: 3px;
     font-size: 17px;
-    line-height: 280%;
+    font-weight: 900;
+    line-height: 285%;
     border: 2px solid #008cba;
-    transition: border-bottom-color 0.25s ease-in;
+    /* transition: border-bottom-color 0.10s ease-in; */
     cursor: pointer;
 }
 
 .nav-items.active {
-    border-bottom-color: #e1e4e8;
+    border-bottom-color: white;
+    border-bottom-width: 3px;
+    color: black;
+    background-color: white;
 }
 </style>

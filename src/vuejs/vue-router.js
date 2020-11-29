@@ -14,8 +14,8 @@ import ClientView from '@/components/client/ClientView'
 import Sessions from '@/components/session/Sessions'
 import SessionForm from '@/components/session/SessionForm'
 import SessionView from '@/components/session/SessionView'
-import Members from '@/components/member/Members'
-import MemberForm from '@/components/member/MemberForm'
+import Trainees from '@/components/trainee/Trainees'
+import TraineeForm from '@/components/trainee/TraineeForm'
 
 Vue.use(Router)
 
@@ -87,20 +87,20 @@ const router = new Router({
             components: { app: SessionView }
         },
         {
-            path: '/members',
-            name: 'Members',
+            path: '/trainees',
+            name: 'Trainees',
             meta: { requiresAuth: true },
-            components: { app: Members },
+            components: { app: Trainees },
             children: [
                 {
                     path: 'profile/new',
-                    name: 'AddMember',
-                    components: { 'members': MemberForm }
+                    name: 'AddTrainee',
+                    components: { 'trainees': TraineeForm }
                 },
                 {
                     path: 'profile/edit',
-                    name: 'EditMember',
-                    components: { 'members': MemberForm }
+                    name: 'EditTrainee',
+                    components: { 'trainees': TraineeForm }
                 }
             ]
         },

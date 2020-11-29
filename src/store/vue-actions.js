@@ -106,6 +106,16 @@ export default {
             console.error('Error occurred in API: FETCH_CLIENT_SELECT_LIST')
         }
     },
+    FETCH_SESSION_SELECT_LIST: async function ({ commit }) {
+        try {
+            const config = Util.getConfig('FETCH_SESSION_SELECT_LIST', HttpMethod.GET, 
+                Url.FETCH_SESSION_SELECT_LIST)
+            const { data } = await sendRequest(config)
+            commit('SET_SESSION_SELECT_LIST', data.data)
+        } catch (err) {
+            console.error('Error occurred in API: FETCH_SESSION_SELECT_LIST')
+        }
+    },
     RETRIEVE_CLIENT_INFO: async function ({ commit }, id) {
         try {
             const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, 
@@ -130,7 +140,7 @@ export default {
     FETCH_ALL_SESSIONS: async function ({ commit }) {
         try {
             const formData = new FormData()
-            formData.set('fields', 'id,client,sessionType,sessionName,active,memberCount,address,city,state')
+            formData.set('fields', 'id,client,sessionType,sessionName,active,traineeCount,address,city,state')
 
             const config = Util.getConfig('FETCH_ALL_SESSIONS', HttpMethod.POST, Url.FETCH_ALL_SESSIONS,
                 formData, null, { 'Content-Type': 'multipart/form-data' })
@@ -146,6 +156,14 @@ export default {
                 Url.RETRIEVE_SESSION_INFO.concat(`/${id}`))
             const { data } = await sendRequest(config)
             commit('SET_SESSION_INFO', data.data[0])
+
+            const sessionTrainees = data.data[0].sessionTrainees.map(item => {
+                return {
+                    active: item.active,
+                    ...item.trainee
+                }
+            })
+            commit('SET_TRAINEE_LIST', sessionTrainees)
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_SESSION_INFO')
         }
@@ -160,48 +178,47 @@ export default {
             console.error('Error occurred in API: UPDATE_SESSION')
         }
     },
-    REGISTER_MEMBER: async function ({ commit }, memberData) {
+    REGISTER_TRAINEE: async function ({ commit }, traineeData) {
         try {
-            const config = Util.getConfig('REGISTER_MEMBER', HttpMethod.POST, Url.REGISTER_MEMBER, memberData)
+            const config = Util.getConfig('REGISTER_TRAINEE', HttpMethod.POST, Url.REGISTER_TRAINEE, traineeData)
             const { data } = await sendRequest(config)
             commit('DATA_MODIFIED', true)
             Router.go(-1)
         } catch (err) { 
-            console.error('Error occurred in API: REGISTER_MEMBER')
+            console.error('Error occurred in API: REGISTER_TRAINEE')
         }
     },
-    UPDATE_MEMBER: async function ({ commit }, memberData) {
+    UPDATE_TRAINEE: async function ({ commit }, traineeData) {
         try {
-            const config = Util.getConfig('UPDATE_MEMBER', HttpMethod.PUT, Url.UPDATE_MEMBER, memberData)
+            const config = Util.getConfig('UPDATE_TRAINEE', HttpMethod.PUT, Url.UPDATE_TRAINEE, traineeData)
             const { data } = await sendRequest(config)
             commit('DATA_MODIFIED', true)
             Router.go(-1)
         } catch (err) { 
-            console.error('Error occurred in API: UPDATE_MEMBER')
+            console.error('Error occurred in API: UPDATE_TRAINEE')
         }
     },
-    FETCH_ALL_MEMBERS: async function ({ commit }) {
+    FETCH_ALL_TRAINEES: async function ({ commit }) {
         try {
             const formData = new FormData()
             formData.set('fields', 'id,sessionId,memberName,onboardingDate,address,city,state')
 
-            const config = Util.getConfig('FETCH_ALL_MEMBERS', HttpMethod.POST, Url.FETCH_ALL_MEMBERS,
+            const config = Util.getConfig('FETCH_ALL_TRAINEES', HttpMethod.POST, Url.FETCH_ALL_TRAINEES,
                 formData, null, { 'Content-Type': 'multipart/form-data' })
             const { data } = await sendRequest(config)
-            commit('SET_MEMBER_LIST', data.data)
-            commit('FILTER_MEMBER_LIST', 0)
+            commit('SET_TRAINEE_LIST', data.data)
         } catch (err) {
-            console.error('Error occurred in API: FETCH_ALL_MEMBERS')
+            console.error('Error occurred in API: FETCH_ALL_TRAINEES')
         }
     },
-    RETRIEVE_MEMBER_INFO: async function ({ commit }, id) {
+    RETRIEVE_TRAINEE_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_MEMBER_INFO', HttpMethod.GET, 
-                Url.RETRIEVE_MEMBER_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_TRAINEE_INFO', HttpMethod.GET, 
+                Url.RETRIEVE_TRAINEE_INFO.concat(`/${id}`))
             const { data } = await sendRequest(config)
-            commit('SET_MEMBER_INFO', data.data[0])
+            // commit('SET_MEMBER_INFO', data.data[0])
         } catch (err) {
-            console.error('Error occurred in API: RETRIEVE_MEMBER_INFO')
+            console.error('Error occurred in API: RETRIEVE_TRAINEE_INFO')
         }
     }
 }

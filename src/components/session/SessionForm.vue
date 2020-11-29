@@ -3,8 +3,8 @@
         <h2 v-if="mode === 'ADD'">Add Session</h2>
         <h2 v-else-if="mode === 'EDIT'">Edit Session</h2>
         <hr v-if="mode !== 'VIEW'">
-        <form-module name="" v-bind:mode="mode" v-model="client">
-            <form-field input="select" label="Associated With" map="clientId" :models="clients" 
+        <form-module name="" v-bind:mode="mode" v-model="client" :key="updateKey">
+            <form-field input="select" label="Associated With" map="clientId" :models="getClientSelectList" 
                 :disabled="disabled"></form-field>
         </form-module>
         <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
@@ -51,12 +51,12 @@ export default {
     data: function () {
         return {
             mode: '',
-            clients: [],
+            updateKey: 0,
             types: [
                 { key: 'Regular', value: 'REGULAR' },
                 { key: 'Event', value: 'EVENT' }
             ],
-            client: { clientId: '' },
+            client: { clientId: 0 },
             basicDetails: { sessionName: '', sessionType: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
@@ -82,10 +82,7 @@ export default {
                 break
         }
 
-        if (this.$store.getters.GET_CLIENT_SELECT_LIST) {
-            this.clients = this.$store.getters.GET_CLIENT_SELECT_LIST
-        }
-
+        /* Add session in client view */
         if (this.$route.query.clientId) {
             this.client.clientId = this.$route.query.clientId
             this.disabled = true
@@ -93,6 +90,15 @@ export default {
         
         this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
         this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
+    },
+    computed: {
+        getClientSelectList: function () {
+            const size = this.$store.getters.GET_CLIENT_SELECT_LIST.length
+            if (size > 0) {
+                this.updateKey += 1;
+                return this.$store.getters.GET_CLIENT_SELECT_LIST
+            }
+        }
     },
     methods: {
         populate: function (data) {
@@ -104,7 +110,9 @@ export default {
                 this.sameAsClientAddress = this.mode === 'EDIT'
                         ? sessionData.sameAsClientAddress
                         : false
-                this.client.clientId = sessionData.clientId                    
+                this.client = {
+                    clientId: sessionData.clientId
+                }
                 this.basicDetails = mapper(sessionData, this.basicDetails)
                 this.address = mapper(sessionData.address, this.address)
             }

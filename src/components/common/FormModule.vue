@@ -180,8 +180,10 @@ export default {
             return key == val
         },
         getSelectedElement: function (val, models) {
-            const model = models.filter(ele => ele.value == val)
-            return model[0].key
+            if (models != null && models.length > 0) {
+                const model = models.filter(ele => ele.value == val)
+                return model[0].key
+            }
         }
     },
     watch: {

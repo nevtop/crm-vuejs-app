@@ -17,9 +17,10 @@ export default {
     },
     session: {
         list: [],
+        selectList: [],
         info: null
     },
-    member: {
+    trainee: {
         list: [],
         info: null
     }

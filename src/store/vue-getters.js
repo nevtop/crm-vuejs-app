@@ -23,6 +23,9 @@ export default {
     GET_CLIENT_SELECT_LIST: function (state) {
         return state.client.selectList
     },
+    GET_SESSION_SELECT_LIST: function (state) {
+        return state.session.selectList
+    },
     GET_CLIENT_INFO: function (state) {
         return state.client.info
     },
@@ -32,7 +35,10 @@ export default {
     GET_SESSION_INFO: function (state) {
         return state.session.info
     },
-    GET_MEMBER_INFO: function (state) {
-        return state.member.info
+    GET_TRAINEE_LIST: function (state) {
+        return state.trainee.list
+    },
+    GET_TRAINEE_INFO: function (state) {
+        return state.trainee.info
     }
 }

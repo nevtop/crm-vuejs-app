@@ -31,21 +31,21 @@ new Vue({
       this.$store.state.routeParams = JSON.parse(routeParams)
     }
 
-    const clientInfo = localStorage.getItem('_client_info')
-    if (clientInfo) {
-      const clientData = JSON.parse(clientInfo)
-      this.$store.commit('SET_CLIENT_INFO', clientData)
-      this.$store.commit('SET_SESSION_LIST', clientData.sessions)
-    }
+    // const clientInfo = localStorage.getItem('_client_info')
+    // if (clientInfo) {
+    //   const clientData = JSON.parse(clientInfo)
+    //   this.$store.commit('SET_CLIENT_INFO', clientData)
+    //   this.$store.commit('SET_SESSION_LIST', clientData.sessions)
+    // }
 
-    const sessionInfo = localStorage.getItem('_session_info')
-    if (sessionInfo) {
-      this.$store.commit('SET_SESSION_INFO', JSON.parse(sessionInfo))
-    }
+    // const sessionInfo = localStorage.getItem('_session_info')
+    // if (sessionInfo) {
+    //   this.$store.commit('SET_SESSION_INFO', JSON.parse(sessionInfo))
+    // }
 
-    const memberInfo = localStorage.getItem('_member_info')
-    if (memberInfo) {
-      this.$store.commit('SET_MEMBER_INFO', JSON.parse(memberInfo))
+    const traineeInfo = localStorage.getItem('_member_info')
+    if (traineeInfo) {
+      // this.$store.commit('SET_MEMBER_INFO', JSON.parse(traineeInfo))
     }
 
     Axios.interceptors.request.use((request) => {

@@ -63,12 +63,20 @@ export default {
             }
         })
     },
+    SET_SESSION_SELECT_LIST: function (state, sessionSelectList) {
+        state.session.selectList = sessionSelectList.map(session => {
+            return {
+                key: session.sessionName,
+                value: session.id
+            }
+        })
+    },
     DATA_MODIFIED: function (state, bool) {
         state.isDataModified = bool
     },
     SET_CLIENT_INFO: function (state, clientInfo) {
         state.client.info = clientInfo
-        localStorage.setItem('_client_info', JSON.stringify(clientInfo))
+        // localStorage.setItem('_client_info', JSON.stringify(clientInfo))
     },
     SET_SESSION_LIST: function (state, sessionList) {
         const processList = sessionList.map((ele, index) => {
@@ -88,22 +96,21 @@ export default {
     SET_SESSION_INFO: function (state, sessionInfo) {
         sessionInfo.clientId = sessionInfo.client.id
         state.session.info = sessionInfo
-        localStorage.setItem('_session_info', JSON.stringify(sessionInfo))
+
+        // localStorage.setItem('_session_info', JSON.stringify(sessionInfo))
     },
-    SET_MEMBER_LIST: function (state, memberList) {
-        const processList = memberList.map((ele, index) => {
-            const newEle = {...ele, ...ele.address}
+    SET_TRAINEE_LIST: function (state, traineeList) {
+        const processList = traineeList.map((ele, index) => {
+            const newEle = {...ele, ...ele.profile, ...ele.profile.address}
             newEle.sno = ++index
-            newEle.onboardingDate = new Intl.DateTimeFormat('en-GB')
-                .format(new Date(ele.onboardingDate))
-            delete newEle.address
+            delete newEle.profile
             return newEle
         })
-        state.member.list = processList
+        state.trainee.list = processList
     },
-    SET_MEMBER_INFO: function (state, memberInfo) {
-        memberInfo.clientId = memberInfo.client.id
-        state.member.info = memberInfo
-        localStorage.setItem('_member_info', JSON.stringify(memberInfo))
+    SET_TRAINER_INFO: function (state, traineeInfo) {
+        traineeInfo.clientId = traineeInfo.client.id
+        state.trainee.info = traineeInfo
+        // localStorage.setItem('_member_info', JSON.stringify(traineeInfo))
     }
 }

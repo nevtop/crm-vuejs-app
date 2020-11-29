@@ -6,14 +6,17 @@
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getSessionName }}</label>
             </div>
-            <router-link class="link" :to="{ name: route.name }">{{ route.label }}</router-link>
+            <router-link 
+                class="link" 
+                :to="{ name: selectedTab.route , query: { sessionId: $route.params.id } }"
+            >{{ selectedTab.label }}</router-link>
         </div>
-        <tab-nav v-bind:tabs="tabs" v-bind:selected="selected" v-on:select-tab="selectTab"/>
-        <!-- <router-view name="client-view"></router-view> -->
-        <template v-if="selected === 'PROFILE'">
+        <tab-nav v-bind:tabs="tabs" v-bind:selected="selectedTab"/>
+        <template v-if="selectedTab.name === 'PROFILE'">
             <session-form :sessionInfo="sessionInfo"></session-form>
         </template>
-        <template v-else-if="selected === 'MEMBER'">
+        <template v-else-if="selectedTab.name === 'TRAINEE'">
+            <trainees></trainees>
         </template>
     </div>
 </template>
@@ -21,24 +24,37 @@
 <script>
 import TabNav from '@/components/common/TabNav'
 import SessionForm from '@/components/session/SessionForm'
+import Trainees from '@/components/trainee/Trainees'
 import { mapGetters } from 'vuex';
 
 export default {
     components: {
         'tab-nav': TabNav,
-        'session-form': SessionForm
+        'session-form': SessionForm,
+        'trainees': Trainees
     },
     data: function () {
         return {
-            selected: 'PROFILE',
-            route: { name: 'EditSession', label: 'Edit Profile' },
-            tabs: ['PROFILE', 'MEMBERS', 'PAYMENT HISTORY']
+            tabs: [
+                { name: 'PROFILE', route: 'EditSession', label: 'Edit Profile' },
+                { name: 'TRAINEE', route: 'AddTrainee', label: 'Add Trainee' }
+            ]
         }
+    },
+    created: function () {
+        if (this.$store.getters.GET_SELECTED_TAB) {
+            this.$store.commit('SET_SELECTED_TAB', this.$store.getters.GET_SELECTED_TAB)
+        } else {
+            this.$store.commit('SET_SELECTED_TAB', this.tabs[0])
+        }
+        this.$store.dispatch('RETRIEVE_SESSION_INFO', this.$route.params.id)
+        this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
     },
     computed: {
         ...mapGetters({
             params: 'GET_ROUTE_PARAMS',
-            sessionInfo: 'GET_SESSION_INFO'
+            sessionInfo: 'GET_SESSION_INFO',
+            selectedTab: 'GET_SELECTED_TAB'
         }),
         getSessionName: function () {
             if (this.params.SessionView) {
@@ -46,21 +62,6 @@ export default {
             }
             return ""
         }
-    },
-    methods: {
-        selectTab: function (tabName) {
-            this.selected = tabName;
-            if (this.selected === 'PROFILE') {
-                this.route.name = 'EditSession'
-                this.route.label = 'Edit Profile'
-            } else {
-                this.route.name = 'AddMember'
-                this.route.label = 'Add Member'
-            }
-        } 
-    },
-    created: function () {
-        this.$store.dispatch('RETRIEVE_SESSION_INFO', this.$route.params.id)
     }
 }
 </script>
