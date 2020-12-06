@@ -116,8 +116,13 @@ const router = new Router({
                     components: { setting: User },
                     children: [
                         {
-                            path: 'new',
-                            name: 'UserForm',
+                            path: 'add',
+                            name: 'AddUser',
+                            components: { user: UserForm }
+                        },
+                        {
+                            path: 'edit',
+                            name: 'EditUser',
                             components: { user: UserForm }
                         }
                     ]

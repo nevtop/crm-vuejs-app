@@ -3,7 +3,7 @@
         <template v-if="userPage">
             <div class="search-bar">
                 <search width='900px' placeholder="Search for users.."></search>
-                <router-link :to="{ name: 'UserForm' }" class="link">New User</router-link>
+                <router-link :to="{ name: 'AddUser' }" class="link">New User</router-link>
             </div>
             <table-view v-if="true" v-bind:list="userList">
                 <table-column label="First Name" map="firstName"></table-column>
