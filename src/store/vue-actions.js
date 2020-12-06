@@ -139,11 +139,7 @@ export default {
     },
     FETCH_ALL_SESSIONS: async function ({ commit }) {
         try {
-            const formData = new FormData()
-            formData.set('fields', 'id,client,sessionType,sessionName,active,traineeCount,address,city,state')
-
-            const config = Util.getConfig('FETCH_ALL_SESSIONS', HttpMethod.POST, Url.FETCH_ALL_SESSIONS,
-                formData, null, { 'Content-Type': 'multipart/form-data' })
+            const config = Util.getConfig('FETCH_ALL_SESSIONS', HttpMethod.GET, Url.FETCH_ALL_SESSIONS)
             const { data } = await sendRequest(config)
             commit('SET_SESSION_LIST', data.data)
         } catch (err) {
@@ -200,11 +196,7 @@ export default {
     },
     FETCH_ALL_TRAINEES: async function ({ commit }) {
         try {
-            const formData = new FormData()
-            formData.set('fields', 'id,sessionId,memberName,onboardingDate,address,city,state')
-
-            const config = Util.getConfig('FETCH_ALL_TRAINEES', HttpMethod.POST, Url.FETCH_ALL_TRAINEES,
-                formData, null, { 'Content-Type': 'multipart/form-data' })
+            const config = Util.getConfig('FETCH_ALL_TRAINEES', HttpMethod.GET, Url.FETCH_ALL_TRAINEES)
             const { data } = await sendRequest(config)
             commit('SET_TRAINEE_LIST', data.data)
         } catch (err) {
@@ -216,7 +208,15 @@ export default {
             const config = Util.getConfig('RETRIEVE_TRAINEE_INFO', HttpMethod.GET, 
                 Url.RETRIEVE_TRAINEE_INFO.concat(`/${id}`))
             const { data } = await sendRequest(config)
-            // commit('SET_MEMBER_INFO', data.data[0])
+            commit('SET_TRAINEE_INFO', data.data[0])
+            const sessionTrainees = data.data[0].sessionTrainees.map(item => {
+                return {
+                    ...item.session,
+                    active: item.active,
+                }
+            })
+            commit('SET_SESSION_LIST', sessionTrainees)
+
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_TRAINEE_INFO')
         }

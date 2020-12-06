@@ -3,13 +3,13 @@
         <h2 v-if="mode === 'ADD'" id="du">Add Trainee</h2>
         <h2 v-else-if="mode === 'EDIT'" id="du">Edit Trainee</h2>
         <hr v-if="mode !== 'VIEW'">
-        <form-module name="" v-bind:mode="mode" v-model="session" :key="updateKey">
+        <form-module v-if="mode === 'ADD'" v-bind:mode="mode" v-model="session" :key="updateKey">
             <form-field  input="select" label="Associated with" map="sessionId" :models="getSessionSelectList"
                 :disabled="disabled"></form-field>
         </form-module>
         <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
-            <form-field  input="text" label="FirstName" map="firstName"></form-field>
-            <form-field  input="text" label="LastName" map="lastName"></form-field>
+            <form-field  input="text" label="First Name" map="firstName"></form-field>
+            <form-field  input="text" label="Last Name" map="lastName"></form-field>
             <form-field  input="date" label="Date Of Birth" map="dob"></form-field>
             <form-field  input="radio" label="Gender" map="gender" :models="genders"></form-field>
         </form-module>
@@ -49,7 +49,7 @@ import Datepicker from 'vuejs-datepicker'
 
 export default {
     props: {
-        MemberInfo: Object
+        traineeInfo: Object
     },
     components: {
         'form-module': FormModule,
@@ -66,7 +66,7 @@ export default {
                 { key: 'Other', value: 'OTHER' }
             ],
             session: { sessionId: 0 },
-            basicDetails: { FirstName: '', LastName: '', gender: '', dob: new Date() },
+            basicDetails: { firstName: '', lastName: '', gender: '', dob: new Date().getTime() },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
             },
@@ -113,18 +113,23 @@ export default {
     },
     methods: {
         populate: function (data) {
-            traineeData = data 
-                    ? traineeData 
+            const traineeData = data 
+                    ? data 
                     : this.$store.getters.GET_TRAINEE_INFO
-
-            if (traineeData && traineeData.address) {
+            if (traineeData && traineeData.profile && traineeData.profile.address) {
                 this.sameAsSessionAddress = this.mode === 'EDIT'
                         ? traineeData.sameAsSessionAddress
                         : false
-                this.trainee.sessionId = traineeData.sessionId
-                this.basicDetails = mapper(traineeData, this.basicDetails)
-                this.address = mapper(traineeData.address, this.address)
-                this.contactDetails = mapper(traineeData, this.otherDetails)
+                
+                let options = { year: 'numeric', month: 'long', day: 'numeric'}
+                traineeData.profile.dob = this.mode === 'VIEW'
+                    ? new Date(traineeData.profile.dob).toLocaleDateString("en-GB", options)
+                    : new Date(traineeData.profile.dob).getTime()
+                    
+                this.session.sessionId = traineeData.sessionId
+                this.basicDetails = mapper(traineeData.profile, this.basicDetails)
+                this.address = mapper(traineeData.profile.address, this.address)
+                this.contactDetails = mapper(traineeData.profile, this.contactDetails)
             }
         },
         process: function () {

@@ -74,9 +74,9 @@ export default {
         this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
     },
     methods: {
-        populate: function (clientData) {
-            clientData = clientData 
-                    ? clientData 
+        populate: function (data) {
+            const clientData = data 
+                    ? data 
                     : this.$store.getters.GET_CLIENT_INFO
 
             if (clientData && clientData.address) {

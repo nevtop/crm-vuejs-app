@@ -16,6 +16,7 @@ import SessionForm from '@/components/session/SessionForm'
 import SessionView from '@/components/session/SessionView'
 import Trainees from '@/components/trainee/Trainees'
 import TraineeForm from '@/components/trainee/TraineeForm'
+import TraineeView from '@/components/trainee/TraineeView'
 
 Vue.use(Router)
 
@@ -103,6 +104,12 @@ const router = new Router({
                     components: { 'trainees': TraineeForm }
                 }
             ]
+        },
+        {
+            path: '/trainee/:id',
+            name: 'TraineeView',
+            meta: { requiresAuth: true },
+            components: { app: TraineeView }
         },
         {
             path: '/settings',

@@ -6,7 +6,7 @@
                 <router-link :to="{ name: 'AddTrainee'}" class="link">New Trainee</router-link>
             </div>
             <search v-if="traineePage" width='250px' placeholder="Search for trainee.."></search>
-            <table-view v-bind:list="traineeList" action="MemberView">
+            <table-view v-bind:list="traineeList" action="TraineeView">
                 <table-column label="First Name" map="firstName"></table-column>
                 <table-column label="Last Name" map="lastName"></table-column>
                 <table-column label="Gender" map="gender"></table-column>

@@ -80,7 +80,7 @@ export default {
     },
     SET_SESSION_LIST: function (state, sessionList) {
         const processList = sessionList.map((ele, index) => {
-            const newEle = {...ele, ...ele.address}
+            const newEle = {...ele, ...ele.client, ...ele.address}
             newEle.sno = ++index
             if (ele.active === true) {
                 newEle.status = 'RUNNING'
@@ -108,8 +108,8 @@ export default {
         })
         state.trainee.list = processList
     },
-    SET_TRAINER_INFO: function (state, traineeInfo) {
-        traineeInfo.clientId = traineeInfo.client.id
+    SET_TRAINEE_INFO: function (state, traineeInfo) {
+        // traineeInfo.clientId = traineeInfo.client.id
         state.trainee.info = traineeInfo
         // localStorage.setItem('_member_info', JSON.stringify(traineeInfo))
     }

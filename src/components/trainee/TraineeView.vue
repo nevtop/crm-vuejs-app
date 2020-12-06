@@ -2,43 +2,50 @@
     <div>
         <div class="header">
             <div class="label-heading">
-                <label for="heading">Session</label> 
+                <label for="heading">Trainee</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
-                <label for="">{{ getSessionName }}</label>
+                <label for="">{{ getTraineeName }}</label>
             </div>
             <router-link 
                 class="link" 
-                :to="{ name: selectedTab.route , query: { sessionId: $route.params.id } }"
+                :to="{ name: selectedTab.route , query: { traineeId: $route.params.id } }"
             >{{ selectedTab.label }}</router-link>
         </div>
         <tab-nav v-bind:tabs="tabs" v-bind:selected="selectedTab"/>
         <template v-if="selectedTab.name === 'PROFILE'">
-            <session-form :sessionInfo="sessionInfo"></session-form>
+            <trainee-form :traineeInfo="traineeInfo"></trainee-form>
         </template>
-        <template v-else-if="selectedTab.name === 'TRAINEE'">
-            <trainees></trainees>
+        <template v-else-if="selectedTab.name === 'SESSION'">
+            <sessions></sessions>
+        </template>
+        <template v-else-if="selectedTab.name === 'WORKOUT PLAN'">
+            <!-- <trainees></trainees> -->
+        </template>
+        <template v-else-if="selectedTab.name === 'DIET PLAN'">
+            <!-- <trainees></trainees> -->
         </template>
     </div>
 </template>
 
 <script>
 import TabNav from '@/components/common/TabNav'
-import SessionForm from '@/components/session/SessionForm'
-import Trainees from '@/components/trainee/Trainees'
+import TraineeForm from '@/components/trainee/TraineeForm'
+import Sessions from '@/components/session/Sessions'
 import { mapGetters } from 'vuex'
 
 export default {
     components: {
         'tab-nav': TabNav,
-        'session-form': SessionForm,
-        'trainees': Trainees
+        'trainee-form': TraineeForm,
+        'sessions': Sessions
     },
     data: function () {
         return {
             tabs: [
-                { name: 'PROFILE', route: 'EditSession', label: 'Edit Profile' },
-                { name: 'TRAINEE', route: 'AddTrainee', label: 'Add Trainee' },
-                { name: 'PAYMENTS', route: 'AddTrainee', label: 'Add Service' }
+                { name: 'PROFILE', route: 'EditTrainee', label: 'Edit Profile' },
+                { name: 'SESSION', route: 'AddSession', label: 'Add Session' },
+                { name: 'WORKOUT PLAN', route: 'AddWorkout', label: 'Add Plan' },
+                { name: 'DIET PLAN', route: 'AddDiet', label: 'Add Plan' }
             ]
         }
     },
@@ -48,18 +55,19 @@ export default {
         } else {
             this.$store.commit('SET_SELECTED_TAB', this.tabs[0])
         }
-        this.$store.dispatch('RETRIEVE_SESSION_INFO', this.$route.params.id)
-        this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
+        this.$store.dispatch('RETRIEVE_TRAINEE_INFO', this.$route.params.id)
+        this.$store.dispatch('FETCH_SESSION_SELECT_LIST')
     },
     computed: {
         ...mapGetters({
             params: 'GET_ROUTE_PARAMS',
-            sessionInfo: 'GET_SESSION_INFO',
+            traineeInfo: 'GET_TRAINEE_INFO',
             selectedTab: 'GET_SELECTED_TAB'
         }),
-        getSessionName: function () {
-            if (this.params.SessionView) {
-                return this.params.SessionView.sessionName
+        getTraineeName: function () {
+            if (this.params.TraineeView) {
+                return this.params.TraineeView.firstName + " " 
+                    + this.params.TraineeView.lastName
             }
             return ""
         }

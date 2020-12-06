@@ -9,6 +9,7 @@
             <table-view v-bind:list="sessionList" action="SessionView">
                 <table-column label="Session Name" map="sessionName"></table-column>
                 <table-column label="Session Type" map="sessionType"></table-column>
+                <table-column v-if="sessionPage" label="Client Name" map="clientName"></table-column>
                 <table-column label="Status" map="status"></table-column>
                 <table-column label="Trainee" map="traineeCount"></table-column>
                 <table-column label="Package" map="packageCode"></table-column>
@@ -45,6 +46,9 @@ export default {
                 this.setState(true, false)
                 break
             case 'ClientView':
+                this.setState(false, true)
+                break
+            case 'TraineeView':
                 this.setState(false, true)
                 break
             default:
