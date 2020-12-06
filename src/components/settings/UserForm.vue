@@ -1,89 +1,71 @@
 <template>
-    <div class="wrapper">
-        <h2 class="ml-10">User Registration</h2>
-        <form>
-            <div class="row">
-                <div class="col-2">
-                    <label for="fname_lb" class="mb-5">First Name</label>
-                    <input type="text" class="input-field" v-model="fname">
-                </div>
-                <div class="col-2">
-                    <label for="lname_lb" class="mb-5">Last Name</label>
-                    <input type="text" class="input-field" v-model="lname">
-                </div>
+    <div class="wrapper" v-bind:style="{ maxWidth: maxWidth }">
+        <h2 v-if="mode === 'ADD'" id="du">Add User</h2>
+        <h2 v-else-if="mode === 'EDIT'" id="du">Edit User</h2>
+        <hr v-if="mode !== 'VIEW'">
+        <form-module name="Basic Details" v-bind:mode="mode" v-model="basicDetails">
+            <form-field  input="text" label="FirstName" map="firstName"></form-field>
+            <form-field  input="text" label="LastName" map="lastName"></form-field>
+            <form-field  input="date" label="Date Of Birth" map="dob"></form-field>
+            <form-field  input="radio" label="Gender" map="gender" :models="genders"></form-field>
+            <form-field  input="text" label="Mail ID" map="email"></form-field>
+            <form-field  input="number" label="Contact No" map="contact"></form-field>
+        </form-module>
+        <div class="row">
+            <div class="col-2">
+                <label for="dunction_lb" class="mb-5">Department</label>
+                <select class="selection" v-model="department_selected" multiple>
+                    <option v-for="department in departments" v-bind:key="department.value" v-bind:value="department.value">{{ department.text }}</option>
+                </select>
             </div>
-            <div class="row">
-                <div class="col-2">
-                    <label for="dob_lb" class="mb-5">Date of Birth</label>
-                    <date-picker input-class="input-date" calendar-class="input-date" wrapper-class="input-date"></date-picker>
-                </div>
-                <div class="col-2">
-                    <label for="gender_lb" class="mb-5">Gender</label>
-                    <div class="mt-5">
-                        <span class="mr-10">
-                            <input type="radio" value="male" v-model="gender">
-                            <label for="male_lb">Male</label>
-                        </span>
-                        <span>
-                            <input type="radio" value="female" v-model="gender">
-                            <label for="female_lb">Female</label>
-                        </span>
-                    </div>
-                </div>
+            <div class="col-2">
+                <label for="role_lb" class="mb-5">User Role</label>
+                <select class="selection" v-model="role_selected" multiple>
+                    <option v-for="role in roles" v-bind:key="role.value" v-bind:value="role.value">{{ role.text }}</option>
+                </select>
             </div>
-            <div class="row">
-                <div class="col-2">
-                    <label for="email_lb" class="mb-5">Email</label>
-                    <input type="text" class="input-field" v-model="email">
-                </div>
-                <div class="col-2">
-                    <label for="phoneno_lb" class="mb-5">Phone Number</label>
-                    <input type="text" class="input-field" v-model="phoneno">
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <span>Department selected: {{ department_selected }}</span>
             </div>
-            <div class="row">
-                <div class="col-2">
-                    <label for="dunction_lb" class="mb-5">Department</label>
-                    <select class="selection" v-model="department_selected" multiple>
-                        <option v-for="department in departments" v-bind:key="department.value" v-bind:value="department.value">{{ department.text }}</option>
-                    </select>
-                </div>
-                <div class="col-2">
-                    <label for="role_lb" class="mb-5">User Role</label>
-                    <select class="selection" v-model="role_selected" multiple>
-                        <option v-for="role in roles" v-bind:key="role.value" v-bind:value="role.value">{{ role.text }}</option>
-                    </select>
-                </div>
+            <div class="col-2">
+                <span>Role selected: {{ role_selected }}</span>
             </div>
-            <div class="row">
-                <div class="col-2">
-                    <span>Department selected: {{ department_selected }}</span>
-                </div>
-                <div class="col-2">
-                    <span>Role selected: {{ role_selected }}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="action">
-                    <button type="button" class="btn">Create</button>
-                    <button type="button" class="btn" v-on:click="goBack">Cancel</button>
-                </div>
-            </div>
-        </form>
+        </div>
+        <div v-if="mode !== 'VIEW'" class="action">
+            <button type="button" class="btn" v-on:click="process">{{ buttonName }}</button>
+            <button type="button" class="btn" v-on:click="cancel">Cancel</button>
+        </div>
     </div>
 </template>
-
 <script>
-import Datepicker from 'vuejs-datepicker';
+
+import FormModule from '@/components/common/FormModule'
+import FormField from '@/components/common/FormField'
+import { mapper } from '@/commonjs/util'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
+    props: {
+        userInfo: Object
+    },
+    components: {
+        'date-picker': Datepicker,
+        'form-module': FormModule,
+        'form-field': FormField
+    },
     data: function () {
         return {
-            fname: '',
-            lname: '',
-            gender: '',
-            email: '',
-            phoneno: '',
+            mode: '',
+            genders: [
+                { key: 'Male', value: 'MALE' },
+                { key: 'Female', value: 'FEMALE' },
+                { key: 'Other', value: 'OTHER' }
+            ],
+            basicDetails: { firstName: '', lastName: '', email:"", gender:"", contact:"", dob: new Date() },
+            buttonName: 'Create',
+            maxWidth: '1000px',
             departments: [
                 { text: 'GENERAL', value: 0},
                 { text: 'TRAINING', value: 1},
@@ -93,7 +75,6 @@ export default {
                 { text: 'CUSTOMER SUPPORT', value: 5},
                 { text: 'ACCOUNTS', value: 6},
                 { text: 'MANAGEMENT', value: 7}
-
             ],
             roles: [
                 { text: 'USER', value: 0},
@@ -105,26 +86,56 @@ export default {
             role_selected: []
         }
     },
-    components: {
-        'date-picker': Datepicker
+    created: function () {
+        if (this.$route.name === 'AddUser') {
+            this.mode = 'ADD'
+        } else if (this.$route.name === 'EditUser') {
+            this.mode = 'EDIT'
+            this.populate()
+            
+        } else {
+            this.mode = 'VIEW'
+            this.populate()
+        }
+        
+        this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
+        this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
     },
     methods: {
-        goBack: function () {
+        populate: function (userData) {
+            userData = userData 
+                    ? userData 
+                    : this.$store.getters.GET_USER_INFO
+
+            if (userData && userData.address) {
+                this.basicDetails = mapper(userData, this.basicDetails)
+            }
+        },
+        process: function () {
+            const userData = {
+                active: true,
+                ...this.basicDetails
+            }
+            if (this.mode === 'ADD') {
+                this.$store.dispatch('REGISTER_USER', userData)
+            } else {
+                userData['id'] = this.$store.getters.GET_CLIENT_INFO.id
+                this.$store.dispatch('UPDATE_USER', userData)
+            }
+        },
+        cancel: function () {
             this.$router.go(-1)
+        }
+    },
+    watch: {
+        userInfo: function (newVal) {
+            this.populate(newVal)
         }
     }
 }
 </script>
 
 <style scoped>
-
-.wrapper {
-    max-width: 700px;
-    margin: auto;
-    border: 1px solid #b3b3b2;
-    border-radius: 10px;
-    padding: 70px 90px 70px 70px;
-}
 
 .row {
     display: flex;
@@ -137,27 +148,34 @@ export default {
     width: calc((100% - 60px) / 2);
     margin: 15px;
 }
-
-.input-field {
-    height: 40px;
+.wrapper {
+    margin: auto;
+    border: 1px solid #b3b3b2;
+    border-radius: 10px;
+    padding: 30px 70px;
 }
-
-.input-date {
-    width: 320px;
-    height: 40px;
-}
-
-.selection {
-    height: 150px;
+.section{
+    margin-top: -25px;
 }
 
 .action {
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .btn {
     width: 140px;
     height: 40px;
 }
-
+#y{
+    margin-top: 9px;
+}
+#web{
+    display:inline-block;
+}
+#lb{
+    margin-top: 1px;
+}
+#du{
+    margin-bottom: 6px;
+}
 </style>
