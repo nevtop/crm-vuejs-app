@@ -6,10 +6,12 @@
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getTraineeName }}</label>
             </div>
-            <router-link 
-                class="link" 
-                :to="{ name: selectedTab.route , query: { traineeId: $route.params.id } }"
-            >{{ selectedTab.label }}</router-link>
+            <router-link
+                v-for="(button, index) in selectedTab.buttons"
+                :key="index"
+                class="link"
+                :to="{ name: button.route , query: { traineeId: $route.params.id } }"
+            >{{ button.label }}</router-link>
         </div>
         <tab-nav v-bind:tabs="tabs" v-bind:selected="selectedTab"/>
         <template v-if="selectedTab.name === 'PROFILE'">
@@ -42,10 +44,11 @@ export default {
     data: function () {
         return {
             tabs: [
-                { name: 'PROFILE', route: 'EditTrainee', label: 'Edit Profile' },
-                { name: 'SESSION', route: 'AddSession', label: 'Add Session' },
-                { name: 'WORKOUT PLAN', route: 'AddWorkout', label: 'Add Plan' },
-                { name: 'DIET PLAN', route: 'AddDiet', label: 'Add Plan' }
+                { name: 'PROFILE', buttons: [{ route: 'EditTrainee', label: 'Edit Profile' }]},
+                { name: 'SESSION', buttons: [{ route: 'AddSession', label: 'Add Session' },
+                    { route: 'FindSessionModal', label: 'Existing Session' }]},
+                { name: 'WORKOUT PLAN', buttons: [{ route: 'AddWorkout', label: 'Add Plan' }]},
+                { name: 'DIET PLAN', buttons: [{ route: 'AddDiet', label: 'Add Plan' }]}
             ]
         }
     },
@@ -100,10 +103,17 @@ export default {
     border: 2px solid #008cba;
     transition-duration: 0.4s;
     cursor: pointer;
+    width: 117px;
+    margin: 0px 5px;
 }
 
 .link:hover {
     background-color: #008cba;
     color: white;
+}
+
+.expand {
+    width: 185px;
+    transition-duration: 0.4s;
 }
 </style>

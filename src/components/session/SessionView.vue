@@ -6,10 +6,12 @@
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getSessionName }}</label>
             </div>
-            <router-link 
-                class="link" 
-                :to="{ name: selectedTab.route , query: { sessionId: $route.params.id } }"
-            >{{ selectedTab.label }}</router-link>
+            <router-link
+                v-for="(button, index) in selectedTab.buttons"
+                :key="index"
+                class="link"
+                :to="{ name: button.route , query: { traineeId: $route.params.id } }"
+            >{{ button.label }}</router-link>
         </div>
         <tab-nav v-bind:tabs="tabs" v-bind:selected="selectedTab"/>
         <template v-if="selectedTab.name === 'PROFILE'">
@@ -36,9 +38,10 @@ export default {
     data: function () {
         return {
             tabs: [
-                { name: 'PROFILE', route: 'EditSession', label: 'Edit Profile' },
-                { name: 'TRAINEE', route: 'AddTrainee', label: 'Add Trainee' },
-                { name: 'PAYMENTS', route: 'AddTrainee', label: 'Add Service' }
+                { name: 'PROFILE', buttons: [{ route: 'EditSession', label: 'Edit Profile' }]},
+                { name: 'TRAINEE', buttons: [{ route: 'AddTrainee', label: 'Add Trainee' },
+                    { route: 'FindTraineeModal', label: 'Existing Trainee' }]},
+                { name: 'SERVICE', buttons: [{ route: 'AddTrainee', label: 'Add Service' }]}
             ]
         }
     },
@@ -71,7 +74,7 @@ export default {
 .header {
     display:flex;
     justify-content: space-between;
-    margin: 0px 130px;
+    margin: 0px 126px;
 }
 
 .label-heading {
@@ -92,10 +95,17 @@ export default {
     border: 2px solid #008cba;
     transition-duration: 0.4s;
     cursor: pointer;
+    width: 115px;
+    margin: 0px 5px;
 }
 
 .link:hover {
     background-color: #008cba;
     color: white;
+}
+
+.expand {
+    width: 185px;
+    transition-duration: 0.4s;
 }
 </style>

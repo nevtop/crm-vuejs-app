@@ -148,10 +148,13 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     Store.dispatch('CANCEL_PENDING_REQUESTS')
     const isAuthenticated = !!localStorage.getItem('_access_token')
-    if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated)
+    if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
         Store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
-    else
+    } else if (to.name.match(/modal/i)) {
+        Store.dispatch('OPEN_MODAL', to.name)
+    } else {
         next()
+    }
 })
 
 export default router

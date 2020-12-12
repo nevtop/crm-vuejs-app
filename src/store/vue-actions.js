@@ -63,6 +63,9 @@ export default {
         EventBus.$emit('toggle-side-nav', false)
         commit('CLEAR_LOCAL_DATA')
     },
+    OPEN_MODAL: async function ({ commit }, modalbox) {
+        console.log(modalbox)
+    },
     REGISTER_CLIENT: async function ({ commit }, clientData) {
         try {
             const config = Util.getConfig('REGISTER_CLIENT', HttpMethod.POST, Url.REGISTER_CLIENT, clientData)

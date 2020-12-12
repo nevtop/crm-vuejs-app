@@ -40,8 +40,16 @@ export default {
         EventBus.$on('toggle-side-nav', (drawn) => {
             if (drawn) {
                 this.$refs['container-app'].style.marginLeft = '20%'
+                const links = document.getElementsByClassName("link");
+                for(let i = 0; i < links.length; i++) {
+                    links[i].classList.add("expand");
+                }
             } else {
                 this.$refs['container-app'].style.marginLeft = '0%'
+                const links = document.getElementsByClassName("link");
+                for(let i = 0; i < links.length; i++) {
+                    links[i].classList.remove("expand");
+                }
             }
         })
     }
