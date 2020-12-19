@@ -12,7 +12,7 @@
             <form-field input="radio" label="Session Type" map="sessionType" :models="types"></form-field>
         </form-module>
         <form-module name="Address" v-bind:mode="mode" v-model="address" :disable="sameAsClientAddress">
-            <div v-if="mode !== 'VIEW'" slot="form-control" class="form-control">
+            <div v-if="mode !== 'VIEW' && client.clientId > 0" slot="form-control" class="form-control">
                 <label>
                     <input type="checkbox" v-model="sameAsClientAddress">
                     same as client address
@@ -38,7 +38,6 @@ import FormModule from '@/components/common/FormModule'
 import FormField from '@/components/common/FormField'
 import Datepicker from 'vuejs-datepicker'
 import { mapper } from '@/commonjs/util'
-
 export default {
     props: {
         sessionInfo: Object
@@ -81,7 +80,6 @@ export default {
                 this.populate()
                 break
         }
-
         /* Add session in client view */
         if (this.$route.query.clientId) {
             this.client.clientId = this.$route.query.clientId
@@ -105,7 +103,6 @@ export default {
             const sessionData = data 
                     ? data 
                     : this.$store.getters.GET_SESSION_INFO
-
             if (sessionData && sessionData.address) {
                 this.sameAsClientAddress = this.mode === 'EDIT'
                         ? sessionData.sameAsClientAddress
@@ -157,11 +154,9 @@ export default {
     border-radius: 10px;
     padding: 30px 70px;
 }
-
 .action {
     margin-top: 50px;
 }
-
 .btn {
     width: 140px;
     height: 40px;
@@ -169,7 +164,6 @@ export default {
 #x{
   margin-left: 100px;
 }
-
 .form-control {
     float: right;
 }
