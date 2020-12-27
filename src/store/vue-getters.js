@@ -40,5 +40,11 @@ export default {
     },
     GET_TRAINEE_INFO: function (state) {
         return state.trainee.info
+    },
+    GET_LEED_LIST: function (state) {
+        return state.leed.list
+    },
+    GET_LEED_INFO: function (state) {
+        return state.leed.info
     }
 }

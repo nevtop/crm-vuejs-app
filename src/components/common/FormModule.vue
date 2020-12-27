@@ -72,6 +72,15 @@
                             @selected="inputValue"
                         />
                     </template>
+                    <template v-else-if="item.input === 'textarea'">
+                        <textarea 
+                            :ref="item.map"
+                            cols="40" 
+                            rows="10" 
+                            @input="inputValue"
+                            v-model="item.value"
+                        />
+                    </template>
                 </span>
             </div>
             <div v-else class="column left-align">
@@ -164,7 +173,9 @@ export default {
                     case 'date':
                         newVal[`${item.map}`] = this.$refs[`${item.map}`][0].selectedDate.getTime()
                         break
-
+                    case 'textarea':
+                        newVal[`${item.map}`] = this.$refs[`${item.map}`][0].value
+                        break
                     default:
                 }
             });

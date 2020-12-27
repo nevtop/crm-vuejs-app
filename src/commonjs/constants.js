@@ -23,4 +23,8 @@ export const Url = {
     UPDATE_TRAINEE: '/trainee/update',
     FETCH_ALL_TRAINEES: '/trainee/all',
     RETRIEVE_TRAINEE_INFO: '/trainee/info',
+    CREATE_LEED: '/leed/create',
+    FETCH_ALL_LEEDS: '/leed/all',
+    RETRIEVE_LEED_INFO: '/leed/info',
+    UPDATE_LEED: '/leed/update'
 }

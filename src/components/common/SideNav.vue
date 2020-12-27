@@ -2,6 +2,7 @@
     <div class="sidenav" v-bind:class="{ 'drawn': drawn }">
         <div>
             <a href="#" class="menu-item">About</a>
+            <router-link :to="{name: 'Leeds'}" v-on:click.native="emitEvents" class="menu-item">Leeds</router-link>
             <router-link :to="{name: 'Clients'}" v-on:click.native="emitEvents" class="menu-item">Clients</router-link>
             <router-link :to="{name: 'Sessions'}" v-on:click.native="emitEvents" class="menu-item">Sessions</router-link>
             <router-link :to="{name: 'Trainees'}" v-on:click.native="emitEvents" class="menu-item">Trainees</router-link>

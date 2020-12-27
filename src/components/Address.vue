@@ -13,7 +13,7 @@
             <input type="text" class="input-field" v-model="addressLine2">
             <input type="text" class="input-field" v-model="city">
             <input type="text" class="input-field" v-model="state">
-            <input type="text" class="input-field" v-model="pincode">
+            <input type="number" class="input-field" v-model="pincode">
             <input type="text" class="input-field" v-model="country">
         </div>
     </div>

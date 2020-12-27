@@ -9,13 +9,18 @@
 		        </tr>
             </thead>
             <tbody>
-                <tr v-for="(row, index) in rows" v-bind:key="index">
-                    <td>{{ index + 1 }}</td>
-                    <td v-for="(column, index) in columns" v-bind:key="index">{{ row[column.map] }}</td>
-                    <td>
-                        <router-link :to={} v-on:click.native="saveRowData(row)">view</router-link>
-                    </td>
-                </tr>
+                <template v-if="rows.length > 0">
+                    <tr v-for="(row, index) in rows" v-bind:key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td v-for="(column, index) in columns" v-bind:key="index">{{ row[column.map] }}</td>
+                        <td>
+                            <router-link :to={} v-on:click.native="saveRowData(row)">view</router-link>
+                        </td>
+                    </tr>
+                </template>
+                <template v-else>
+                    <tr><td :colspan="columns.length + 2" style="text-align:center">No record found</td></tr>
+                </template>
             </tbody>
         </table>
         <div style="display:none;">
@@ -28,7 +33,10 @@
 
 export default {
     props: {
-        list: Array,
+        list: {
+            type: Array,
+            default: () => []
+        },
         action: String
     },
     data: function () {
@@ -60,7 +68,9 @@ export default {
     },
     watch: {
         list: function () {
-            this.rows = this.list
+            this.rows = (this.list != null && this.list.length > 0)
+                    ? this.list
+                    : []
         }
     }
 };

@@ -223,5 +223,43 @@ export default {
         } catch (err) {
             console.error('Error occurred in API: RETRIEVE_TRAINEE_INFO')
         }
+    },
+    CREATE_LEED: async function ({ commit }, leedData) {
+        try {
+            const config = Util.getConfig('CREATE_LEED', HttpMethod.POST, Url.CREATE_LEED, leedData)
+            const { data } = await sendRequest(config)
+            commit('DATA_MODIFIED', true)
+            Router.go(-1)
+        } catch (err) { 
+            console.error('Error occurred in API: CREATE_LEED')
+        }
+    },
+    FETCH_ALL_LEEDS: async function ({ commit }) {
+        try {
+            const config = Util.getConfig('FETCH_ALL_LEEDS', HttpMethod.GET, Url.FETCH_ALL_LEEDS)
+            const { data } = await sendRequest(config)
+            commit('SET_LEED_LIST', data.data)
+        } catch (err) {
+            console.error('Error occurred in API: FETCH_ALL_LEEDS')
+        }
+    },
+    RETRIEVE_LEED_INFO: async function ({ commit }, id) {
+        try {
+            const config = Util.getConfig('RETRIEVE_LEED_INFO', HttpMethod.GET, Url.RETRIEVE_LEED_INFO.concat(`/${id}`))
+            const { data } = await sendRequest(config)
+            commit('SET_LEED_INFO', data.data[0])
+        } catch (err) {
+            console.error('Error occurred in API: RETRIEVE_LEED_INFO')
+        }
+    },
+    UPDATE_LEED: async function ({ commit }, leedData) {
+        try {
+            const config = Util.getConfig('UPDATE_LEED', HttpMethod.PUT, Url.UPDATE_LEED, leedData)
+            const { data } = await sendRequest(config)
+            commit('DATA_MODIFIED', true)
+            Router.go(-1)
+        } catch (err) {
+            console.error('Error occurred in API: UPDATE_LEED')
+        }
     }
 }

@@ -2,17 +2,21 @@ import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
-// alert
+// Alert.vue
 import { faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 library.add(faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle)
 
-// client
+//search filter
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
+library.add(faFilter)
+
+// ClientView.vue
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 library.add(faCaretRight)
 
-// setting - user
-import { faUser, faSitemap } from '@fortawesome/free-solid-svg-icons'
-library.add(faUser, faSitemap)
+// Setting.vue - user
+import { faUser, faSitemap, faCubes } from '@fortawesome/free-solid-svg-icons'
+library.add(faUser, faSitemap, faCubes)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)

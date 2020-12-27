@@ -1,11 +1,16 @@
 <template>
     <div>
         <template v-if="settingPage">
-            <div v-for="(setting,index) in settings" v-bind:key="index">
+            <div v-for="(setting,index) in settings" v-bind:key="index" class="setting-section">
                 <p class="heading"><span class="heading-title">{{ setting.name }}</span></p>
                 <ul class="settings-list">
-                    <li v-for="item in setting.items" v-bind:key="item.id" class="settings-list-item">
-                        <router-link :to="{ name : item.name}" v-on:click.native="settingPage = !settingPage" class="link">
+                    <li 
+                        v-for="item in setting.items"
+                        v-bind:key="item.id"
+                        v-on:click="openItem(item.name)"
+                        class="settings-list-item"
+                    >
+                        <router-link :to="{}" class="link">
                             <font-awesome-icon v-bind:icon="item.icon" size="3x" transform="down-2 shrink-4"/>    
                             <label v-bind:for="item.name" class="label">{{ item.name }}</label>
                         </router-link>
@@ -26,16 +31,14 @@ export default {
                {
                     name: 'USER SETTINGS', 
                     items : [
-                        {
-                            id: 11,
-                            name: 'User',
-                            icon: 'user' 
-                        },
-                        {
-                            id: 12,
-                            name: 'Role',
-                            icon: 'sitemap'
-                        }
+                        { id: 11, name: 'User', icon: 'user' },
+                        { id: 12, name: 'Role', icon: 'sitemap' }
+                    ]
+               },
+               {
+                   name: 'PACKAGE SETTINGS', 
+                    items : [
+                        { id: 21, name: 'Package', icon: 'cubes' }
                     ]
                }
             ]
@@ -50,11 +53,20 @@ export default {
     created: function () {
         if(this.$route.name !== 'Setting')
             this.settingPage = false
+    },
+    methods: {
+        openItem: function (routeName) {
+            this.settingPage = !this.settingPage
+            this.$router.push({ name : routeName })
+        }
     }
 }
 </script>
 
 <style scoped>
+.setting-section {
+    margin-bottom: 70px;
+}
 
 .heading {
     width: 100%; 
@@ -81,8 +93,9 @@ export default {
     text-align: center;
     border: 1px solid #b3b3b2;
     border-radius: 10px;
-    padding: 10px;
     margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .link {

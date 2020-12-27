@@ -23,5 +23,9 @@ export default {
     trainee: {
         list: [],
         info: null
+    },
+    leed: {
+        list: [],
+        info: null
     }
 }

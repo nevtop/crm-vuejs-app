@@ -17,6 +17,9 @@ import SessionView from '@/components/session/SessionView'
 import Trainees from '@/components/trainee/Trainees'
 import TraineeForm from '@/components/trainee/TraineeForm'
 import TraineeView from '@/components/trainee/TraineeView'
+import Leeds from '@/components/leed/Leeds'
+import LeedForm from '@/components/leed/LeedForm'
+import LeedView from '@/components/leed/LeedView'
 
 Vue.use(Router)
 
@@ -38,6 +41,30 @@ const router = new Router({
             name: 'Home',
             meta: { requiresAuth: true },
             components: { app: Home }
+        },
+        {
+            path: '/leeds',
+            name: 'Leeds',
+            meta: { requiresAuth: true },
+            components: { app: Leeds },
+            children: [
+                {
+                    path: 'profile/new',
+                    name: 'AddLeed',
+                    components: { 'leeds': LeedForm }
+                },
+                {
+                    path: 'profile/edit',
+                    name: 'EditLeed',
+                    components: { 'leeds': LeedForm }
+                }
+            ]
+        },
+        {
+            path: '/leed/:id',
+            name: 'LeedView',
+            meta: { requiresAuth: true },
+            components: { app: LeedView }
         },
         {
             path: '/clients',

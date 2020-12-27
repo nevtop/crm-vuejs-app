@@ -1,20 +1,23 @@
 <template>
     <div>
-        <div v-if="clientPage" class="wrapper">
+        <div v-if="leedPage" class="wrapper">
             <div class="heading">
-                <label class="label-heading">Clients</label>
-                <router-link :to="{ name: 'AddClient' }" class="link">New Client</router-link>
+                <label class="label-heading">Leeds</label>
+                <router-link :to="{ name: 'AddLeed'}" class="link">New Leed</router-link>
             </div>
-            <search width='250px' placeholder="Search for clients.."></search>
-            <table-view v-bind:list="clientList" action="ClientView">
-                <table-column label="Client Name" map="clientName"></table-column>
-                <table-column label="Client Type" map="clientType"></table-column>
-                <table-column label="Boarding Date" map="onboardingDate"></table-column>
+            <search width='250px' placeholder="Search for leeds.."></search>
+            <table-view v-bind:list="leedList" action="LeedView">
+                <table-column label="Leed Name" map="leedName"></table-column>
+                <table-column label="Status" map="status"></table-column>
+                <table-column label="Stage" map="stage"></table-column>
+                <table-column label="Source" map="source"></table-column>
+                <table-column label="Email" map="email"></table-column>
+                <table-column label="Phone No" map="phone"></table-column>
                 <table-column label="City" map="city"></table-column>
                 <table-column label="State" map="state"></table-column>
             </table-view>
         </div>
-        <router-view name="clients"></router-view>
+        <router-view name="leeds"></router-view>
     </div>
 </template>
 
@@ -27,7 +30,7 @@ import TableColumn from '@/components/table/TableColumn.vue'
 export default {
     data: function () {
         return {
-            clientPage: true
+            leedPage: true
         }
     },
     components: {
@@ -36,34 +39,29 @@ export default {
         'table-column': TableColumn
     },
     created: function () {
-        if (this.$route.name === 'Clients') {
-            this.$store.dispatch('FETCH_ALL_CLIENTS')
-            this.clientPage = true
+        if (this.$route.name === 'Leeds') {
+            this.$store.dispatch('FETCH_ALL_LEEDS')
+            this.leedPage = true
         } else {
-            this.clientPage = false
-        }
-
-        if (this.$store.getters.GET_CLIENT_SELECT_LIST.length == 0) {
-            this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
+            this.leedPage = false
         }
     },
     computed: {
         ...mapGetters({
-            clientList: 'GET_CLIENT_LIST'
+            leedList: 'GET_LEED_LIST'
         })
     },
     methods: {},
     watch: {
         $route (to, next) {
-            if (to.name === 'Clients') {
-                this.clientPage = true
+            if (to.name === 'Leeds') {
+                this.leedPage = true
                 if (this.$store.getters.IS_DATA_MODIFIED) {
-                    this.$store.dispatch('FETCH_ALL_CLIENTS')
-                    this.$store.dispatch('FETCH_CLIENT_SELECT_LIST')
+                    this.$store.dispatch('FETCH_ALL_LEEDS')
                     this.$store.commit('DATA_MODIFIED', false)
                 }
             } else {
-                this.clientPage = false
+                this.leedPage = false
             }
         }
     }

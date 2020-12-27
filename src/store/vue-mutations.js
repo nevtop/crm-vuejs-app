@@ -112,5 +112,18 @@ export default {
         // traineeInfo.clientId = traineeInfo.client.id
         state.trainee.info = traineeInfo
         // localStorage.setItem('_member_info', JSON.stringify(traineeInfo))
+    },
+    SET_LEED_LIST: function (state, leedList) {
+        const processList = leedList.map((ele, index) => {
+            const newEle = {...ele, ...ele.address}
+            newEle.sno = ++index
+            newEle.status = ele.active ? "ACTIVE" : "REJECT";
+            delete newEle.address
+            return newEle
+        })
+        state.leed.list = processList
+    },
+    SET_LEED_INFO: function (state, leedInfo) {
+        state.leed.info = leedInfo
     }
 }
