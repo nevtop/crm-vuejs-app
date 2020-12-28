@@ -9,6 +9,7 @@
             <table-view v-bind:list="clientList" action="ClientView">
                 <table-column label="Client Name" map="clientName"></table-column>
                 <table-column label="Client Type" map="clientType"></table-column>
+                <table-column label="Status" map="status"></table-column>
                 <table-column label="Boarding Date" map="onboardingDate"></table-column>
                 <table-column label="City" map="city"></table-column>
                 <table-column label="State" map="state"></table-column>

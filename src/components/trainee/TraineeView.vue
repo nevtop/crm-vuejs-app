@@ -5,6 +5,7 @@
                 <label for="heading">Trainee</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getTraineeName }}</label>
+                <v-button :status="getStatus"></v-button>
             </div>
             <div style="margin-right: 125px">
                 <router-link
@@ -35,13 +36,15 @@
 import TabNav from '@/components/common/TabNav'
 import TraineeForm from '@/components/trainee/TraineeForm'
 import Sessions from '@/components/session/Sessions'
+import VButton from '@/components/elements/vbutton'
 import { mapGetters } from 'vuex'
 
 export default {
     components: {
         'tab-nav': TabNav,
         'trainee-form': TraineeForm,
-        'sessions': Sessions
+        'sessions': Sessions,
+        'v-button': VButton
     },
     data: function () {
         return {
@@ -64,17 +67,22 @@ export default {
         this.$store.dispatch('FETCH_SESSION_SELECT_LIST')
     },
     computed: {
-        ...mapGetters({
-            params: 'GET_ROUTE_PARAMS',
+        ...mapGetters({    
             traineeInfo: 'GET_TRAINEE_INFO',
             selectedTab: 'GET_SELECTED_TAB'
         }),
         getTraineeName: function () {
-            if (this.params.TraineeView) {
-                return this.params.TraineeView.firstName + " " 
-                    + this.params.TraineeView.lastName
+            return (this.traineeInfo && this.traineeInfo.profile)
+                ? this.traineeInfo.profile.firstName + " " + this.traineeInfo.profile.lastName
+                : ""
+        },
+        getStatus: function () {
+            if (this.traineeInfo && this.traineeInfo.profile) {
+                return (this.traineeInfo.profile.active) 
+                    ? { name: 'Active', type: 'active' }
+                    : { name: 'Inactive', type: 'inactive' }
             }
-            return ""
+            return { name: 'Unknown', type: 'info' }
         }
     }
 }

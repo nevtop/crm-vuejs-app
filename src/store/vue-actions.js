@@ -87,12 +87,11 @@ export default {
         }
     },
     FETCH_ALL_CLIENTS: async function ({ commit }) {
-        try {
-            const formData = new FormData()
-            formData.set('fields', 'id,clientId,clientType,clientName,onboardingDate,address,city,state')
-
-            const config = Util.getConfig('FETCH_ALL_CLIENTS', HttpMethod.POST, Url.FETCH_ALL_CLIENTS,
-                formData, null, { 'Content-Type': 'multipart/form-data' })
+        try {   
+            // const formData = new FormData()
+            // formData.set('fields', 'id,clientId,clientType,clientName,onboardingDate,address,city,state')
+            // { 'Content-Type': 'multipart/form-data' }
+            const config = Util.getConfig('FETCH_ALL_CLIENTS', HttpMethod.GET, Url.FETCH_ALL_CLIENTS)
             const { data } = await sendRequest(config)
             commit('SET_CLIENT_LIST', data.data)  
         } catch (err) {

@@ -5,6 +5,7 @@
                 <label for="heading">Client</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getClientName }}</label>
+                <v-button :status="getStatus"></v-button>
             </div>
             <div style="margin-right: 125px">
                 <router-link
@@ -29,13 +30,15 @@
 import TabNav from '@/components/common/TabNav'
 import ClientForm from '@/components/client/ClientForm'
 import Sessions from '@/components/session/Sessions'
+import VButton from '@/components/elements/vbutton'
 import { mapGetters } from 'vuex';
 
 export default {
     components: {
         'tab-nav': TabNav,
         'client-form': ClientForm,
-        'sessions': Sessions
+        'sessions': Sessions,
+        'v-button': VButton
     },
     data: function () {
         return {
@@ -55,15 +58,19 @@ export default {
     },
     computed: {
         ...mapGetters({
-            params: 'GET_ROUTE_PARAMS',
             clientInfo: 'GET_CLIENT_INFO',
             selectedTab: 'GET_SELECTED_TAB'
         }),
         getClientName: function () {
-            if (this.params.ClientView) {
-                return this.params.ClientView.clientName
+            return (this.clientInfo) ? this.clientInfo.clientName : ""
+        },
+        getStatus: function () {
+            if (this.clientInfo) {
+                return (this.clientInfo.active) 
+                    ? { name: 'Active', type: 'active' }
+                    : { name: 'Inactive', type: 'inactive' }
             }
-            return ""
+            return { name: 'Unknown', type: 'info' }
         }
     }
 }

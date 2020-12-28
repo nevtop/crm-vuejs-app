@@ -2,9 +2,10 @@
     <div>
         <div class="flex-sb">
             <div class="view-heading">
-                <label for="heading">Client</label> 
+                <label for="heading">Leed</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getLeedName }}</label>
+                <v-button :status="getStatus"></v-button>
             </div>
             <div style="margin-right: 125px">
                 <router-link
@@ -19,7 +20,7 @@
         <template v-if="selectedTab.name === 'PROFILE'">
             <leed-form :leedInfo="leedInfo"></leed-form>
         </template>
-        <template v-else-if="selectedTab.name === 'HISTORY'">
+        <template v-else-if="selectedTab.name === 'TIMELINE'">
             <!-- left-blank -->
         </template>
     </div>
@@ -28,18 +29,20 @@
 <script>
 import TabNav from '@/components/common/TabNav'
 import LeedForm from '@/components/leed/LeedForm'
+import VButton from '@/components/elements/vbutton'
 import { mapGetters } from 'vuex';
 
 export default {
     components: {
         'tab-nav': TabNav,
-        'leed-form': LeedForm
+        'leed-form': LeedForm,
+        'v-button': VButton
     },
     data: function () {
         return {
             tabs: [
                 { name: 'PROFILE', buttons: [{ route: 'EditLeed', label: 'Edit Profile' }] },
-                { name: 'HISTORY', buttons: [] }
+                { name: 'TIMELINE', buttons: [] }
             ]
         }
     },
@@ -53,12 +56,19 @@ export default {
     },
     computed: {
         ...mapGetters({
-            params: 'GET_ROUTE_PARAMS',
             leedInfo: 'GET_LEED_INFO',
             selectedTab: 'GET_SELECTED_TAB'
         }),
         getLeedName: function () {
-            return (this.params.LeedView) ? this.params.LeedView.leedName : ""
+            return (this.leedInfo) ? this.leedInfo.leedName : ""
+        },
+        getStatus: function () {
+            if (this.leedInfo) {
+                return (this.leedInfo.active)
+                    ? { name: 'Active', type: 'active' }
+                    : { name: 'Reject', type: 'inactive' }
+            }
+            return { name: 'Unknown', type: 'info' }
         }
     }
 }

@@ -41,9 +41,8 @@ export default {
     top: 0;
     left: 0;
     background-color: #111;
-    overflow-y: hidden;
+    overflow: auto;
     transition: width 0.5s ease;
-    padding-top: 60px;
 }
 
 .drawn {

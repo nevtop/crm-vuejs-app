@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import getDefaultState from './vue-states'
 
 export default {
     SET_ACCESS_TOKEN: function (state, token) {
@@ -19,10 +20,9 @@ export default {
         localStorage.removeItem('_user')
         localStorage.removeItem('_access_token')
         localStorage.removeItem('_refresh_token')
-        state.jwt.accessToken = null
-        state.jwt.refreshToken = null
+        localStorage.removeItem('_route_params')
+        Object.assign(state, getDefaultState())
         state.isAuthenticated = false
-        state.configMap.clear()
         delete Axios.defaults.headers.common['Authorization']
     },
     ADD_REQUEST_CONFIG: function (state, config) {
@@ -48,6 +48,7 @@ export default {
         const processList = clientList.map((ele, index) => {
             const newEle = {...ele, ...ele.address}
             newEle.sno = ++index
+            newEle.status = ele.active ? 'ACTIVE' : 'INACTIVE'
             newEle.onboardingDate = new Intl.DateTimeFormat('en-GB')
                 .format(new Date(ele.onboardingDate))
             delete newEle.address
@@ -76,19 +77,13 @@ export default {
     },
     SET_CLIENT_INFO: function (state, clientInfo) {
         state.client.info = clientInfo
-        // localStorage.setItem('_client_info', JSON.stringify(clientInfo))
     },
     SET_SESSION_LIST: function (state, sessionList) {
         const processList = sessionList.map((ele, index) => {
             const newEle = {...ele, ...ele.client, ...ele.address}
             newEle.sno = ++index
-            if (ele.active === true) {
-                newEle.status = 'RUNNING'
-            } else {
-                newEle.status = 'STOPPED'
-            }
+            newEle.status = ele.active ? 'RUNNING' : 'STOPPED'
             delete newEle.address
-            delete newEle.active
             return newEle
         })
         state.session.list = processList
@@ -96,8 +91,6 @@ export default {
     SET_SESSION_INFO: function (state, sessionInfo) {
         sessionInfo.clientId = sessionInfo.client.id
         state.session.info = sessionInfo
-
-        // localStorage.setItem('_session_info', JSON.stringify(sessionInfo))
     },
     SET_TRAINEE_LIST: function (state, traineeList) {
         const processList = traineeList.map((ele, index) => {
@@ -109,15 +102,13 @@ export default {
         state.trainee.list = processList
     },
     SET_TRAINEE_INFO: function (state, traineeInfo) {
-        // traineeInfo.clientId = traineeInfo.client.id
         state.trainee.info = traineeInfo
-        // localStorage.setItem('_member_info', JSON.stringify(traineeInfo))
     },
     SET_LEED_LIST: function (state, leedList) {
         const processList = leedList.map((ele, index) => {
             const newEle = {...ele, ...ele.address}
             newEle.sno = ++index
-            newEle.status = ele.active ? "ACTIVE" : "REJECT";
+            newEle.status = ele.active ? 'ACTIVE' : 'REJECT'
             delete newEle.address
             return newEle
         })

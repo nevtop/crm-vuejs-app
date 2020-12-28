@@ -5,6 +5,7 @@
                 <label for="heading">Session</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getSessionName }}</label>
+                <v-button :status="getStatus"></v-button>
             </div>
             <div style="margin-right: 125px">
                 <router-link
@@ -29,13 +30,15 @@
 import TabNav from '@/components/common/TabNav'
 import SessionForm from '@/components/session/SessionForm'
 import Trainees from '@/components/trainee/Trainees'
+import VButton from '@/components/elements/vbutton'
 import { mapGetters } from 'vuex'
 
 export default {
     components: {
         'tab-nav': TabNav,
         'session-form': SessionForm,
-        'trainees': Trainees
+        'trainees': Trainees,
+        'v-button': VButton
     },
     data: function () {
         return {
@@ -58,12 +61,19 @@ export default {
     },
     computed: {
         ...mapGetters({
-            params: 'GET_ROUTE_PARAMS',
             sessionInfo: 'GET_SESSION_INFO',
             selectedTab: 'GET_SELECTED_TAB'
         }),
         getSessionName: function () {
-            return (this.params.SessionView) ? this.params.SessionView.sessionName : ""
+            return (this.sessionInfo) ? this.sessionInfo.sessionName : ""
+        },
+        getStatus: function () {
+            if (this.sessionInfo) {
+                return (this.sessionInfo.active) 
+                    ? { name: 'Running', type: 'active' }
+                    : { name: 'Stopped', type: 'inactive' }
+            }
+            return { name: 'Unknown', type: 'info' }
         }
     }
 }
