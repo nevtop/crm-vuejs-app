@@ -1,5 +1,8 @@
 <template>
     <div>
+        <button class="link fa-btn">
+            <font-awesome-icon icon="angle-down" size="lg" class="fa-icon"/>
+        </button>
         <input 
             type="text" 
             v-model="searchValue" 
@@ -61,5 +64,15 @@ ul {
 .link:hover {
     background-color: #008cba;
     color: white;
+}
+
+.fa-btn:focus > .fa-icon {
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
+
+.fa-icon {
+    transform: rotate(0deg);
+    transition: 0.5s;
 }
 </style>

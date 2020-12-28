@@ -8,9 +8,9 @@
                         v-for="item in setting.items"
                         v-bind:key="item.id"
                         v-on:click="openItem(item.name)"
-                        class="settings-list-item"
+                        class="setting-item"
                     >
-                        <router-link :to="{}" class="link">
+                        <router-link :to="{}" class="rlink">
                             <font-awesome-icon v-bind:icon="item.icon" size="3x" transform="down-2 shrink-4"/>    
                             <label v-bind:for="item.name" class="label">{{ item.name }}</label>
                         </router-link>
@@ -88,7 +88,7 @@ export default {
     flex-wrap: wrap;
 }
 
-.settings-list-item {
+.setting-item {
     width: 60px;
     text-align: center;
     border: 1px solid #b3b3b2;
@@ -98,12 +98,12 @@ export default {
     cursor: pointer;
 }
 
-.link {
+.setting-item .rlink {
     text-decoration: none;
     outline: none;
 }
 
-.label {
+.setting-item .label {
     line-height: 2;
 }
 

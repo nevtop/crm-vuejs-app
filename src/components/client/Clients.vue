@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <div v-if="clientPage" class="wrapper">
-            <div class="heading">
-                <label class="label-heading">Clients</label>
+    <div class="section-wrapper">
+        <template v-if="clientPage">
+            <div class="flex-sb mb-25">
+                <label class="section-heading">Clients</label>
                 <router-link :to="{ name: 'AddClient' }" class="link">New Client</router-link>
             </div>
             <search width='250px' placeholder="Search for clients.."></search>
@@ -13,7 +13,7 @@
                 <table-column label="City" map="city"></table-column>
                 <table-column label="State" map="state"></table-column>
             </table-view>
-        </div>
+        </template>
         <router-view name="clients"></router-view>
     </div>
 </template>
@@ -71,38 +71,4 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-    max-width: 1100px;
-    margin: auto;
-}
-
-.heading {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
-}
-
-.label-heading {
-    height: 45px;
-    font-size: 25px;
-    font-weight: bold;
-    line-height: 40px;
-}
-
-.link {
-    color: black;
-    text-align: center;
-    height: 18px;
-    padding: 12px 10px;
-    text-decoration: none;
-    font-size: 15px;
-    border: 2px solid #008cba;
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-
-.link:hover {
-    background-color: #008cba;
-    color: white;
-}
 </style>

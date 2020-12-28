@@ -1,8 +1,8 @@
 <template>
-    <div class="wrapper">
+    <div class="section-wrapper">
         <template v-if="sessionPage || sessionTab">
-            <div v-if="sessionPage" class="heading">
-                <label class="label-heading">Sessions</label>
+            <div v-if="sessionPage" class="flex-sb mb-25">
+                <label class="section-heading">Sessions</label>
                 <router-link :to="{ name: 'AddSession' }" class="link">New Session</router-link>
             </div>
             <search v-if="sessionPage" width='250px' placeholder="Search for sessions.."></search>
@@ -85,40 +85,4 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-    max-width: 1100px;
-    margin: auto;
-}
-
-.heading {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
-}
-
-.label-heading {
-    height: 45px;
-    font-size: 25px;
-    font-weight: bold;
-    line-height: 40px;
-}
-
-.link {
-    float: right;
-    display: block;
-    color: black;
-    text-align: center;
-    height: 18px;
-    padding: 12px 10px;
-    text-decoration: none;
-    font-size: 15px;
-    border: 2px solid #008cba;
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-
-.link:hover {
-    background-color: #008cba;
-    color: white;
-}
 </style>

@@ -1,17 +1,19 @@
 <template>
     <div>
-        <div class="header">
-            <div class="label-heading">
+        <div class="flex-sb">
+            <div class="view-heading">
                 <label for="heading">Trainee</label> 
                 <font-awesome-icon icon="caret-right" size="lg" transform="down-1 shrink-8"/>
                 <label for="">{{ getTraineeName }}</label>
             </div>
-            <router-link
-                v-for="(button, index) in selectedTab.buttons"
-                :key="index"
-                class="link"
-                :to="{ name: button.route , query: { traineeId: $route.params.id } }"
-            >{{ button.label }}</router-link>
+            <div style="margin-right: 125px">
+                <router-link
+                    v-for="(button, index) in selectedTab.buttons"
+                    :key="index"
+                    class="link"
+                    :to="{ name: button.route , query: { traineeId: $route.params.id } }"
+                >{{ button.label }}</router-link>
+            </div>
         </div>
         <tab-nav v-bind:tabs="tabs" v-bind:selected="selectedTab"/>
         <template v-if="selectedTab.name === 'PROFILE'">
@@ -21,10 +23,10 @@
             <sessions></sessions>
         </template>
         <template v-else-if="selectedTab.name === 'WORKOUT PLAN'">
-            <!-- <trainees></trainees> -->
+            <!-- left-blank -->
         </template>
         <template v-else-if="selectedTab.name === 'DIET PLAN'">
-            <!-- <trainees></trainees> -->
+            <!-- left-blank -->
         </template>
     </div>
 </template>
@@ -79,41 +81,4 @@ export default {
 </script>
 
 <style scoped>
-.header {
-    display:flex;
-    justify-content: space-between;
-    margin: 0px 130px;
-}
-
-.label-heading {
-    height: 45px;
-    font-size: 25px;
-    font-weight: bold;
-    line-height: 40px;
-    width: 950px;
-}
-
-.link {
-    color: black;
-    font-weight: normal;
-    text-align: center;
-    padding: 12px 10px;
-    text-decoration: none;
-    font-size: 15px;
-    border: 2px solid #008cba;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    width: 117px;
-    margin: 0px 5px;
-}
-
-.link:hover {
-    background-color: #008cba;
-    color: white;
-}
-
-.expand {
-    width: 185px;
-    transition-duration: 0.4s;
-}
 </style>

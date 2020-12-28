@@ -1,5 +1,5 @@
 <template>
-    <div id="app" ref="container-app" class="container">
+    <div id="app" ref="root" class="root">
         <template v-if="!login">
             <top-bar></top-bar>
             <side-nav></side-nav>
@@ -38,19 +38,8 @@ export default {
             this.login = false
             
         EventBus.$on('toggle-side-nav', (drawn) => {
-            if (drawn) {
-                this.$refs['container-app'].style.marginLeft = '20%'
-                const links = document.getElementsByClassName("link");
-                for(let i = 0; i < links.length; i++) {
-                    links[i].classList.add("expand");
-                }
-            } else {
-                this.$refs['container-app'].style.marginLeft = '0%'
-                const links = document.getElementsByClassName("link");
-                for(let i = 0; i < links.length; i++) {
-                    links[i].classList.remove("expand");
-                }
-            }
+            const width = (drawn) ? '20%' : '0%'
+            this.$refs['root'].style.marginLeft = width
         })
     }
 }
@@ -60,7 +49,7 @@ export default {
 @import './styles/main.css';
 @import './styles/util.css';
 
-.container {
+.root {
     transition: 0.5s;
 }
 </style>

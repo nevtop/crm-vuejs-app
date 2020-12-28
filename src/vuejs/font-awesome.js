@@ -7,8 +7,8 @@ import { faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle } from 
 library.add(faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle)
 
 //search filter
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
-library.add(faFilter)
+import { faFilter, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+library.add(faFilter, faAngleDown)
 
 // ClientView.vue
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'

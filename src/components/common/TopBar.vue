@@ -53,7 +53,7 @@ img {
     color: black;
     font-weight: bold;
     text-align: center;
-    padding: 14px 16px;
+    padding: 12px 10px;
     text-decoration: none;
     font-size: 17px;
     margin: 5px;

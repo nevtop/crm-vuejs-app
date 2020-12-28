@@ -1,13 +1,11 @@
 <template>
     <div class="sidenav" v-bind:class="{ 'drawn': drawn }">
-        <div>
-            <a href="#" class="menu-item">About</a>
-            <router-link :to="{name: 'Leeds'}" v-on:click.native="emitEvents" class="menu-item">Leeds</router-link>
-            <router-link :to="{name: 'Clients'}" v-on:click.native="emitEvents" class="menu-item">Clients</router-link>
-            <router-link :to="{name: 'Sessions'}" v-on:click.native="emitEvents" class="menu-item">Sessions</router-link>
-            <router-link :to="{name: 'Trainees'}" v-on:click.native="emitEvents" class="menu-item">Trainees</router-link>
-            <router-link :to="{name: 'Setting'}" v-on:click.native="emitEvents" class="menu-item">Settings</router-link>
-        </div>
+        <a href="#" class="menu-item">About</a>
+        <router-link :to="{name: 'Leeds'}" v-on:click.native="emitEvents" class="menu-item">Leeds</router-link>
+        <router-link :to="{name: 'Clients'}" v-on:click.native="emitEvents" class="menu-item">Clients</router-link>
+        <router-link :to="{name: 'Sessions'}" v-on:click.native="emitEvents" class="menu-item">Sessions</router-link>
+        <router-link :to="{name: 'Trainees'}" v-on:click.native="emitEvents" class="menu-item">Trainees</router-link>
+        <router-link :to="{name: 'Setting'}" v-on:click.native="emitEvents" class="menu-item">Settings</router-link>
     </div>
 </template>
 
@@ -44,7 +42,7 @@ export default {
     left: 0;
     background-color: #111;
     overflow-y: hidden;
-    transition: 0.5s;
+    transition: width 0.5s ease;
     padding-top: 60px;
 }
 
@@ -61,7 +59,6 @@ export default {
     text-align: center;
     color: #fff;
     display: block;
-    transition-duration: 0.4s;
     border: 1px solid #008cba;
     cursor: pointer;
 }

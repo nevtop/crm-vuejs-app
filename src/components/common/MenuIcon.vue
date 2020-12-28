@@ -34,11 +34,10 @@ export default {
 <style scoped>
 .menu-icon {
     display: inline-block;
-    font-size: 40px;
     color: black;
     margin: 5px;
     border: 2px solid #008cba;
-    padding: 5px 15px;
+    padding: 2px 10px;
     transition-duration: 0.4s;
     cursor: pointer;
 }
