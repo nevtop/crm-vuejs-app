@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="leed-view">
         <div class="flex-sb">
             <div class="view-heading">
                 <label for="heading">Leed</label> 
@@ -21,7 +21,7 @@
             <leed-form :leedInfo="leedInfo"></leed-form>
         </template>
         <template v-else-if="selectedTab.name === 'TIMELINE'">
-            <!-- left-blank -->
+            <leed-timeline></leed-timeline>
         </template>
     </div>
 </template>
@@ -29,6 +29,7 @@
 <script>
 import TabNav from '@/components/common/TabNav'
 import LeedForm from '@/components/leed/LeedForm'
+import LeedTimeline from '@/components/leed/LeedTimeline'
 import VButton from '@/components/elements/vbutton'
 import { mapGetters } from 'vuex';
 
@@ -36,6 +37,7 @@ export default {
     components: {
         'tab-nav': TabNav,
         'leed-form': LeedForm,
+        'leed-timeline': LeedTimeline,
         'v-button': VButton
     },
     data: function () {
@@ -50,7 +52,7 @@ export default {
         if (this.$store.getters.GET_SELECTED_TAB) {
             this.$store.commit('SET_SELECTED_TAB', this.$store.getters.GET_SELECTED_TAB)
         } else {
-            this.$store.commit('SET_SELECTED_TAB', this.tabs[0])
+            this.$store.commit('SET_SELECTED_TAB', this.tabs[1])
         }
         this.$store.dispatch('RETRIEVE_LEED_INFO', this.$route.params.id)
     },

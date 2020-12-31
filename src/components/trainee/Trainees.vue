@@ -1,8 +1,8 @@
 <template>
-    <div class="section-wrapper">
+    <div class="module-wrapper">
         <template v-if="traineePage || traineeTab">
             <div v-if="traineePage" class="flex-sb mb-25">
-                <label class="section-heading">Trainees</label>
+                <label class="module-heading">Trainees</label>
                 <router-link :to="{ name: 'AddTrainee'}" class="link">New Trainee</router-link>
             </div>
             <search v-if="traineePage" width='250px' placeholder="Search for trainee.."></search>

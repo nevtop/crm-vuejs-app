@@ -1,6 +1,6 @@
 <template>
     <div class="container-login">
-        <div class="container-wrapper mt-50">
+        <div class="container-wrapper mt-25">
             <form>
                 <span class="label-login mb-20">Login</span>
                 <template v-if="showAlert">
@@ -27,7 +27,7 @@
                         <label for="rememberme">Remember me</label>
                     </div>
                     <div>
-                        <router-link :to="{ name: 'ForgotPassword'}" class="link">Forgot Password?</router-link>
+                        <router-link :to="{ name: 'ForgotPassword'}">Forgot Password?</router-link>
                     </div>
                 </div>
             </form>

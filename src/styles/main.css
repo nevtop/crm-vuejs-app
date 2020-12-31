@@ -103,12 +103,12 @@ div.left-align > span {
     width: 300px;
 }
 
-.section-wrapper {
+.module-wrapper {
     max-width: 1100px;
     margin: auto;
 }
 
-.section-heading {
+.module-heading {
     height: 45px;
     font-size: 25px;
     font-weight: bold;

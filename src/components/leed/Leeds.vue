@@ -1,8 +1,8 @@
 <template>
-    <div class="section-wrapper">
+    <div class="module-wrapper">
         <template v-if="leedPage">
             <div class="flex-sb mb-25">
-                <label class="section-heading">Leeds</label>
+                <label class="module-heading">Leeds</label>
                 <router-link :to="{ name: 'AddLeed'}" class="link">New Leed</router-link>
             </div>
             <search width='250px' placeholder="Search for leeds.."></search>

@@ -1,8 +1,8 @@
 <template>
-    <div class="section-wrapper">
+    <div class="module-wrapper">
         <template v-if="sessionPage || sessionTab">
             <div v-if="sessionPage" class="flex-sb mb-25">
-                <label class="section-heading">Sessions</label>
+                <label class="module-heading">Sessions</label>
                 <router-link :to="{ name: 'AddSession' }" class="link">New Session</router-link>
             </div>
             <search v-if="sessionPage" width='250px' placeholder="Search for sessions.."></search>

@@ -1,8 +1,8 @@
 <template>
-    <div class="section-wrapper">
+    <div class="module-wrapper">
         <template v-if="clientPage">
             <div class="flex-sb mb-25">
-                <label class="section-heading">Clients</label>
+                <label class="module-heading">Clients</label>
                 <router-link :to="{ name: 'AddClient' }" class="link">New Client</router-link>
             </div>
             <search width='250px' placeholder="Search for clients.."></search>
