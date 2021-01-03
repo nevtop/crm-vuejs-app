@@ -46,7 +46,7 @@ export default {
     margin: 3px;
     font-size: 17px;
     font-weight: 900;
-    line-height: 285%;
+    line-height: 280%;
     border: 2px solid #008cba;
     /* transition: border-bottom-color 0.10s ease-in; */
     cursor: pointer;

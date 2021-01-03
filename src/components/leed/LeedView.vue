@@ -21,7 +21,7 @@
             <leed-form :leedInfo="leedInfo"></leed-form>
         </template>
         <template v-else-if="selectedTab.name === 'TIMELINE'">
-            <leed-timeline></leed-timeline>
+            <leed-timeline :leedInfo="leedInfo"></leed-timeline>
         </template>
     </div>
 </template>
@@ -30,7 +30,7 @@
 import TabNav from '@/components/common/TabNav'
 import LeedForm from '@/components/leed/LeedForm'
 import LeedTimeline from '@/components/leed/LeedTimeline'
-import VButton from '@/components/elements/vbutton'
+import VButton from '@/components/elements/CustomButton'
 import { mapGetters } from 'vuex';
 
 export default {

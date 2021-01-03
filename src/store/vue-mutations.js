@@ -49,8 +49,7 @@ export default {
             const newEle = {...ele, ...ele.address}
             newEle.sno = ++index
             newEle.status = ele.active ? 'ACTIVE' : 'INACTIVE'
-            newEle.onboardingDate = new Intl.DateTimeFormat('en-GB')
-                .format(new Date(ele.onboardingDate))
+            newEle.onboardingDate = new Date(ele.onboardingDate).toLocaleDateString("en-GB")
             delete newEle.address
             return newEle
         })
@@ -108,7 +107,6 @@ export default {
         const processList = leedList.map((ele, index) => {
             const newEle = {...ele, ...ele.address}
             newEle.sno = ++index
-            newEle.status = ele.active ? 'ACTIVE' : 'REJECT'
             delete newEle.address
             return newEle
         })

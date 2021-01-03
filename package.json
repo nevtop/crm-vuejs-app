@@ -22,6 +22,7 @@
     "vue": "^2.5.2",
     "vue-axios": "^2.1.5",
     "vue-router": "^3.0.1",
+    "vue2-timepicker": "^1.1.5",
     "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.4.0"
   },

@@ -30,7 +30,7 @@
 import TabNav from '@/components/common/TabNav'
 import SessionForm from '@/components/session/SessionForm'
 import Trainees from '@/components/trainee/Trainees'
-import VButton from '@/components/elements/vbutton'
+import VButton from '@/components/elements/CustomButton'
 import { mapGetters } from 'vuex'
 
 export default {

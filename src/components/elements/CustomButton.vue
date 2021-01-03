@@ -1,5 +1,10 @@
 <template>
-    <button class="button" :class="status.type" style="vertical-align:middle">
+    <button 
+        class="button" 
+        :class="[{ disabled: nohover }, status.type]" 
+        style="vertical-align:middle"
+        @click="$emit('vclick')"
+    >
         <span>{{ status.name }}</span>
     </button>
 </template>
@@ -10,6 +15,10 @@ export default {
         status: {
             type: Object,
             default: () => {}
+        },
+        nohover: {
+            type: Boolean,
+            default: false
         }
     }
 }
@@ -43,7 +52,7 @@ export default {
     transition: 0.25s;
 }
 
-.button span:after {
+.button:not(.disabled) span:after {
     content: '\00bb';
     position: absolute;
     opacity: 0;
@@ -52,11 +61,11 @@ export default {
     transition: 0.25s;
 }
 
-.button:hover span {
+.button:not(.disabled):hover span {
     padding-right: 25px;
 }
 
-.button:hover span:after {
+.button:not(.disabled):hover span:after {
     opacity: 1;
     right: 0;
 }
@@ -66,4 +75,6 @@ export default {
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
+
+.disabled { display: inline-block; }
 </style>
