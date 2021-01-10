@@ -52,7 +52,7 @@ export default {
         if (this.$store.getters.GET_SELECTED_TAB) {
             this.$store.commit('SET_SELECTED_TAB', this.$store.getters.GET_SELECTED_TAB)
         } else {
-            this.$store.commit('SET_SELECTED_TAB', this.tabs[1])
+            this.$store.commit('SET_SELECTED_TAB', this.tabs[0])
         }
         this.$store.dispatch('RETRIEVE_LEED_INFO', this.$route.params.id)
     },

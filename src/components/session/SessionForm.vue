@@ -120,9 +120,7 @@ export default {
                 clientId: this.client.clientId,
                 ...this.basicDetails,
                 sameAsClientAddress: this.sameAsClientAddress,
-                address: {
-                    ...this.address
-                },
+                address: this.address,
             }
             if (this.mode === 'ADD') {
                 this.$store.dispatch('CREATE_SESSION', sessionData)

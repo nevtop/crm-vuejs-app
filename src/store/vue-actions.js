@@ -260,5 +260,14 @@ export default {
         } catch (err) {
             console.error('Error occurred in API: UPDATE_LEED')
         }
+    },
+    SAVE_STAGE: async function ({ commit }, newStage) {
+        try {
+            const config = Util.getConfig('SAVE_STAGE', HttpMethod.POST, Url.SAVE_STAGE, newStage)
+            const { data } = await sendRequest(config)
+            commit('SET_LEED_INFO', data.data[0])
+        } catch (err) {
+            console.error('Error occurred in API: SAVE_STAGE')
+        }
     }
 }

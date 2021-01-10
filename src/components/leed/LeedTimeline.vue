@@ -1,8 +1,8 @@
 <template>
-    <div id="leed-timeline" class="module-wrapper timeline" style="position: relative;">
+    <div id="leed-timeline" class="module-wrapper timeline mb-20" style="position: relative;">
         <div v-for="(timeline, index) in timelines" :key="index" class="card mb-20 ml-20">
             <div class="card-heading">
-                <label>{{ timeline.title }}</label>
+                <label>{{ timeline.stage }}</label>
                 <label style="font-size:14px;font-style:italic;">[{{ timeline.createDate }}]</label>
                 <vbutton
                     v-if="index === timelines.length-1 && !tempStage"
@@ -16,7 +16,7 @@
             <div v-if="index !== timelines.length-1 || !stageEdit" class="card-content">
                 <span>Assigned To<label class="pill-button">{{ getSelectedElement(timeline.assignedTo, assignees, 'Unassigned') }}</label></span>
                 <span>Status<label class="pill-button">{{ timeline.status ? timeline.status : 'Not known' }}</label></span>
-                <span v-if="isStageScheduled(timeline)">Scheduled on<label class="pill-button">{{ getScheduleDate(timeline) }}</label></span>
+                <span v-if="isStageScheduled(timeline)">Scheduled on<label class="pill-button">{{ getScheduleDate(timeline.scheduleDate) }}</label></span>
             </div>
             <!-- ADD & EDIT -->
             <div v-if="index === timelines.length-1 && stageEdit">
@@ -38,7 +38,7 @@
                         Status
                         <select v-model="timeline.status">
                             <option value="">Please select</option>
-                            <option v-for="(st, index) in status" 
+                            <option v-for="(st, index) in stageSt[`${timeline.stage}`]" 
                                 :key="index" :value="st.value" 
                                 :selected="isSelected(st.value, timeline.status)"
                             >{{
@@ -47,7 +47,7 @@
                             </option>
                         </select>
                     </span>
-                    <span style="display:flex">
+                    <span v-if="isStageScheduled(timeline)" style="display:flex">
                         <date-picker v-model="timeline.scheduleDate"/>
                         <time-picker v-model="timeline.timeValue"></time-picker>
                     </span>
@@ -69,6 +69,8 @@ import VButton from '@/components/elements/CustomButton'
 import Datepicker from 'vuejs-datepicker';
 import Timepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
+import * as Util from '@/commonjs/util'
+import { StageStatus } from '@/commonjs/constants'
 
 export default {
     components: {
@@ -84,32 +86,16 @@ export default {
             stageEdit: false,
             tempStage: false,
             nextStageName: '',
-            assignees: [
-                { key: 'Aarti', value: '1'},
-                { key: 'Piyush', value: '2' },
-                { key: 'Vishal', value: '3' },
-                { key: 'Ankit', value: '4' },
-            ],
-            status: [
-                { key: 'CANCELLED', value: 'CANCELLED' },
-                { key: 'DISQUALIFIED', value: 'DISQUALIFIED' },
-                { key: 'DONE', value: 'DONE' },
-                { key: 'HOLD', value: 'HOLD' },
-                { key: 'INPROGRESS', value: 'INPROGRESS' },
-                { key: 'OVERDUE', value: 'OVERDUE' },
-                { key: 'PENDING', value: 'PENDING' },
-                { key: 'QUALIFIED', value: 'QUALIFIED' },
-                { key: 'RECORD', value: 'RECORD' },
-                { key: 'REJECT', value: 'REJECT' },
-                { key: 'SCHEDULED', value: 'SCHEDULED' }
-            ],
-            timelines: [
-                { id: 1, title: 'Generated', stage: 'GENERATION', createDate: '23-DEC-2020', assignedTo: 3, status: 'QUALIFIED' },
-                // { id: 2, title: 'Consultation', createDate: '25-DEC-2020', assignedTo: 'Piyush', status: 'COMPLETED', scheduleDate: 1606156200000 },
-                // { id: 3, title: 'Trail', createDate: '27-DEC-2020', assignedTo: 'Vishal', status: 'COMPLETED' },
-                // { id: 4, title: 'Conversion', createDate: '28-DEC-2020', assignedTo: 'Aarti', status: 'INPROGRESS' },
-            ]
+            assignees: [],
+            stageSt: null,
+            timelines: []
         }
+    },
+    created: function () {
+        if (this.leedInfo && this.leedInfo.leedStatuses) {
+            this.timelines = this.leedInfo.leedStatuses
+        }
+        this.stageSt = StageStatus
     },
     computed: {
         proceedToNextStage: function () {
@@ -121,16 +107,16 @@ export default {
             if (this.leedInfo) {
                 switch (this.leedInfo.stage) {
                     case 'GENERATION':
-                        this.nextStageName = 'Consultation'
+                        this.nextStageName = 'CONSULTATION'
                         return 'Book Consulation'
                     case 'CONSULTATION':
-                        this.nextStageName = 'Trial'
+                        this.nextStageName = 'TRIAL'
                         return 'Book Trial'
                     case 'TRIAL':
-                        this.nextStageName = 'Conversion'
-                        return 'Close Sale'
+                        this.nextStageName = 'CONVERSION'
+                        return 'Contact Leed'
                     case 'CONVERSION':
-                        return 'Create Profile'
+                        return 'Close Sale'
                 }
             }
         }
@@ -144,29 +130,35 @@ export default {
                 ? true
                 : false
         },
-        getScheduleDate: function (timeline) {
-            const arr = timeline.timeValue.split(":");
-            const millis = (parseInt(arr[0])*60 + parseInt(arr[1]))*60*1000
-            const totalMillis = new Date(timeline.scheduleDate).getTime() + millis;
+        getScheduleDate: function (epochTime) {
+            if (epochTime == null) {
+                return '';
+            }
+
             const options = {
                 year: 'numeric', month: 'numeric', day: 'numeric',
                 hour: 'numeric', minute: 'numeric',
                 hour12: false,
             }
-            return new Intl.DateTimeFormat('en-GB', options).format(new Date(totalMillis))
+            return new Intl.DateTimeFormat('en-GB', options).format(new Date(epochTime))
         },
         addStage: function () {
-            this.assignValues(true)
+            if (this.timelines[this.timelines.length-1].stage === 'CONVERSION') {
+                const clientInfo = {
+                    leedId: this.leedInfo.id,
+                    clientName: this.leedInfo.leedName,
+                    address: this.leedInfo.address
+                }
+                this.$router.push({ name: 'AddClient', params: { leedData: clientInfo } });
+                return
+            }
+
+            this.setStates(true)
             const currDate = new Date()
-            const time = currDate.getHours() + ":" + currDate.getMinutes()
-            currDate.setHours(0);
-            currDate.setMinutes(0);
-            currDate.setSeconds(0);
-            currDate.setMilliseconds(0);
+            const time = Util.getTimeValue(currDate.getTime())
             const timeline = { 
-                title: this.nextStageName, 
+                stage: this.nextStageName, 
                 assignedTo: '0', 
-                stage: 'CONSULTATION',
                 status: '', 
                 scheduleDate: currDate,
                 timeValue: time
@@ -174,12 +166,20 @@ export default {
             this.timelines.push(timeline)
         },
         saveStage: function () {
-            this.assignValues(false)
-            this.leedInfo.status = this.timelines[this.timelines.length-1].status
-            this.leedInfo.stage = this.timelines[this.timelines.length-1].stage
+            this.setStates(false)
+            const temp = this.timelines[this.timelines.length-1]
+            const newStage = {
+                id: temp.id,
+                leedId: this.leedInfo.id,
+	            stage: temp.stage,
+	            status: temp.status,
+	            profileId: parseInt(temp.assignedTo),
+	            scheduleDate: Util.calculateScheduleDate(temp.scheduleDate, temp.timeValue)
+            }
+            this.$store.dispatch('SAVE_STAGE', newStage)
         },
         removeStage: function () {
-            this.assignValues(false)
+            this.setStates(false)
             this.timelines.pop()
         },
         getSelectedElement: function (val, models, defVal) {
@@ -189,9 +189,14 @@ export default {
             }
             return defVal
         },
-        assignValues: function (bool) {
+        setStates: function (bool) {
             this.stageEdit = bool
             this.tempStage = bool
+        }
+    },
+    watch: {
+        leedInfo: function(newValue) {
+            this.timelines = newValue.leedStatuses
         }
     }
 }

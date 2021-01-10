@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import getDefaultState from './vue-states'
+import * as Util from '@/commonjs/util'
 
 export default {
     SET_ACCESS_TOKEN: function (state, token) {
@@ -113,6 +114,13 @@ export default {
         state.leed.list = processList
     },
     SET_LEED_INFO: function (state, leedInfo) {
+        leedInfo.leedStatuses.forEach((ele) => {
+            ele.createDate = new Date(ele.createDate).toLocaleDateString("en-GB")
+            if (ele.scheduleDate) {
+                const date = new Date(ele.scheduleDate)
+                ele.timeValue = Util.getTimeValue(date.getTime())
+            }
+        })
         state.leed.info = leedInfo
     }
 }

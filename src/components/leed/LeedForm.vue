@@ -96,9 +96,7 @@ export default {
             const leedData = {
                 active: true,
                 ...this.basicDetails,
-                address: {
-                    ...this.address
-                },
+                address: this.address,
                 ...this.otherDetails
             }
             if (this.mode === 'ADD') {

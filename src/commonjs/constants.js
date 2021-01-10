@@ -26,5 +26,43 @@ export const Url = {
     CREATE_LEED: '/leed/create',
     FETCH_ALL_LEEDS: '/leed/all',
     RETRIEVE_LEED_INFO: '/leed/info',
-    UPDATE_LEED: '/leed/update'
+    UPDATE_LEED: '/leed/update',
+    SAVE_STAGE: '/leed/stage/save'
+}
+
+export const StageStatus = {
+    GENERATION: [
+        { value: 'DISQUALIFIED', key: 'Disqualifed' },
+        { value: 'FOLLOW_UP', key: 'Follow up' },
+        { value: 'HOLD', key: 'Hold' },
+        { value: 'INPROGRESS', key: 'Inprogress' },
+        { value: 'QUALIFIED', key: 'Qualifed' },        
+        { value: 'RECORD', key: 'Record' },
+    ],
+    CONSULTAION: [
+        { value: 'CANCELLED', key: 'Cancelled' },
+        { value: 'DONE', key: 'Done' },
+        { value: 'FOLLOW_UP', key: 'Follow up' },
+        { value: 'HOLD', key: 'Hold' },
+        { value: 'OVERDUE', key: 'Overdue' },
+        { value: 'PENDING', key: 'Pending' },
+        { value: 'REJECT', key: 'Reject' },
+        { value: 'SCHEDULED', key: 'Scheduled' }
+    ],
+    TRIAL: [
+        { value: 'CANCELLED', key: 'Cancelled' },
+        { value: 'DONE', key: 'Done' },
+        { value: 'FOLLOW_UP', key: 'Follow up' },
+        { value: 'HOLD', key: 'Hold' },
+        { value: 'OVERDUE', key: 'Overdue' },
+        { value: 'PENDING', key: 'Pending' },
+        { value: 'REJECT', key: 'Reject' },
+        { value: 'SCHEDULED', key: 'Scheduled' }
+    ],
+    CONVERSION: [
+        { value: 'CLOSE', key: 'Close' },
+        { value: 'FOLLOW_UP', key: 'Follow up' },
+        { value: 'HOLD', key: 'Hold' },
+        { value: 'REJECT', key: 'Reject' },
+    ]
 }

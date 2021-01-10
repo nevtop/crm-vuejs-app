@@ -8,8 +8,8 @@
             <search width='250px' placeholder="Search for leeds.."></search>
             <table-view v-bind:list="leedList" action="LeedView">
                 <table-column label="Leed Name" map="leedName"></table-column>
-                <table-column label="Status" map="status"></table-column>
                 <table-column label="Stage" map="stage"></table-column>
+                <table-column label="Status" map="status"></table-column>
                 <table-column label="Source" map="source"></table-column>
                 <table-column label="Email" map="email"></table-column>
                 <table-column label="Phone No" map="phone"></table-column>

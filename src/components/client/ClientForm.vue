@@ -49,6 +49,7 @@ export default {
                 { key: 'Personal', value: 'PERSONAL' },
                 { key: 'Corporate', value: 'CORPORATE' }
             ],
+            leedId: null,
             basicDetails: { clientType: '', clientName: '', gstNo: '', panNo: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
@@ -69,6 +70,12 @@ export default {
             this.mode = 'VIEW'
             this.populate()
         }
+
+        if (this.$route.params.leedData) {
+            const leedInfo = this.$route.params.leedData
+            this.leedId = leedInfo.leedId;
+            this.populate(leedInfo)
+        }
         
         this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
         this.buttonName = this.mode === 'ADD' ? 'Create' : 'Update'
@@ -87,11 +94,10 @@ export default {
         },
         process: function () {
             const clientData = {
+                leedId: this.leedId,
                 active: true,
                 ...this.basicDetails,
-                address: {
-                    ...this.address
-                },
+                address: this.address,
                 ...this.otherDetails
             }
             if (this.mode === 'ADD') {
