@@ -39,7 +39,7 @@ export const StageStatus = {
         { value: 'QUALIFIED', key: 'Qualifed' },        
         { value: 'RECORD', key: 'Record' },
     ],
-    CONSULTAION: [
+    CONSULTATION: [
         { value: 'CANCELLED', key: 'Cancelled' },
         { value: 'DONE', key: 'Done' },
         { value: 'FOLLOW_UP', key: 'Follow up' },

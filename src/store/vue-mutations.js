@@ -119,6 +119,9 @@ export default {
             if (ele.scheduleDate) {
                 const date = new Date(ele.scheduleDate)
                 ele.timeValue = Util.getTimeValue(date.getTime())
+            } else {
+                ele.scheduleDate = new Date()
+                ele.timeValue = '00:00'
             }
         })
         state.leed.info = leedInfo
