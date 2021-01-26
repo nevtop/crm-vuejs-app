@@ -9,7 +9,7 @@
                     style="float:right" 
                     :status="{ name: !stageEdit ? 'Edit' : 'Cancel', type: 'info'}" 
                     :nohover="true"
-                    @vclick="stageEdit = !stageEdit"
+                    @vclick="cancelEdit"
                 />
             </div>
             <!-- VIEW -->
@@ -20,7 +20,7 @@
             </div>
             <!-- ADD & EDIT -->
             <div v-if="index === timelines.length-1 && stageEdit">
-                <div  class="card-content">
+                <div class="card-content">
                     <span>
                         Assigned To
                         <select v-model="timeline.assignedTo">
@@ -93,13 +93,15 @@ export default {
     },
     created: function () {
         if (this.leedInfo && this.leedInfo.leedStatuses) {
-            this.timelines = this.leedInfo.leedStatuses
+            this.timelines = [...this.leedInfo.leedStatuses]
         }
         this.stageSt = StageStatus
     },
     computed: {
         proceedToNextStage: function () {
-            return (this.leedInfo && (this.leedInfo.status === 'QUALIFIED' || this.leedInfo.status === 'DONE'))
+            return (this.leedInfo && (this.leedInfo.status === 'QUALIFIED' 
+                    || this.leedInfo.status === 'DONE'
+                    || this.leedInfo.status === 'CLOSE'))
                 ? true
                 : false
         },
@@ -141,6 +143,14 @@ export default {
                 hour12: false,
             }
             return new Intl.DateTimeFormat('en-GB', options).format(new Date(epochTime))
+        },
+        cancelEdit: function () {
+            this.stageEdit = !this.stageEdit  
+            if (this.stageEdit) {
+                return
+            }
+            const len = this.timelines.length
+            this.timelines[len-1].status = this.leedInfo.status
         },
         addStage: function () {
             if (this.timelines[this.timelines.length-1].stage === 'CONVERSION') {
