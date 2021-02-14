@@ -63,8 +63,8 @@ export default {
         EventBus.$emit('toggle-side-nav', false)
         commit('CLEAR_LOCAL_DATA')
     },
-    OPEN_MODAL: async function ({ commit }, modalbox) {
-        console.log(modalbox)
+    OPEN_MODAL_BOX: async function ({ commit }, bool) {
+        commit('SET_MODAL_BOX', bool)
     },
     REGISTER_CLIENT: async function ({ commit }, clientData) {
         try {

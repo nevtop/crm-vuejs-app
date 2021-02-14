@@ -45,6 +45,9 @@ export default {
     SET_SELECTED_TAB: function (state, tab) {
         state.selectedTab = tab
     },
+    SET_MODAL_BOX: function (state, bool) {
+        state.modalBox = bool
+    },
     SET_CLIENT_LIST: function (state, clientList) {
         const processList = clientList.map((ele, index) => {
             const newEle = {...ele, ...ele.address}

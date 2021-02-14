@@ -167,7 +167,8 @@ const router = new Router({
                     components: { setting: Role }
                 }
             ]
-        }
+        },
+        { path: '/modal-box', name: 'ModalBox' }
     ],
     mode: 'history'
 })
@@ -178,7 +179,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
         Store.dispatch('PERFORM_LOGOUT', 'sessionExpired')
     } else if (to.name.match(/modal/i)) {
-        Store.dispatch('OPEN_MODAL', to.name)
+        Store.dispatch('OPEN_MODAL_BOX', true)
     } else {
         next()
     }

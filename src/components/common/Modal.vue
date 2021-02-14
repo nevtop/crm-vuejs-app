@@ -2,6 +2,8 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <button class="close" v-on:click="$emit('close')">&times;</button>
+            <h2>{{ title }}</h2>
+            <hr>
             <slot name="content"></slot>
         </div>
     </div>
@@ -13,18 +15,9 @@ export default {
         title: String
     },
     data: function () {
-        return {
-            x: true,
-            y: true,
-            cities: ["bangalore","mysore","delhi"],
-            city: ""
-        }
+        return {}
     },
-    methods: {
-        span: function() {
-            this.x = true;
-        }
-    }
+    methods: {}
 }
 </script>
 

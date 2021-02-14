@@ -10,6 +10,10 @@ library.add(faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle)
 import { faFilter, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 library.add(faFilter, faAngleDown)
 
+//LeedDocument.vue
+import { faFilePdf, faDownload, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+library.add(faFilePdf, faDownload, faTrashAlt)
+
 // ClientView.vue
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 library.add(faCaretRight)

@@ -11,6 +11,7 @@ export default function getDefaultState() {
         routeParams: {},
         isDataModified: false,
         selectedTab: null,
+        modalBox: false,
         client: {
             list: [],
             selectList: [],

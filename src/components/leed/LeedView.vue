@@ -23,6 +23,9 @@
         <template v-else-if="selectedTab.name === 'TIMELINE'">
             <leed-timeline :leedInfo="leedInfo"></leed-timeline>
         </template>
+        <template v-else-if="selectedTab.name === 'DOCUMENT'">
+            <leed-doc></leed-doc>
+        </template>
     </div>
 </template>
 
@@ -31,6 +34,7 @@ import TabNav from '@/components/common/TabNav'
 import LeedForm from '@/components/leed/LeedForm'
 import LeedTimeline from '@/components/leed/LeedTimeline'
 import VButton from '@/components/elements/CustomButton'
+import LeedDocument from '@/components/leed/LeedDocument'
 import { mapGetters } from 'vuex';
 
 export default {
@@ -38,13 +42,15 @@ export default {
         'tab-nav': TabNav,
         'leed-form': LeedForm,
         'leed-timeline': LeedTimeline,
-        'v-button': VButton
+        'v-button': VButton,
+        'leed-doc': LeedDocument
     },
     data: function () {
         return {
             tabs: [
                 { name: 'PROFILE', buttons: [{ route: 'EditLeed', label: 'Edit Profile' }] },
-                { name: 'TIMELINE', buttons: [] }
+                { name: 'TIMELINE', buttons: [] },
+                { name: 'DOCUMENT', buttons: [{ route: 'ModalBox', label: 'Add Document' }]}
             ]
         }
     },
