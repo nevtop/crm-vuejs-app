@@ -5,6 +5,7 @@
         <div class="section" :class="{ 'grey-out': disable }">
             <div class="column right-align">
                 <span v-for="(item, index) in items" v-bind:key="index">{{ item.label }} : </span>
+                <slot name="form-field-label"></slot>
             </div>
             <div v-if="mode === 'ADD' || mode === 'EDIT'" class="column left-align">
                 <span v-for="(item, index) in items" v-bind:key="index">
@@ -82,6 +83,7 @@
                         />
                     </template>
                 </span>
+                <slot name="form-field-value"></slot>
             </div>
             <div v-else class="column left-align">
                 <span v-for="(item, index) in items" v-bind:key="index">
@@ -143,7 +145,9 @@ export default {
     },
     methods: {
         inputValue: function () {
-            let newVal = {};
+            let newVal = {
+                ...this.value
+            };
             this.items.forEach((item) => {
 
                 switch (item.input) {

@@ -2,25 +2,51 @@ import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
-// Alert.vue
-import { faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
-library.add(faTimesCircle, faCheckCircle, faInfoCircle, faExclamationCircle)
+/** Solid SVG icons */
+import {
+    faAngleDown,
+    faCaretRight,
+    faCheckCircle,
+    faCubes,
+    faDownload,
+    faEdit,
+    faExclamationCircle,
+    faFilePdf,
+    faFilter,
+    faInfoCircle,
+    faSitemap,
+    faTimesCircle,
+    faTrashAlt,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons'
 
-//search filter
-import { faFilter, faAngleDown } from '@fortawesome/free-solid-svg-icons'
-library.add(faFilter, faAngleDown)
+library.add(
+    faAngleDown,
+    faCaretRight,
+    faCheckCircle,
+    faCubes,
+    faDownload,
+    faEdit,
+    faExclamationCircle,
+    faFilePdf,
+    faFilter,
+    faInfoCircle,
+    faSitemap,
+    faTimesCircle,
+    faTrashAlt,
+    faUser,
+)
 
-//LeedDocument.vue
-import { faFilePdf, faDownload, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-library.add(faFilePdf, faDownload, faTrashAlt)
+/** Regular SVG icons */
+import {
+    faCircle,
+    faDotCircle,
+} from '@fortawesome/free-regular-svg-icons'
 
-// ClientView.vue
-import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
-library.add(faCaretRight)
-
-// Setting.vue - user
-import { faUser, faSitemap, faCubes } from '@fortawesome/free-solid-svg-icons'
-library.add(faUser, faSitemap, faCubes)
+library.add(
+    faCircle,
+    faDotCircle,
+)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)

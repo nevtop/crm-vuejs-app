@@ -1,268 +1,363 @@
 <template>
-    <div id="leed-timeline" class="module-wrapper timeline mb-20" style="position: relative;">
-        <div v-for="(timeline, index) in timelines" :key="index" class="card mb-20 ml-20">
-            <div class="card-heading">
-                <label>{{ timeline.stage }}</label>
-                <label style="font-size:14px;font-style:italic;">[{{ timeline.createDate }}]</label>
-                <vbutton
-                    v-if="index === timelines.length-1 && !tempStage"
-                    style="float:right" 
-                    :status="{ name: !stageEdit ? 'Edit' : 'Cancel', type: 'info'}" 
-                    :nohover="true"
-                    @vclick="cancelEdit"
-                />
+    <div class="module-wrapper">
+        <template v-if="view === 'SCRAP'">
+            <leed-scrap @submit-scrap="submitScrap" @close-scrap="view = 'TIMELINE'"></leed-scrap>
+        </template>
+        <template v-if="view === 'TIMELINE'">
+
+        <ul>
+            <li :class="applyCssStage0" @click="selectedStage = 0">
+                <font-awesome-icon  :style="applyCssStageIcon0" :icon="deriveStageIcon(0)" size="1x"/>
+                <label style="padding:2px">Qualification</label>
+            </li>
+            <li :class="applyCssStage1" @click="selectedStage = 1">
+                <font-awesome-icon :style="applyCssStageIcon1" :icon="deriveStageIcon(1)" size="1x"/>
+                <label style="padding:2px">Consultation</label>
+            </li>
+            <li :class="applyCssStage2" @click="selectedStage = 2">
+                <font-awesome-icon :style="applyCssStageIcon2" :icon="deriveStageIcon(2)" size="1x"/>
+                <label style="padding:2px">Trial</label>
+            </li>
+            <li :class="applyCssStage3" @click="selectedStage = 3">
+                <font-awesome-icon :style="applyCssStageIcon3" :icon="deriveStageIcon(3)" size="1x"/>
+                <label style="padding:2px">Conversion</label>
+            </li>
+        </ul>
+        
+        <template v-if="timelines[selectedStage]">
+            <div v-if="timelines[selectedStage].mode === 'VIEW'" style="float:right">
+                <button v-if="isEditVisible" type="button" @click="executeAction('EDIT')">
+                    <font-awesome-icon icon="edit" size="1x"/>
+                </button>
             </div>
-            <!-- VIEW -->
-            <div v-if="index !== timelines.length-1 || !stageEdit" class="card-content">
-                <span>Assigned To<label class="pill-button">{{ getSelectedElement(timeline.assignedTo, assignees, 'Unassigned') }}</label></span>
-                <span>Status<label class="pill-button">{{ timeline.status ? timeline.status : 'Not known' }}</label></span>
-                <span v-if="isStageScheduled(timeline)">Scheduled on<label class="pill-button">{{ getScheduleDate(timeline.scheduleDate) }}</label></span>
-            </div>
-            <!-- ADD & EDIT -->
-            <div v-if="index === timelines.length-1 && stageEdit">
-                <div class="card-content">
-                    <span>
-                        Assigned To
-                        <select v-model="timeline.assignedTo">
-                            <option value="0">Unassigned</option>
-                            <option v-for="(assignee, index) in assignees" 
-                                :key="index" 
-                                :value="assignee.value"
-                                :selected="isSelected(assignee.value, timeline.assignedTo)"
-                            >{{
-                                assignee.key
-                            }}</option>
-                        </select>
-                    </span>
-                    <span>
-                        Status
-                        <select v-model="timeline.status">
-                            <option value="">Please select</option>
-                            <option v-for="(st, index) in stageSt[`${timeline.stage}`]" 
-                                :key="index" :value="st.value" 
-                                :selected="isSelected(st.value, timeline.status)"
-                            >{{
-                                st.key
-                            }}
-                            </option>
-                        </select>
-                    </span>
-                    <span v-if="isStageScheduled(timeline)" style="display:flex">
-                        <date-picker v-model="timeline.scheduleDate"/>
-                        <time-picker v-model="timeline.timeValue"></time-picker>
-                    </span>
-                </div>
-                <div style="padding:10px;border-top: 1px solid #b3b3b2;"> 
-                    <button @click="saveStage">Save</button>
-                    <button v-if="tempStage" @click="removeStage">Remove</button>
-                </div>
-            </div>
+        </template>
+        
+        <!-- QUALIFICATION -->
+        <div v-if="selectedStage == 0" key="stage-0">
+            <template v-if="timelines[0]">
+                <div>Created on: {{ createDate }}</div>
+                <form-module v-bind:mode="timelines[0].mode" v-model="timelines[0]">
+                    <form-field input="select" label="Assignee" map="assignee" :models="assigneeList"></form-field>
+                    <form-field input="select" label="Flag" map="flag" :models="flagOptions[0]"></form-field>
+                    <form-field input="textarea" label="Remark" map="remark"></form-field>
+                </form-module>
+            </template>
+            <template v-else>
+                <alert type="info" message="Qualification record is not generated yet" @close-alert="{}"></alert>
+            </template>
         </div>
-        <div v-if="proceedToNextStage && !stageEdit" class="ml-20">
-            <button @click="addStage">{{ getStageName }}</button>
+        <!-- CONSULTATION -->
+        <div v-else-if="selectedStage == 1" key="stage-1">
+            <template v-if="timelines[1]">
+                <div>Created on: {{ createDate }}</div>
+                <form-module v-bind:mode="timelines[1].mode" v-model="timelines[1]">
+                    <form-field input="select" label="Assignee" map="assignee" :models="assigneeList"></form-field>
+                    <form-field input="select" label="Flag" map="flag" :models="flagOptions[1]"></form-field>
+                    <span slot="form-field-label">Schedule Date: </span>
+                    <span slot="form-field-value" style="display:flex">
+                        <date-picker/>
+                        <time-picker></time-picker> 
+                    </span>
+                </form-module>
+                <form-module v-bind:mode="timelines[1].mode" v-model="timelines[1]">
+                    <form-field input="textarea" label="Remark" map="remark"></form-field>
+                </form-module>
+            </template>
+            <template v-else>
+                <alert type="info" message="Consultation record is not generated yet" @close-alert="{}"></alert>
+            </template>
         </div>
+        <!-- TRIAL -->
+        <div v-else-if="selectedStage == 2" key="stage-2">
+            <template v-if="timelines[2]">
+                <div>Created on: {{ createDate }}</div>
+                <form-module v-bind:mode="timelines[2].mode" v-model="timelines[2]">
+                    <form-field input="select" label="Assignee" map="assignee" :models="assigneeList"></form-field>
+                    <form-field input="select" label="Flag" map="flag" :models="flagOptions[2]"></form-field>
+                    <span slot="form-field-label">Schedule Date: </span>
+                    <span slot="form-field-value" style="display:flex">
+                        <date-picker/>
+                        <time-picker></time-picker> 
+                    </span>
+                </form-module>
+                <form-module v-bind:mode="timelines[2].mode" v-model="timelines[2]">
+                    <form-field input="textarea" label="Remark" map="remark"></form-field>
+                </form-module>
+            </template>
+            <template v-else>
+                <alert type="info" message="Trial record is not generated yet" @close-alert="{}"></alert>
+            </template>
+        </div>
+        <!-- CONVERSION -->
+        <div v-else-if="selectedStage == 3" key="stage-0">
+            <template v-if="timelines[3]">
+                <div>Created on: {{ createDate }}</div>
+                <form-module v-bind:mode="timelines[3].mode" v-model="timelines[3]" key="stage-3">
+                    <form-field input="select" label="Assignee" map="assignee" :models="assigneeList"></form-field>
+                    <form-field input="select" label="Flag" map="flag" :models="flagOptions[3]"></form-field>
+                    <form-field input="textarea" label="Remark" map="remark"></form-field>
+                </form-module>
+            </template>
+            <template v-else>
+                <alert type="info" message="Conversion record is not generated yet" @close-alert="{}"></alert>
+            </template>
+        </div>
+        <template v-if="timelines[selectedStage]">
+            <div v-if="timelines[selectedStage].mode === 'VIEW'" class="mt-25 mb-25">
+                <button v-if="isScrapVisible" type="button" class="btn" @click="executeAction('SCRAP')">Scrap</button>
+                <button v-if="isDoneVisible" type="button" class="btn" @click="executeAction('DONE')">Done</button>
+            </div>
+            <div v-else class="mt-25 mb-25">
+                <button type="button" class="btn" @click="executeAction('SAVE')">Save</button>
+                <button v-if="timelines[selectedStage].id" type="button" class="btn" @click="executeAction('CANCEL')">Cancel</button>
+                <button v-else type="button" class="btn" @click="executeAction('UNDO')">Undo</button>
+            </div>
+        </template>
+
+        </template>
     </div>
 </template>
 
 <script>
-import VButton from '@/components/elements/CustomButton'
-import Datepicker from 'vuejs-datepicker';
+import LeedScrap from '@/components/leed/LeedScrap'
+import FormModule from '@/components/common/FormModule'
+import FormField from '@/components/common/FormField'
+import Datepicker from 'vuejs-datepicker'
 import Timepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
-import * as Util from '@/commonjs/util'
-import { StageStatus } from '@/commonjs/constants'
+import Alert from '@/components/common/Alert'
+import { StageFlagOptions } from '@/commonjs/constants'
 
 export default {
     components: {
-        'vbutton': VButton,
+        'leed-scrap': LeedScrap,
+        'form-module': FormModule,
+        'form-field': FormField,
         'date-picker': Datepicker,
-        'time-picker': Timepicker
-    },
-    props: {
-        leedInfo: Object
+        'time-picker': Timepicker,
+        'alert': Alert
     },
     data: function () {
         return {
-            stageEdit: false,
-            tempStage: false,
-            nextStageName: '',
-            assignees: [],
-            stageSt: null,
-            timelines: []
+            view: 'TIMELINE',
+            stageStatusMap: new Map(),
+            createDate: '23 Feb 2021',
+            selectedStage: 0,
+            assigneeList: [
+                { key: 'Piyush Mehta', value: 1 },
+                { key: 'Vishal Kumar', value: 2 },
+                { key: 'Navneet Singh', value: 3 },
+                { key: 'Aarti Kumari', value: 4 },
+                { key: 'Akash Jha', value: 5 },
+            ],
+            statusList: [],
+            timelines: [
+                { id: 1, stage: 0, assignee: 2, status: 'ACTIVE', flag: 'RECORD', createDate: '', completeDate: '', scheduleDate: '', remark: '', mode: 'VIEW' },
+            ]
         }
     },
     created: function () {
-        if (this.leedInfo && this.leedInfo.leedStatuses) {
-            this.timelines = [...this.leedInfo.leedStatuses]
-        }
-        this.stageSt = StageStatus
+        const len = this.timelines.length
+        this.stageStatusMap.set(0, 'QUALIFIED')
+        this.stageStatusMap.set(1, 'DONE')
+        this.stageStatusMap.set(2, 'DONE')
+        this.stageStatusMap.set(3, 'CLOSE')
+        this.flagOptions = StageFlagOptions
     },
     computed: {
-        proceedToNextStage: function () {
-            return (this.leedInfo && (this.leedInfo.status === 'QUALIFIED' 
-                    || this.leedInfo.status === 'DONE'
-                    || this.leedInfo.status === 'CLOSE'))
-                ? true
-                : false
+        applyCssStage0: function () {
+            return this.evaluateCssStage(0)
         },
-        getStageName: function () {
-            if (this.leedInfo) {
-                switch (this.leedInfo.stage) {
-                    case 'GENERATION':
-                        this.nextStageName = 'CONSULTATION'
-                        return 'Book Consulation'
-                    case 'CONSULTATION':
-                        this.nextStageName = 'TRIAL'
-                        return 'Book Trial'
-                    case 'TRIAL':
-                        this.nextStageName = 'CONVERSION'
-                        return 'Contact Leed'
-                    case 'CONVERSION':
-                        return 'Close Sale'
-                }
-            }
+        applyCssStage1: function () {
+            return this.evaluateCssStage(1)
+        },
+        applyCssStage2: function () {
+            return this.evaluateCssStage(2)
+        },
+        applyCssStage3: function () {
+            return this.evaluateCssStage(3)
+        },
+        applyCssStageIcon0: function () {
+            return this.evaluateCssStageIcon(0)
+        },
+        applyCssStageIcon1: function () {
+            return this.evaluateCssStageIcon(1)
+        },
+        applyCssStageIcon2: function () {
+            return this.evaluateCssStageIcon(2)
+        },
+        applyCssStageIcon3: function () {
+            return this.evaluateCssStageIcon(3)
+        },
+        isEditVisible: function () {
+            const len = this.timelines.length
+            return this.selectedStage === len-1
+        },
+        isDoneVisible: function () {
+            const len = this.timelines.length
+            return this.selectedStage === len-1
+        },
+        isScrapVisible: function () {
+            const len = this.timelines.length
+            return (this.selectedStage === len-1 || this.selectedStage === len-2)
         }
     },
     methods: {
-        isSelected: function (key, val) {
-            return key === val
+        selectStage: function (stageNo) {
+            this.selectedStage = stageNo
         },
-        isStageScheduled: function (timeline) {
-            return (timeline.status === 'SCHEDULED' && (timeline.stage === 'CONSULTATION' || timeline.stage === 'TRIAL'))
-                ? true
-                : false
-        },
-        getScheduleDate: function (epochTime) {
-            if (epochTime == null) {
-                return '';
-            }
-
-            const options = {
-                year: 'numeric', month: 'numeric', day: 'numeric',
-                hour: 'numeric', minute: 'numeric',
-                hour12: false,
-            }
-            return new Intl.DateTimeFormat('en-GB', options).format(new Date(epochTime))
-        },
-        cancelEdit: function () {
-            this.stageEdit = !this.stageEdit  
-            if (this.stageEdit) {
-                return
-            }
-            const len = this.timelines.length
-            this.timelines[len-1].status = this.leedInfo.status
-        },
-        addStage: function () {
-            if (this.timelines[this.timelines.length-1].stage === 'CONVERSION') {
-                const clientInfo = {
-                    leedId: this.leedInfo.id,
-                    clientName: this.leedInfo.leedName,
-                    address: this.leedInfo.address
+        evaluateCssStage: function (index) {
+            const status = this.stageStatusMap.get(index)
+            if (this.timelines[index]) {
+                if (this.selectedStage === index && this.timelines[index].status === status) {
+                    return 'active-done'
+                } else if (this.selectedStage === index && this.timelines[index].status === 'SCRAP') {
+                    return 'active-scrap'
+                } else if (this.selectedStage === index) {
+                    return 'active'
+                } else if (this.timelines[index].status === status) {
+                    return 'done'
+                } else if (this.timelines[index].status === 'SCRAP') {
+                    return 'scrap'
+                } else {
+                    return 'inprogress'
                 }
-                this.$router.push({ name: 'AddClient', params: { leedData: clientInfo } });
-                return
             }
 
-            this.setStates(true)
-            const currDate = new Date()
-            const time = Util.getTimeValue(currDate.getTime())
-            const timeline = { 
-                stage: this.nextStageName, 
-                assignedTo: '0', 
-                status: '', 
-                scheduleDate: currDate,
-                timeValue: time
+            if (this.selectedStage === index) {
+                return 'inactive'
             }
-            this.timelines.push(timeline)
+            return ''
         },
-        saveStage: function () {
-            this.setStates(false)
-            const temp = this.timelines[this.timelines.length-1]
-            const newStage = {
-                id: temp.id,
-                leedId: this.leedInfo.id,
-	            stage: temp.stage,
-	            status: temp.status,
-	            profileId: parseInt(temp.assignedTo),
-	            scheduleDate: Util.calculateScheduleDate(temp.scheduleDate, temp.timeValue)
+        deriveStageIcon: function (index) {
+            const status = this.stageStatusMap.get(index)
+            if (this.timelines[index]) {
+                if (this.timelines[index].status === status) {
+                    return ['fas', 'check-circle']
+                } else if (this.timelines[index].status === 'SCRAP') {
+                    return ['fas', 'times-circle']
+                } else {
+                    return ['far', 'dot-circle']
+                }
             }
-            this.$store.dispatch('SAVE_STAGE', newStage)
+            return ['far', 'circle']
         },
-        removeStage: function () {
-            this.setStates(false)
-            this.timelines.pop()
-        },
-        getSelectedElement: function (val, models, defVal) {
-            if (models != null && models.length > 0) {
-                const model = models.filter(ele => ele.value == val)
-                return model && model.length > 0 ? model[0].key : defVal
+        evaluateCssStageIcon: function (index) {
+            const status = this.stageStatusMap.get(index)
+            if (this.selectedStage === index) {
+                return { color: '#fff' }
             }
-            return defVal
+            
+            if (this.timelines[index]) {
+                if (this.timelines[index].status === status) {
+                    return { color: '#049a00' }
+                } else if (this.timelines[index].status === 'SCRAP') {
+                    return { color: '#f44336' }
+                } else {
+                    return { color: '#008CBA' }
+                }
+            }
+            return { color: '#949494' }
         },
-        setStates: function (bool) {
-            this.stageEdit = bool
-            this.tempStage = bool
-        }
-    },
-    watch: {
-        leedInfo: function(newValue) {
-            this.timelines = newValue.leedStatuses
+        executeAction: function (type) {
+            const currIndex = this.timelines.length - 1
+            switch (type) {
+                case 'EDIT':
+                    this.timelines[currIndex].mode = 'EDIT'
+                    break
+                case 'SCRAP':
+                    this.view = 'SCRAP'
+                    break
+                case 'DONE':
+                    this.timelines[currIndex].status = this.stageStatusMap.get(currIndex)
+                    const tempStage = { 
+                        stage: currIndex + 1,
+                        assignee: 2, 
+                        status: 'ACTIVE',
+                        flag: 'RECORD', 
+                        createDate: '', 
+                        completeDate: '', 
+                        scheduleDate: '', 
+                        remark: '',
+                        mode: 'ADD'
+                    }
+                    this.timelines.push(tempStage)
+                    this.selectedStage = currIndex + 1
+                    break
+                case 'SAVE':
+                    this.timelines[currIndex].id = currIndex + 1
+                    this.timelines[currIndex].mode = 'VIEW'
+                    break
+                case 'CANCEL':
+                    this.timelines[currIndex].mode = 'VIEW'
+                    break
+                case 'UNDO':
+                    this.selectedStage = currIndex - 1
+                    this.timelines[this.selectedStage].status = 'ACTIVE'
+                    this.timelines.pop()
+                    break
+                default:
+            }
+        },
+        submitScrap: function (scrapValue) {
+            console.log('scrap-value', scrapValue)
+            this.timelines[this.selectedStage].status = 'SCRAP'
+            this.view = 'TIMELINE'
         }
     }
 }
 </script>
 
 <style scoped>
-.timeline::before {
-    content: '';
-    position: absolute;
-    width: 3px;
-    background-color: #008CBA;
-    top: 0;
-    bottom: 0;
+ul {
+    display: flex;
 }
 
-.card {
-    position: relative;
-    display: block;
-    border: 1px solid #b3b3b2;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    left: -29px;
-    background-color: white;
-    border: 4px solid #008CBA;
-    top: 8px;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-.card .card-heading {
+li {
     font-size: 20px;
-    color: white;
+    border: 2px solid #949494;
+    padding: 5px;
+    margin: 5px;
+    list-style-type: none;
+}
+
+li::after {
+    content: "\27A4";
+}
+
+.done {
+    border: 2px solid #049a00;
+}
+
+.scrap {
+    border: 2px solid #f44336;
+}
+
+.inprogress {
+    border: 2px solid #008CBA;
+}
+
+.active {
+    border: 2px solid #008CBA;
     background-color: #008CBA;
-    padding: 10px;
+    color: #fff;
 }
 
-.card .card-content {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    padding: 10px;
+.active-done {
+    border: 2px solid #049a00;
+    background-color: #049a00;
+    color: #fff;
 }
 
-.pill-button {
-  background-color: #ddd;
-  border: none;
-  color: black;
-  padding: 8px 14px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 0px 5px;
-  font-size: 12px;
+.inactive {
+    border: 2px solid #949494;
+    background-color: #949494;
+    color: #fff;
+}
+
+.active-scrap {
+    border: 2px solid #f44336;
+    background-color: #f44336;
+    color: #fff;
 }
 </style>

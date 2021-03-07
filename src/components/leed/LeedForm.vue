@@ -22,7 +22,7 @@
         <form-module name="Other Details" v-bind:mode="mode" v-model="otherDetails">
             <form-field input="textarea" label="Description" map="description"></form-field>
         </form-module>
-        <div v-if="mode !== 'VIEW'" class="action">
+        <div v-if="mode !== 'VIEW'" class="mt-50">
             <button type="button" class="btn" v-on:click="process">{{ buttonName }}</button>
             <button type="button" class="btn" v-on:click="cancel">Cancel</button>
         </div>
@@ -124,10 +124,6 @@ export default {
     border: 1px solid #b3b3b2;
     border-radius: 10px;
     padding: 30px 70px;
-}
-
-.action {
-    margin-top: 50px;
 }
 
 .btn {

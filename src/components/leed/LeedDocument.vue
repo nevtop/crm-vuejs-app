@@ -17,7 +17,7 @@
         </template>
         <div v-for="item in items" :key="item.id" class="doc-item mb-10">
             <span class="doc-icon mr-10">
-                <font-awesome-icon icon="file-pdf" size="3x" transform=""/>
+                <font-awesome-icon icon="file-pdf" size="3x"/>
             </span>
             <span class="flex-column" style="flex-basis: 450px; line-height: 24px">
                 <label for="name">{{ item.fileName }}</label>
