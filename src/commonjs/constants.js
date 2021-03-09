@@ -58,3 +58,41 @@ export const StageFlagOptions = [
         { value: 'RECORD', key: 'Record' },
     ]
 ]
+
+export const ScrapReasons = [
+    // GENERATION 
+    [
+        { value: '0', key: 'Call not picked' },
+        { value: '1', key: 'Wrong number' },
+        { value: '2', key: 'Requirement already fulfilled' },
+        { value: '3', key: 'Requirement can\'t be fulfilled' },
+        { value: '4', key: 'Service doesn\'t require anymore' },
+        { value: '5', key: 'Service is too expensive' },
+        { value: '7', key: 'Other' },
+    ],
+    // CONSULTATION
+    [
+        { value: '6', key: 'Call not picked after consultation booked' },
+        { value: '8', key: 'Call not picked after consultation done' },
+        { value: '9', key: 'Cancelled by relationship manager' },
+        { value: '2', key: 'Requirement already fulfilled' },
+        { value: '3', key: 'Requirement can\'t be fulfilled' },
+        { value: '5', key: 'Service is too expensive' },
+        { value: '10', key: 'Cancelled by client' },
+        { value: '7', key: 'Other' },
+    ],
+    // TRIAL
+    [
+        { value: '11', key: 'Call not picked after trial booked' },
+        { value: '12', key: 'Call not picked after trial done' },
+        { value: '13', key: 'Cancelled by trainer' },
+        { value: '2', key: 'Requirement already fulfilled' },
+        { value: '10', key: 'Cancelled by client' },
+        { value: '7', key: 'Other' },
+    ],
+    // CONVERSION
+    [
+        { value: '5', key: 'Service is too expensive' },
+        { value: '10', key: 'Cancelled by client' },
+    ]
+]

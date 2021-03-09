@@ -18,24 +18,21 @@
 </template>
 
 <script>
+import { ScrapReasons } from '@/commonjs/constants'
+
 export default {
+    props: ['stage'],
     data: function () {
         return {
             scrapValue: '-1',
-            reasons: [
-                { value: '0', key: 'Call not picked' },
-                { value: '1', key: 'Wrong number' },
-                { value: '2', key: 'Requirement already fulfilled' },
-                { value: '3', key: 'Requirement can\'t be fulfilled' },
-                { value: '4', key: 'Service doesn\'t require anymore' },
-                { value: '5', key: 'Service is too expensive' },
-                { value: '7', key: 'Other' },
-            ],
+            hello:[],
+            reasons: [],
             otherValue: null,
             comment: ''
         }
     },
     created: function () {
+        this.reasons = ScrapReasons[parseInt(this.stage)]
         const len = this.reasons.length
         this.otherValue = this.reasons[len-1].value
     }
