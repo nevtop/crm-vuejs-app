@@ -47,9 +47,10 @@
                         <form-field input="select" label="Flag" map="flag" :models="flagOptions[1]"></form-field>
                         <span slot="form-field-label">Schedule Date: </span>
                         <span slot="form-field-value" style="display:flex">
-                            <date-picker/>
-                            <time-picker></time-picker> 
+                            <date-picker v-model="timelines[1].scheduleDate"/>
+                            <time-picker v-model="timelines[1].timeValue"></time-picker> 
                         </span>
+                        <span slot="form-field-view" class="pill-button">{{ getScheduleDate(timelines[1].scheduleDate) }}</span>
                     </form-module>
                     <form-module v-bind:mode="timelines[1].mode" v-model="timelines[1]">
                         <form-field input="textarea" label="Remark" map="remark"></form-field>
@@ -68,9 +69,10 @@
                         <form-field input="select" label="Flag" map="flag" :models="flagOptions[2]"></form-field>
                         <span slot="form-field-label">Schedule Date: </span>
                         <span slot="form-field-value" style="display:flex">
-                            <date-picker/>
-                            <time-picker></time-picker> 
+                            <date-picker v-model="timelines[2].scheduleDate"/>
+                            <time-picker v-model="timelines[2].timeValue"></time-picker> 
                         </span>
+                        <span slot="form-field-view" class="pill-button">{{ getScheduleDate(timelines[2].scheduleDate) }}</span>
                     </form-module>
                     <form-module v-bind:mode="timelines[2].mode" v-model="timelines[2]">
                         <form-field input="textarea" label="Remark" map="remark"></form-field>
@@ -150,7 +152,7 @@ export default {
             ],
             statusList: [],
             timelines: [
-                { id: 1, stage: 0, assignee: 2, status: 'ACTIVE', flag: 'RECORD', createDate: '', completeDate: '', scheduleDate: '', remark: '', mode: 'VIEW' },
+                { id: 1, stage: 0, assignee: 2, status: 'ACTIVE', flag: 'RECORD', createDate: '', completeDate: '', scheduleDate: '', timeValue: '', remark: '', mode: 'VIEW' },
             ]
         }
     },
@@ -180,6 +182,18 @@ export default {
         },
         selectStage: function (stageNo) {
             this.selectedStage = stageNo
+        },
+        getScheduleDate: function (epochTime) {
+            if (epochTime == null) {
+                return '';
+            }
+
+            const options = {
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                hour: 'numeric', minute: 'numeric',
+                hour12: false,
+            }
+            return new Intl.DateTimeFormat('en-GB', options).format(new Date(epochTime))
         },
         applyCssStage: function (index) {
             const status = this.stageStatusMap.get(index)
@@ -252,7 +266,8 @@ export default {
                         flag: 'RECORD', 
                         createDate: '', 
                         completeDate: '', 
-                        scheduleDate: '', 
+                        scheduleDate: new Date(), 
+                        timeValue: '00:00',
                         remark: '',
                         mode: 'ADD'
                     }
@@ -333,5 +348,17 @@ li::after {
     border: 2px solid #f44336;
     background-color: #f44336;
     color: #fff;
+}
+
+.pill-button {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  padding: 0px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0px 5px;
+  font-size: 15px;
 }
 </style>

@@ -94,6 +94,7 @@
                     </template>
                     <template v-else>-</template>
                 </span>
+                <slot name="form-field-view"></slot>
             </div>
         </div>
         <div style="display:none;">

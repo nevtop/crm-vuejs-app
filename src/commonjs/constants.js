@@ -94,5 +94,6 @@ export const ScrapReasons = [
     [
         { value: '5', key: 'Service is too expensive' },
         { value: '10', key: 'Cancelled by client' },
+        { value: '7', key: 'Other' },
     ]
 ]
