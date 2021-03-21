@@ -105,6 +105,7 @@
 
 <script>
 import Datepicker from 'vuejs-datepicker';
+import * as Util from '@/commonjs/util'
 
 export default {
     components: {
@@ -198,7 +199,12 @@ export default {
         getSelectedElement: function (val, models) {
             if (models != null && models.length > 0) {
                 const model = models.filter(ele => ele.value == val)
-                return model[0].key
+                if (model.length === 1) {
+                    return model[0].key
+                } else {
+                    console.error('No option found for element: ', val)
+                    return Util.convertToStandardString(val)
+                }
             }
         }
     },

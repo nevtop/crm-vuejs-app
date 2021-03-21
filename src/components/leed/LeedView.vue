@@ -72,9 +72,16 @@ export default {
         },
         getStatus: function () {
             if (this.leedInfo) {
-                return (this.leedInfo.active)
-                    ? { name: 'Active', type: 'active' }
-                    : { name: 'Reject', type: 'inactive' }
+                switch (this.leedInfo.status) {
+                    case 'ACTIVE':
+                        return { name: 'Active', type: 'active' }
+                    case 'DONE':
+                        return { name: 'Done', type: 'active' }
+                    case 'SCRAP':
+                        return { name: 'Scrap', type: 'inactive' }
+                    default:
+                        return null
+                }
             }
             return { name: 'Unknown', type: 'info' }
         }

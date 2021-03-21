@@ -71,7 +71,12 @@ export default {
             const config = Util.getConfig('REGISTER_CLIENT', HttpMethod.POST, Url.REGISTER_CLIENT, clientData)
             const { data } = await sendRequest(config)
             commit('DATA_MODIFIED', true)
-            Router.go(-1)
+            
+            if (clientData.leedId) {
+                Router.push({ name : 'LeedView', params: { id: clientData.leedId } })
+            } else {
+                Router.go(-1)
+            }
         } catch (err) { 
             console.error('Error occurred in API: REGISTER_CLIENT')
         }
@@ -120,8 +125,7 @@ export default {
     },
     RETRIEVE_CLIENT_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, 
-                Url.RETRIEVE_CLIENT_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_CLIENT_INFO', HttpMethod.GET, `${Url.RETRIEVE_CLIENT_INFO}/${id}`)
             const { data } = await sendRequest(config)
             commit('SET_CLIENT_INFO', data.data[0])
             commit('SET_SESSION_LIST', data.data[0].sessions)
@@ -150,8 +154,7 @@ export default {
     },
     RETRIEVE_SESSION_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_SESSION_INFO', HttpMethod.GET, 
-                Url.RETRIEVE_SESSION_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_SESSION_INFO', HttpMethod.GET, `${Url.RETRIEVE_SESSION_INFO}/${id}`)
             const { data } = await sendRequest(config)
             commit('SET_SESSION_INFO', data.data[0])
 
@@ -207,8 +210,7 @@ export default {
     },
     RETRIEVE_TRAINEE_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_TRAINEE_INFO', HttpMethod.GET, 
-                Url.RETRIEVE_TRAINEE_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_TRAINEE_INFO', HttpMethod.GET, `${Url.RETRIEVE_TRAINEE_INFO}/${id}`)
             const { data } = await sendRequest(config)
             commit('SET_TRAINEE_INFO', data.data[0])
             const sessionTrainees = data.data[0].sessionTrainees.map(item => {
@@ -244,7 +246,7 @@ export default {
     },
     RETRIEVE_LEED_INFO: async function ({ commit }, id) {
         try {
-            const config = Util.getConfig('RETRIEVE_LEED_INFO', HttpMethod.GET, Url.RETRIEVE_LEED_INFO.concat(`/${id}`))
+            const config = Util.getConfig('RETRIEVE_LEED_INFO', HttpMethod.GET, `${Url.RETRIEVE_LEED_INFO}/${id}`)
             const { data } = await sendRequest(config)
             commit('SET_LEED_INFO', data.data[0])
         } catch (err) {
@@ -268,6 +270,17 @@ export default {
             commit('SET_LEED_INFO', data.data[0])
         } catch (err) {
             console.error('Error occurred in API: SAVE_STAGE')
+        }
+    },
+    SCRAP_LEED: async function ({ commit }, scrapModel) {
+        try {
+            const id = scrapModel.leedId
+            delete scrapModel.leedId
+            const config = Util.getConfig('SCRAP_LEED', HttpMethod.POST, `${Url.SCRAP_LEED}/${id}`, scrapModel)
+            const { data } = await sendRequest(config)
+            commit('SET_LEED_INFO', data.data[0])
+        } catch (err) {
+            console.error('Error occurred in API: SCRAP_LEED')
         }
     }
 }

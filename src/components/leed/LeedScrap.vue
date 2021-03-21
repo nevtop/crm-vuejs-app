@@ -10,7 +10,7 @@
             <input type="text" v-model="comment" placeholder="Write a reason">
         </template>
         <div style="float: right;">
-            <button type="button" @click="$emit('submit-scrap', scrapValue)">Submit</button>
+            <button type="button" @click="$emit('scrap-leed', scrapValue)">Submit</button>
             <button type="button" @click="$emit('close-scrap')">Cancel</button>
         </div>
         <div class="mb-10"></div>

@@ -108,23 +108,24 @@ export default {
         state.trainee.info = traineeInfo
     },
     SET_LEED_LIST: function (state, leedList) {
-        const processList = leedList.map((ele, index) => {
-            const newEle = {...ele, ...ele.address}
-            newEle.sno = ++index
-            delete newEle.address
-            return newEle
+        leedList.forEach((ele, index) => {
+            ele['sno'] = ++index
+            ele['city'] = ele.address.city
+            ele['state'] = ele.address.state
+            delete ele.address
         })
-        state.leed.list = processList
+        state.leed.list = leedList
     },
     SET_LEED_INFO: function (state, leedInfo) {
-        leedInfo.leedStatuses.forEach((ele) => {
-            ele.createDate = new Date(ele.createDate).toLocaleDateString("en-GB")
+        leedInfo.leedTimelines.forEach((ele) => {
+            ele['mode'] = 'VIEW'
+            ele['createDate'] = new Date(ele.createDate).toLocaleDateString("en-GB")
             if (ele.scheduleDate) {
                 const date = new Date(ele.scheduleDate)
-                ele.timeValue = Util.getTimeValue(date.getTime())
+                ele['timeValue'] = Util.getTimeValue(date.getTime())
             } else {
-                ele.scheduleDate = new Date()
-                ele.timeValue = '00:00'
+                ele['scheduleDate'] = new Date()
+                ele['timeValue'] = '00:00'
             }
         })
         state.leed.info = leedInfo

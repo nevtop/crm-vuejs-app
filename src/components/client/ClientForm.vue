@@ -49,7 +49,7 @@ export default {
                 { key: 'Personal', value: 'PERSONAL' },
                 { key: 'Corporate', value: 'CORPORATE' }
             ],
-            leedId: null,
+            leedInfo: null,
             basicDetails: { clientType: '', clientName: '', gstNo: '', panNo: '' },
             address: { addressLine1: '', addressLine2: '', city: '',
                 area: '', state: '', pincode: '', country: ''
@@ -72,9 +72,9 @@ export default {
         }
 
         if (this.$route.params.leedData) {
-            const leedInfo = this.$route.params.leedData
-            this.leedId = leedInfo.leedId;
-            this.populate(leedInfo)
+            this.leedInfo = this.$route.params.leedData
+            // this.leedId = leedInfo.leedId;
+            this.populate(this.leedInfo)
         }
         
         this.maxWidth = this.mode === 'VIEW' ? '1000px' : '700px'
@@ -94,12 +94,17 @@ export default {
         },
         process: function () {
             const clientData = {
-                leedId: this.leedId,
                 active: true,
                 ...this.basicDetails,
                 address: this.address,
                 ...this.otherDetails
             }
+
+            if (this.leedInfo && this.leedInfo.leedId) {
+                clientData['leedId'] = this.leedInfo.leedId
+                clientData['stage'] = this.leedInfo.stageData
+            }
+            
             if (this.mode === 'ADD') {
                 this.$store.dispatch('REGISTER_CLIENT', clientData)
             } else {

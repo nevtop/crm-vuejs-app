@@ -27,24 +27,17 @@ export const Url = {
     FETCH_ALL_LEEDS: '/leed/all',
     RETRIEVE_LEED_INFO: '/leed/info',
     UPDATE_LEED: '/leed/update',
-    SAVE_STAGE: '/leed/stage/save'
+    SAVE_STAGE: '/leed/stage/save',
+    SCRAP_LEED: '/leed/scrap',
 }
 
 export const StageFlagOptions = [
-    // GENERATION 
+    /** QUALIFICATION  */
     [
         { value: 'INPROGRESS', key: 'Inprogress' },
         { value: 'RECORD', key: 'Record' },
     ],
-    // CONSULTATION
-    [
-        { value: 'CANCELLED', key: 'Cancelled' },
-        { value: 'INPROGRESS', key: 'Inprogress' },
-        { value: 'OVERDUE', key: 'Overdue' },
-        { value: 'RECORD', key: 'Record' },
-        { value: 'SCHEDULED', key: 'Scheduled' },
-    ],
-    // TRIAL
+    /** CONSULTATION */
     [
         { value: 'CANCELLED', key: 'Cancelled' },
         { value: 'INPROGRESS', key: 'Inprogress' },
@@ -52,7 +45,15 @@ export const StageFlagOptions = [
         { value: 'RECORD', key: 'Record' },
         { value: 'SCHEDULED', key: 'Scheduled' },
     ],
-    // CONVERSION
+    /** TRAIL */
+    [
+        { value: 'CANCELLED', key: 'Cancelled' },
+        { value: 'INPROGRESS', key: 'Inprogress' },
+        { value: 'OVERDUE', key: 'Overdue' },
+        { value: 'RECORD', key: 'Record' },
+        { value: 'SCHEDULED', key: 'Scheduled' },
+    ],
+    /** CONVERSION */
     [
         { value: 'INPROGRESS', key: 'Inprogress' },
         { value: 'RECORD', key: 'Record' },
@@ -60,7 +61,7 @@ export const StageFlagOptions = [
 ]
 
 export const ScrapReasons = [
-    // GENERATION 
+    /** QUALIFICATION  */
     [
         { value: '0', key: 'Call not picked' },
         { value: '1', key: 'Wrong number' },
@@ -70,7 +71,7 @@ export const ScrapReasons = [
         { value: '5', key: 'Service is too expensive' },
         { value: '7', key: 'Other' },
     ],
-    // CONSULTATION
+    /** CONSULTATION */
     [
         { value: '6', key: 'Call not picked after consultation booked' },
         { value: '8', key: 'Call not picked after consultation done' },
@@ -81,7 +82,7 @@ export const ScrapReasons = [
         { value: '10', key: 'Cancelled by client' },
         { value: '7', key: 'Other' },
     ],
-    // TRIAL
+    /** TRAIL */
     [
         { value: '11', key: 'Call not picked after trial booked' },
         { value: '12', key: 'Call not picked after trial done' },
@@ -90,7 +91,7 @@ export const ScrapReasons = [
         { value: '10', key: 'Cancelled by client' },
         { value: '7', key: 'Other' },
     ],
-    // CONVERSION
+    /** CONVERSION */
     [
         { value: '5', key: 'Service is too expensive' },
         { value: '10', key: 'Cancelled by client' },

@@ -42,3 +42,12 @@ export const calculateScheduleDate = function (scheduleDate, timeValue) {
     const millis = (parseInt(arr[0])*60 + parseInt(arr[1]))*60*1000
     return dt.getTime() + millis;
 }
+
+export const convertToStandardString = function (val) {
+    const words = val.split('_');
+    const result = []
+    for (let word of words) {
+        result.push(word[0] + word.substring(1).toLowerCase())
+    }
+    return result.join(' ')
+}
