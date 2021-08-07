@@ -5,7 +5,7 @@
                 <label class="module-heading">Leeds</label>
                 <router-link :to="{ name: 'AddLeed'}" class="link">New Leed</router-link>
             </div>
-            <search width='250px' placeholder="Search for leeds.."></search>
+            <search width='250px' placeholder="Search a lead..."></search>
             <table-view v-bind:list="leedList" action="LeedView">
                 <table-column label="Leed Name" map="leedName"></table-column>
                 <table-column label="Stage" map="stage"></table-column>

@@ -20,6 +20,8 @@ import TraineeView from '@/components/trainee/TraineeView'
 import Leeds from '@/components/leed/Leeds'
 import LeedForm from '@/components/leed/LeedForm'
 import LeedView from '@/components/leed/LeedView'
+import Billing from '@/components/accounts/Billing'
+import InvoiceForm from '@/components/accounts/InvoiceForm'
 
 Vue.use(Router)
 
@@ -89,6 +91,19 @@ const router = new Router({
             name: 'ClientView',
             meta: { requiresAuth: true },
             components: { app: ClientView }
+        },
+        {
+            path: '/accounts',
+            name: 'Accounts',
+            meta: { requiresAuth: true },
+            components: { app: Billing },
+            children: [
+                {
+                    path: 'invoice/new',
+                    name: 'NewInvoice',
+                    components: { accounts: InvoiceForm }
+                }
+            ]
         },
         {
             path: '/sessions',

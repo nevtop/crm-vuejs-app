@@ -5,6 +5,7 @@
         <router-link :to="{name: 'Clients'}" v-on:click.native="emitEvents" class="menu-item">Clients</router-link>
         <router-link :to="{name: 'Sessions'}" v-on:click.native="emitEvents" class="menu-item">Sessions</router-link>
         <router-link :to="{name: 'Trainees'}" v-on:click.native="emitEvents" class="menu-item">Trainees</router-link>
+        <router-link :to="{name: 'Accounts'}" v-on:click.native="emitEvents" class="menu-item">Accounts</router-link>
         <router-link :to="{name: 'Setting'}" v-on:click.native="emitEvents" class="menu-item">Settings</router-link>
     </div>
 </template>

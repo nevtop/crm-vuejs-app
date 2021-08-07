@@ -23,6 +23,9 @@
         <template v-else-if="selectedTab.name === 'SESSIONS'">
             <sessions></sessions>
         </template>
+        <template v-else-if="selectedTab.name === 'BILLING'">
+            <billing></billing>
+        </template>
     </div>
 </template>
 
@@ -30,6 +33,7 @@
 import TabNav from '@/components/common/TabNav'
 import ClientForm from '@/components/client/ClientForm'
 import Sessions from '@/components/session/Sessions'
+import Billing from '@/components/accounts/Billing'
 import VButton from '@/components/elements/CustomButton'
 import { mapGetters } from 'vuex';
 
@@ -38,13 +42,15 @@ export default {
         'tab-nav': TabNav,
         'client-form': ClientForm,
         'sessions': Sessions,
+        'billing': Billing,
         'v-button': VButton
     },
     data: function () {
         return {
             tabs: [
-                { name: 'PROFILE', buttons: [{ route: 'EditClient', label: 'Edit Profile' }]},
-                { name: 'SESSIONS', buttons: [{ route: 'AddSession', label: 'Add Session'}]}
+                { name: 'PROFILE', buttons: [{ route: 'EditClient', label: 'Edit Profile' }] },
+                { name: 'SESSIONS', buttons: [{ route: 'AddSession', label: 'Add Session'}] },
+                { name: 'BILLING', buttons: [{ route: 'NewInvoice', label: 'New Invoice'}] }
             ]
         }
     },
